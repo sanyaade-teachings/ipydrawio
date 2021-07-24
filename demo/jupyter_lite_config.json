@@ -1,9 +1,9 @@
 {
   "LiteBuildConfig": {
     "apps": ["lab"],
-    "files": ["."],
-    "ignore_files": [
-      "(lab/|_output|.gitignore|doit.db|.json|jupyter_config|log$)"
+    "contents": ["."],
+    "ignore_contents": [
+      "(lab/|_output|.gitignore|doit.db|\\.json$|jupyter_config|log$|\\.cache)"
     ],
     "lite_dir": ".",
     "output_archive": "../build/demo/ipydrawio-lite-1.1.1.tgz",

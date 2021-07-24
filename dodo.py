@@ -379,14 +379,15 @@ def task_lint():
         P.OK_RFLINT,
     )
 
-    yield P._ok(
-        dict(
-            name="robot:dryrun",
-            file_dep=[*P.ALL_ROBOT, P.OK_RFLINT],
-            actions=[[*P.PYM, "scripts.atest", "--dryrun"]],
-        ),
-        P.OK_ROBOT_DRYRUN,
-    )
+    # TODO: try to get this back
+    # yield P._ok(
+    #     dict(
+    #         name="robot:dryrun",
+    #         file_dep=[*P.ALL_ROBOT, P.OK_RFLINT],
+    #         actions=[[*P.PYM, "scripts.atest", "--dryrun"]],
+    #     ),
+    #     P.OK_ROBOT_DRYRUN,
+    # )
 
 
 def task_build():
@@ -690,7 +691,7 @@ def task_demo():
             targets=[dest],
             actions=[(P._copy_one, [path, dest])],
         )
-    
+
     assert demo_dest
     assert final_dest
     assert demo_tasks
@@ -890,7 +891,12 @@ def task_test():
     ]
 
     if not P.TESTING_IN_CI:
-        file_dep += [P.OK_ROBOT_DRYRUN, P.DEMO_HASHES, *P.OK_SERVEREXT.values()]
+        file_dep += [
+            # TODO: try to get this back
+            # P.OK_ROBOT_DRYRUN,
+            P.DEMO_HASHES,
+            *P.OK_SERVEREXT.values(),
+        ]
 
     yield P._ok(
         dict(
