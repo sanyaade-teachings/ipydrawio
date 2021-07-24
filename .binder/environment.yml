@@ -28,6 +28,7 @@ dependencies:
   - jupyter-lsp-python-lsp-server
   - retrolab
   - jupyterlab-link-share
+  - jupyter-videochat
   - jupyterlab-lsp
   - matplotlib-base
   - nbgitpuller
