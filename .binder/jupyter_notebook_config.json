@@ -5,6 +5,7 @@
         "buildAvailable": false,
         "buildCheck": false
       }
-    }
+    },
+    "collaborative": true
   }
 }
