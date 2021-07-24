@@ -18,6 +18,7 @@ name: ipydrawio-dev
 
 channels:
   - conda-forge
+  - conda-forge/label/jupyterlab_rc
   - nodefaults
 
 dependencies:

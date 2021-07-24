@@ -690,7 +690,7 @@ def task_demo():
             targets=[dest],
             actions=[(P._copy_one, [path, dest])],
         )
-    
+
     assert demo_dest
     assert final_dest
     assert demo_tasks

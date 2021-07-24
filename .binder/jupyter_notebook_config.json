@@ -1,11 +1,11 @@
 {
   "LabApp": {
+    "collaborative": true,
     "tornado_settings": {
       "page_config_data": {
         "buildAvailable": false,
         "buildCheck": false
       }
-    },
-    "collaborative": true
+    }
   }
 }
