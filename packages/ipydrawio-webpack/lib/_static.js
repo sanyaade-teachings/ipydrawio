@@ -116,6 +116,8 @@ import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/mstile-150
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/my-diagrams-sel.svg';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/my-diagrams.svg';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/nocolor.png';
+import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/notion-logo-white.svg';
+import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/notion-logo.svg';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/onedrive-connector-atlas.png';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/onedrive-connector-atlas.svg';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/onedrive-logo-white.svg';
