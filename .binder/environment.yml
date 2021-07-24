@@ -18,6 +18,7 @@ name: ipydrawio-demo
 
 channels:
   - conda-forge
+  - conda-forge/label/jupyterlab_rc
 
 dependencies:
   - python >=3.9
@@ -25,7 +26,7 @@ dependencies:
   - bqplot
   - graphviz2drawio
   - jupyter-lsp-python-lsp-server
-  - jupyterlab-classic
+  - retrolab
   - jupyterlab-lsp
   - matplotlib-base
   - nbgitpuller
@@ -71,7 +72,7 @@ dependencies:
   - python # this gets patched in ci
   # run
   - ipywidgets >=7.6
-  - jupyterlab >=3.0.13,<4.0.0a0
+  - jupyterlab >=3.1.0rc2,<4.0.0a0
   - jupyterlab_widgets >=1
   - lxml
   - pillow
