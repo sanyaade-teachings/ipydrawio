@@ -142,8 +142,10 @@ Verify Edit With Menu
     @{factories} =    Set Variable    ${EXT EDIT WITH.get('''${ext}''').strip().split(',')}
     FOR    ${i}    IN RANGE    ${factories.__len__()}
         ${factory} =    Set Variable    ${factories[${i}].strip()}
-        Mouse Over
+        ${sel} =    Set Variable
         ...    ${opener}\[position()=${i + 1}]/div[contains(@class, 'lm-Menu-itemLabel')][contains(., '${factory}')]
+        Wait Until Page Contains Element    ${sel}
+        Mouse Over    ${sel}
     END
 
 IPyDrawio Export Server Should be Provisioned
