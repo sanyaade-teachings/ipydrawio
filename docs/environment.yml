@@ -18,7 +18,6 @@ name: ipydrawio-docs
 
 channels:
   - conda-forge
-  - conda-forge/label/jupyterlab_rc
   - nodefaults
 
 dependencies:
@@ -49,7 +48,7 @@ dependencies:
   - python # this gets patched in ci
   # run
   - ipywidgets >=7.6
-  - jupyterlab >=3.1.0rc2,<4.0.0a0
+  - jupyterlab >=3.1.0,<4.0.0a0
   - jupyterlab_widgets >=1
   - lxml
   - pillow

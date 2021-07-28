@@ -1,7 +1,7 @@
 __pycache__
 _output
 .coverage*
-*doit.db
+.eslintcache
 .ipynb_checkpoints
 .pabotsuitenames
 .virtual_documents/
@@ -14,6 +14,7 @@ _output
 *.tgz
 *.tsbuildinfo
 **/*DRAWIO_DEBUG*
+*doit.db
 atest/output/
 build/
 dist/

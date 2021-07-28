@@ -53,8 +53,8 @@ export class DiagramDocument extends DocumentWidget<Diagram> {
     this._manager = options.manager;
     this.getSettings = options.getSettings;
 
-    this._onTitleChanged();
-    this.context.pathChanged.connect(this._onTitleChanged, this);
+    this._onDiagramTitleChanged();
+    this.context.pathChanged.connect(this._onDiagramTitleChanged, this);
     this.context.ready
       .then(async () => {
         DEBUG && console.warn('format', this.format);
@@ -75,7 +75,7 @@ export class DiagramDocument extends DocumentWidget<Diagram> {
   /**
    * Handle a change to the title.
    */
-  private _onTitleChanged(): void {
+  private _onDiagramTitleChanged(): void {
     DEBUG && console.warn('contentsModel', this.context.contentsModel);
 
     this.title.label = PathExt.basename(this.context.localPath);

@@ -34,6 +34,11 @@ pip install ipydrawio[all]
       - plus some Jupyter ones
   - Jupyter [rich display][] output
   - Jupyter [Widgets][]
+  - Basic collaborative editing
+    - requires the `--collaborative` flag, added in JupyterLab 3.1+
+    - token sharing, _a la_ [jupyterlab-link-share], or a custom connector (no
+      known yet)
+    - no presence indicators for other editors
 - `ipydrawio-export`
   - Export print-quality PDF from diagrams
     - optionally include editable Drawio XML as a PDF attachment
@@ -227,3 +232,5 @@ limitations under the License.
 [launcher]:
   https://jupyterlab.readthedocs.io/en/stable/user/files.html?highlight=Launcher#creating-files-and-activities
 [file manager]: https://jupyterlab.readthedocs.io/en/stable/user/files.html
+[jupyterlab-link-share]:
+  https://github.com/jupyterlab-contrib/jupyterlab-link-share

@@ -352,6 +352,7 @@ def task_lint():
             actions=[P._echo_ok("all ok")],
             file_dep=[
                 P.OK_BLACK,
+                P.OK_ESLINT,
                 P.OK_FLAKE8,
                 P.OK_ISORT,
                 P.OK_PRETTIER,
