@@ -4,8 +4,5 @@
   },
   "@jupyterlab/extensionmanager-extension:plugin": {
     "enabled": false
-  },
-  "jupyterlab-videochat": {
-    "area": "main"
   }
 }
