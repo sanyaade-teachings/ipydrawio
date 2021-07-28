@@ -10,7 +10,7 @@
     "@deathbeds/ipydrawio": "file:../ipydrawio"
   },
   "devDependencies": {
-    "typescript": "~4.3.5"
+    "typescript": "~4.2.3"
   },
   "scripts": {
     "build": "tsc --build src",
