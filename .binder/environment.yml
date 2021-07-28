@@ -25,7 +25,6 @@ dependencies:
   - bqplot
   - graphviz2drawio
   - jupyter-lsp-python-lsp-server
-  - retrolab
   - jupyterlab-link-share
   - jupyterlab-lsp
   - matplotlib-base
