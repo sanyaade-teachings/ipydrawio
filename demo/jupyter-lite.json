@@ -9,7 +9,8 @@
       "jupyterlab-server-proxy",
       "nbdime-jupyterlab"
     ],
-    "faviconUrl": "./favicon.ico"
+    "faviconUrl": "./favicon.ico",
+    "collaborative": true
   },
   "jupyter-lite-schema-version": 0
 }
