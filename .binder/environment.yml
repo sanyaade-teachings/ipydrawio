@@ -22,7 +22,6 @@ channels:
 dependencies:
   - python >=3.9
   # demo toys
-  - bqplot
   - graphviz2drawio
   - jupyter-lsp-python-lsp-server
   - jupyterlab-link-share
@@ -37,11 +36,16 @@ dependencies:
   - segno
   - shapely
   - tabulate
+  - sphinx-autobuild
+  ### FEDERATED EXTENSIONS ###
+  - bqplot
+  - jupyterlab_widgets
+  - jupyterlab-tour
   - wxyz_datagrid
   - wxyz_json_schema_form
   - wxyz_lab
   - wxyz_svg
-  - sphinx-autobuild
+  ### FEDERATED EXTENSIONS ###
   ############################################################################
   ### ipydrawio-docs-deps ###
 
@@ -51,8 +55,6 @@ dependencies:
   - sphinx
   - sphinx-jsonschema
   - sphinxext-rediraffe
-  # for lite
-  - jupyterlab-tour
   # TODO: resolve upstream
   - sqlalchemy <1.4
   - pip:

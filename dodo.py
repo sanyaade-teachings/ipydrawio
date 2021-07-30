@@ -86,6 +86,9 @@ def task_dist():
 
 def task_env():
     """sync environments"""
+    if P.RTD:
+        return
+
     for env, inherits in P.ENV_INHERITS.items():
         yield dict(
             name=f"""{env.parent.name}:{':'.join([inh.parent.name for inh in inherits])}""",
@@ -676,6 +679,24 @@ def task_demo():
     if not P.LITE_PREFIX:
         print("jupyterlite not found, this might be okay", flush=True)
         return
+
+    yield dict(
+        name="extensions",
+        doc="update jupyter-lite.json from the conda env",
+        file_dep=[P.ENV_BINDER, P.PY_WHEEL[P.IPD.name]],
+        targets=[P.DEMO_CONFIG],
+        actions=[
+            (
+                P._sync_lite_config,
+                [
+                    P.ENV_BINDER,
+                    P.DEMO_CONFIG,
+                    P.FED_EXT_MARKER,
+                    [P.PY_WHEEL[P.IPD.name]],
+                ],
+            )
+        ],
+    )
 
     demo_dest = []
     demo_tasks = []

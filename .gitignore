@@ -1,5 +1,6 @@
 __pycache__
 _output
+.cache/
 .coverage*
 .eslintcache
 .ipynb_checkpoints

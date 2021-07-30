@@ -6,10 +6,16 @@
     data-toggle="tooltip"
     data-placement="right"
     title="Try IPyDrawio in your browser. Right now."
+    id="demo-room-button"
   >
     <i class="fas fa-lightbulb"></i>
-    Try <strong>IPyDrawio</strong> Now
+    Try <strong>IPyDrawio</strong> Now <span id="demo-room-label"></span>
   </a>
+  <details>
+    <summary><i class="fas fa-users"></i>Collaboration...</summary>
+    <input type="text" placeholder="room name" id="demo-room-name"></input><br/>
+    <em>everyone who uses this room name will be able to edit all files</em>
+  </details>
   <br/>
   or <a
     href="{{ pathto(demo_tarball, True) }}"
@@ -22,5 +28,15 @@
   </a>
   <hr/>
   <em>Powered by <a href="https://jupyterlite.rtfd.io" target="_blank">JupyterLite</a></em>
-  <script>$(function() {$('[data-toggle="tooltip"]').tooltip();});</script>
+  <script>$(function() {
+    $('[data-toggle="tooltip"]').tooltip();
+    $("#demo-room-name").on('input', () => {
+      const room = $("#demo-room-name").val().trim();
+      $("#demo-room-button").attr(
+        "href",
+        `{{ pathto('demo/index') }}` + (room ? `?room=${room}` : '')
+      );
+      $("#demo-room-label").text(room ? ` with ${room}` : '');
+    });
+  });</script>
 </div>
