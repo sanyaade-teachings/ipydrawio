@@ -91,6 +91,8 @@ BUILDING_IN_CI = bool(json.loads(os.environ.get("BUILDING_IN_CI", "0")))
 TESTING_IN_CI = bool(json.loads(os.environ.get("TESTING_IN_CI", "0")))
 CI_ARTIFACT = os.environ.get("CI_ARTIFACT", "wheel")
 CI = bool(json.loads(os.environ.get("CI", "0")))
+RTD = os.environ.get("READTHEDOCS", "build")
+
 
 # test arg pass-throughs
 ATEST_ARGS = json.loads(os.environ.get("ATEST_ARGS", "[]"))

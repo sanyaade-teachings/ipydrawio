@@ -86,6 +86,9 @@ def task_dist():
 
 def task_env():
     """sync environments"""
+    if P.RTD:
+        return
+
     for env, inherits in P.ENV_INHERITS.items():
         yield dict(
             name=f"""{env.parent.name}:{':'.join([inh.parent.name for inh in inherits])}""",
