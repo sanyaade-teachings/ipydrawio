@@ -677,6 +677,24 @@ def task_demo():
         print("jupyterlite not found, this might be okay", flush=True)
         return
 
+    yield dict(
+        name="extensions",
+        doc="update jupyter-lite.json from the conda env",
+        file_dep=[P.ENV_BINDER, P.PY_WHEEL[P.IPD.name]],
+        targets=[P.DEMO_CONFIG],
+        actions=[
+            (
+                P._sync_lite_config,
+                [
+                    P.ENV_BINDER,
+                    P.DEMO_CONFIG,
+                    P.FED_EXT_MARKER,
+                    [P.PY_WHEEL[P.IPD.name]],
+                ],
+            )
+        ],
+    )
+
     demo_dest = []
     demo_tasks = []
     final_dest = []

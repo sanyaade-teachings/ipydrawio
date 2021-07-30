@@ -331,6 +331,9 @@ SERVER_EXT = {
 }
 
 # demo
+RE_CONDA_FORGE_URL = r"/conda-forge/(.*/)?(noarch|linux-64|win-64|osx-64)/([^/]+)$"
+CONDA_FORGE_RELEASE = "https://github.com/conda-forge/releases/releases/download"
+FED_EXT_MARKER = "### FEDERATED EXTENSIONS ###"
 DEMO = ROOT / "demo"
 DEMO_CONFIG = DEMO / "jupyter_lite_config.json"
 DEMO_APPS = ["lab"]
@@ -804,6 +807,35 @@ def _build_lite():
         if subprocess.call(act_args, cwd=DEMO) == 0:
             continue
         return False
+
+
+def _sync_lite_config(from_env, to_json, marker, extras):
+    """use conda list to derive tarball names"""
+    raw_lock = subprocess.check_output(["conda", "list", "--explicit"])
+    ext_packages = [
+        p.strip().split(" ")[0]
+        for p in from_env.read_text(encoding="utf-8").split(marker)[1].split(" - ")
+        if p.strip()
+    ]
+
+    tarball_urls = ["../" + str(extra.relative_to(ROOT).as_posix()) for extra in extras]
+    for raw_url in sorted(raw_lock.decode("utf-8").splitlines()):
+        try:
+            label, subdir, pkg = re.findall(RE_CONDA_FORGE_URL, raw_url)[0]
+        except IndexError:
+            continue
+
+        if label:
+            # TODO: haven't looked into this
+            continue
+
+        for ext in ext_packages:
+            if pkg.startswith(ext):
+                tarball_urls += ["/".join([CONDA_FORGE_RELEASE, subdir, pkg, pkg])]
+
+    config = json.loads(to_json.read_text(encoding="utf-8"))
+    config["LiteBuildConfig"]["federated_extensions"] = sorted(tarball_urls)
+    to_json.write_text(json.dumps(config, indent=2, sort_keys=True))
 
 
 # Late environment hacks
