@@ -1,9 +1,10 @@
-# basicall ipydrawio[all,test] and ipydrawio-export... plus robot
+# basically ipydrawio[all,test] and ipydrawio-export... plus robot
 black
 doit
 flake8
 ipywidgets >=7.6
 isort >=5
+jsonpointer
 jupyterlab ==3.*
 jupyterlab_widgets >=1
 lxml
