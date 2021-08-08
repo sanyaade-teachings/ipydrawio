@@ -17,7 +17,7 @@
     ],
     "ignore_sys_prefix": true,
     "lite_dir": ".",
-    "output_archive": "../build/demo/ipydrawio-lite-1.1.1.tgz",
+    "output_archive": "../build/demo/ipydrawio-lite-1.1.2.tgz",
     "output_dir": "../build/demo"
   }
 }
