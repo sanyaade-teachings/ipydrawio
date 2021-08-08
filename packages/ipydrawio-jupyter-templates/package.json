@@ -6,7 +6,7 @@
   "homepage": "https://ipydrawio.rtfd.io",
   "dependencies": {
     "@jupyterlab/application": "^3.1.0",
-    "@deathbeds/ipydrawio": "^1.1.1"
+    "@deathbeds/ipydrawio": "^1.1.2"
   },
   "description": "Jupyter Templates for IPyDrawio",
   "devDependencies": {
@@ -55,5 +55,5 @@
   },
   "scripts": {},
   "types": "lib/index.d.ts",
-  "version": "1.1.1"
+  "version": "1.1.2"
 }
