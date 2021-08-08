@@ -14,10 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
 import sys
 import tarfile
 from pathlib import Path
 
+import jsonpointer
 import pytest
 
 if True:
@@ -27,7 +29,12 @@ if True:
 
 @pytest.fixture
 def the_changelog():
-    return (P.ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+    return (P.ROOT / "CHANGELOG.md").read_text(**P.ENC)
+
+
+@pytest.fixture
+def the_demo_config():
+    return json.loads(P.DEMO_CONFIG.read_text(**P.ENC))
 
 
 @pytest.mark.parametrize(
@@ -52,6 +59,29 @@ def test_drawio_versions():
     dv = (P.IPDW / "drawio/VERSION").read_text(encoding="utf-8")
     pdv = P.JS_PKG_DATA[P.IPDW.name]["version"]
     assert pdv.startswith(dv), "drawio version out of sync"
+
+
+def test_recipe_versions():
+    """is the conda recipe version correct"""
+    assert f"""version = "{P.IPD_VERSION}" """ in P.RECIPE.read_text(**P.ENC)
+
+
+@pytest.mark.parametrize(
+    "pointer,value",
+    [
+        ["output_archive", f"../build/demo/{P.DEMO_ARCHIVE.name}"],
+        [
+            "federated_extensions/0",
+            f"""../{P.PY_WHEEL["ipydrawio"].relative_to(P.ROOT)}""",
+        ],
+    ],
+)
+def test_demo_paths(the_demo_config, pointer, value):
+    """are the version-specific paths correct in the demo configuration?"""
+    assert (
+        jsonpointer.resolve_pointer(the_demo_config, f"/LiteBuildConfig/{pointer}")
+        == value
+    )
 
 
 @pytest.mark.parametrize("path", P.ALL_HEADERS)

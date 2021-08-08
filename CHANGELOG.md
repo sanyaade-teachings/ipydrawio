@@ -2,6 +2,26 @@
 
 ## Unreleased
 
+### ipydrawio 1.1.2
+
+#### @deathbeds/ipydrawio 1.1.2
+
+#### @deathbeds/ipydrawio-notebook 1.1.2
+
+#### @deathbeds/ipydrawio-webpack 14.9.500
+
+- upgrade to drawio v14.9.5 for enhancements and bug fixes [#66]
+
+#### @deathbeds/ipydrawio-jupyter-templates 1.1.2
+
+### ipydrawio-export 1.1.2
+
+#### @deathbeds/ipydrawio-pdf 1.1.2
+
+[#41]: https://github.com/deathbeds/ipydrawio/issues/41
+
+## Releases
+
 ### ipydrawio 1.1.1
 
 - adds `jupyter ipydrawio clean` for removing `host`, `agent`, `modified`
@@ -31,8 +51,6 @@
 [#44]: https://github.com/deathbeds/ipydrawio/issues/44
 
 ---
-
-## Releases
 
 ### ipydrawio 1.1.0
 

@@ -876,6 +876,7 @@ def task_test():
                 file_dep=[
                     P.SCRIPTS / "integrity.py",
                     P.OK_LINT,
+                    P.DEMO_CONFIG,
                     *[*P.OK_SERVEREXT.values()],
                     *[*P.PY_WHEEL.values()],
                     *[*P.PY_SDIST.values()],
