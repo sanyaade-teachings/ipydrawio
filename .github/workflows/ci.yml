@@ -205,7 +205,7 @@ jobs:
 
       - name: install (conda)
         uses: conda-incubator/setup-miniconda@v2
-        if: ${{ contains(matrix.os, 'windows') }}
+        if: matrix.os == 'windows'
         with:
           environment-file: .github/environment-conda-build-win.yml
           miniforge-variant: Mambaforge
@@ -213,7 +213,7 @@ jobs:
 
       - name: install (conda)
         uses: conda-incubator/setup-miniconda@v2
-        if: ${{ not(contains(matrix.os, 'windows')) }}
+        if: matrix.os != 'windows'
         with:
           environment-file: .github/environment-conda-build.yml
           miniforge-variant: Mambaforge
@@ -279,20 +279,14 @@ jobs:
           name: ipydrawio ${{ github.run_number }} dist
           path: ./dist
 
-      - name: test (linux)
-        if: ${{ contains(matrix.os, 'ubuntu') }}
-        shell: bash -l {0}
-        run: |
-          doit $DOIT_N_TEST test || doit test
-
-      - name: test (macos)
-        if: ${{ contains(matrix.os, 'macos') }}
+      - name: test (unix)
+        if: matrix.os != 'windows'
         shell: bash -l {0}
         run: |
           doit $DOIT_N_TEST test || doit test
 
       - name: test (windows)
-        if: ${{ contains(matrix.os, 'windows') }}
+        if: matrix.os == 'windows'
         shell: cmd /C CALL {0}
         env:
           DOIT_N_TEST: '-n1'
@@ -308,14 +302,8 @@ jobs:
           cd ../ipydrawio-export
           codecov --root ../..
 
-      # - name: clean (windows)
-      #   if: ${{ contains(matrix.os, 'windows') }}
-      #   run: |
-      #     taskkill /F /IM python.exe || echo "no python"
-      #     taskkill /F /IM node.exe || echo "no node"
-
       - name: upload (atest)
-        if: ${{ always() }}
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name:
@@ -382,7 +370,7 @@ jobs:
           doit $DOIT_N_TEST test
 
       - name: upload (atest lite)
-        if: ${{ always() }}
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name:
@@ -391,7 +379,7 @@ jobs:
           path: ./build/atest
 
       - name: upload (docs)
-        if: ${{ always() }}
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name:
