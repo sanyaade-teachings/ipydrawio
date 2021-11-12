@@ -21,6 +21,8 @@ channels:
   - nodefaults
 
 dependencies:
+  ### ipydrawio-conda-build-deps ###
   - boa
   - conda-build
   - doit
+  ### ipydrawio-conda-build-deps ###

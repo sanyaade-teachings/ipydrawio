@@ -55,10 +55,8 @@ dependencies:
   - sphinx
   - sphinx-jsonschema
   - sphinxext-rediraffe
-  # TODO: resolve upstream
-  - sqlalchemy <1.4
   - pip:
-      - jupyterlite ==0.1.0a6
+      - jupyterlite ==0.1.0a16
 
   ### ipydrawio-docs-deps ###
 

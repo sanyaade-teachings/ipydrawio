@@ -387,6 +387,10 @@ export interface DrawioURLParams {
    */
   create?: string;
   /**
+   * [0|1]: Disables/enables dark mode in Sketch and Minimal editor themes.
+   */
+  dark?: number;
+  /**
    * data: Gets the XML data for the diagram (used in client mode to bypass message passing and cross frame access). **TBD `14.6.10`**
    */
   data?: string;
@@ -586,6 +590,10 @@ export interface DrawioURLParams {
    * id: Selects a specific revision of a Google Drive or Dropbox file.
    */
   rev?: string;
+  /**
+   * [0|1]: Disables/enables the rough sketch style (default is 1 for sketch theme and 0 for all other themes).
+   */
+  rough?: number;
   /**
    * 1: Uses chromeless mode with Google Drive realtime enabled.
    */

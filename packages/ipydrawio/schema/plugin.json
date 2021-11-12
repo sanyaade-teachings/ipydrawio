@@ -533,10 +533,6 @@
           "$ref": "#/definitions/off-switch",
           "description": "0: Disables the ability to (un)register the progressive web app (when installed it will stay installed). **NEW `14.6.10`**"
         },
-        "rough": {
-          "$ref": "#/definitions/on-off-switch",
-          "description": "[0|1]: Disables/enables the rough sketch style (default is 1 for sketch theme and 0 for all other themes)."
-        },
         "returnbounds": {
           "$ref": "#/definitions/off-switch",
           "description": "1: Returns a JSON structure with the diagram bounds in embed and client mode. This message is dispatched immediately after receiving the diagram XML. **TBD `14.6.10`**"
@@ -544,6 +540,10 @@
         "rev": {
           "description": "id: Selects a specific revision of a Google Drive or Dropbox file.",
           "type": "string"
+        },
+        "rough": {
+          "$ref": "#/definitions/on-off-switch",
+          "description": "[0|1]: Disables/enables the rough sketch style (default is 1 for sketch theme and 0 for all other themes)."
         },
         "rt": {
           "$ref": "#/definitions/on-switch",
