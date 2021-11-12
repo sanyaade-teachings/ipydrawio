@@ -26,8 +26,8 @@ env:
   PYTHONUNBUFFERED: '1'
   PYTHONIOENCODING: 'utf-8'
   PIP_DISABLE_PIP_VERSION_CHECK: '1'
-  CONDARC: .github/.condarc
   CI: '1'
+  CONDARC: ${{ github.workspace }}/.github/.condarc
 
   # our stuff
   ATEST_RETRIES: '3'
@@ -158,7 +158,6 @@ jobs:
       - name: install (conda)
         uses: conda-incubator/setup-miniconda@v2
         with:
-          condarc-file: .github/.condarc
           environment-file: .github/environment-conda-build.yml
           miniforge-variant: Mambaforge
           use-mamba: true
@@ -200,14 +199,22 @@ jobs:
         with:
           path: ~/conda_pkgs_dir
           key: |
-            ${{ env.CACHE_EPOCH }}-${{ runner.os }}-conda-build-${{ hashFiles('.github/environment-conda-build.yml') }}
+            ${{ env.CACHE_EPOCH }}-${{ runner.os }}-conda-build-${{ hashFiles('.github/environment-conda-build.yml', '.github/environment-conda-build-win.yml') }}
           restore-keys: |
             ${{ env.CACHE_EPOCH }}-${{ runner.os }}-conda-build-
 
       - name: install (conda)
         uses: conda-incubator/setup-miniconda@v2
+        if: matrix.os == 'windows'
         with:
-          condarc-file: .github/.condarc
+          environment-file: .github/environment-conda-build-win.yml
+          miniforge-variant: Mambaforge
+          use-mamba: true
+
+      - name: install (conda)
+        uses: conda-incubator/setup-miniconda@v2
+        if: matrix.os != 'windows'
+        with:
           environment-file: .github/environment-conda-build.yml
           miniforge-variant: Mambaforge
           use-mamba: true
@@ -260,7 +267,6 @@ jobs:
       - name: install (conda)
         uses: conda-incubator/setup-miniconda@v2
         with:
-          condarc-file: .github/.condarc
           miniforge-variant: Mambaforge
           python-version: ${{ matrix.python-version }}
           environment-file: .github/environment.yml
@@ -273,20 +279,14 @@ jobs:
           name: ipydrawio ${{ github.run_number }} dist
           path: ./dist
 
-      - name: test (linux)
-        if: ${{ contains(matrix.os, 'ubuntu') }}
-        shell: bash -l {0}
-        run: |
-          doit $DOIT_N_TEST test || doit test
-
-      - name: test (macos)
-        if: ${{ contains(matrix.os, 'macos') }}
+      - name: test (unix)
+        if: matrix.os != 'windows'
         shell: bash -l {0}
         run: |
           doit $DOIT_N_TEST test || doit test
 
       - name: test (windows)
-        if: ${{ contains(matrix.os, 'windows') }}
+        if: matrix.os == 'windows'
         shell: cmd /C CALL {0}
         env:
           DOIT_N_TEST: '-n1'
@@ -302,14 +302,8 @@ jobs:
           cd ../ipydrawio-export
           codecov --root ../..
 
-      # - name: clean (windows)
-      #   if: ${{ contains(matrix.os, 'windows') }}
-      #   run: |
-      #     taskkill /F /IM python.exe || echo "no python"
-      #     taskkill /F /IM node.exe || echo "no node"
-
       - name: upload (atest)
-        if: ${{ always() }}
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name:
@@ -354,10 +348,9 @@ jobs:
       - name: install (conda)
         uses: conda-incubator/setup-miniconda@v2
         with:
-          condarc-file: .github/.condarc
           miniforge-variant: Mambaforge
           python-version: ${{ matrix.python-version }}
-          environment-file: ./docs/environment.yml
+          environment-file: docs/environment.yml
           use-only-tar-bz2: true
           use-mamba: true
 
@@ -377,7 +370,7 @@ jobs:
           doit $DOIT_N_TEST test
 
       - name: upload (atest lite)
-        if: ${{ always() }}
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name:
@@ -386,7 +379,7 @@ jobs:
           path: ./build/atest
 
       - name: upload (docs)
-        if: ${{ always() }}
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name:

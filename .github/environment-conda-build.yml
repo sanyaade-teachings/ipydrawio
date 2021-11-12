@@ -1,4 +1,4 @@
-# a sufficient environment for acceptance testing
+# a sufficient environment for building conda packages
 
 # Copyright 2021 ipydrawio contributors
 #
@@ -21,6 +21,8 @@ channels:
   - nodefaults
 
 dependencies:
+  ### ipydrawio-conda-build-deps ###
   - boa
   - conda-build
   - doit
+  ### ipydrawio-conda-build-deps ###

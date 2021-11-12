@@ -310,6 +310,10 @@
           "description": "url/name: Creates a new file from a template URL. If the value is not a URL and is not empty, the script will try to use `window.opener_url]`. In [embed mode_, `window.opener[name]` will be used to get the initial XML. Note that this requires the same origin policy in the opener/parent for reading the variable.",
           "type": "string"
         },
+        "dark": {
+          "$ref": "#/definitions/on-off-switch",
+          "description": "[0|1]: Disables/enables dark mode in Sketch and Minimal editor themes."
+        },
         "data": {
           "description": "data: Gets the XML data for the diagram (used in client mode to bypass message passing and cross frame access). **TBD `14.6.10`**",
           "type": "string"
@@ -536,6 +540,10 @@
         "rev": {
           "description": "id: Selects a specific revision of a Google Drive or Dropbox file.",
           "type": "string"
+        },
+        "rough": {
+          "$ref": "#/definitions/on-off-switch",
+          "description": "[0|1]: Disables/enables the rough sketch style (default is 1 for sketch theme and 0 for all other themes)."
         },
         "rt": {
           "$ref": "#/definitions/on-switch",

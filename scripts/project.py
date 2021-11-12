@@ -91,7 +91,7 @@ BUILDING_IN_CI = bool(json.loads(os.environ.get("BUILDING_IN_CI", "0")))
 TESTING_IN_CI = bool(json.loads(os.environ.get("TESTING_IN_CI", "0")))
 CI_ARTIFACT = os.environ.get("CI_ARTIFACT", "wheel")
 CI = bool(json.loads(os.environ.get("CI", "0")))
-RTD = os.environ.get("READTHEDOCS", "build")
+RTD = bool(json.loads(os.environ.get("READTHEDOCS", "0").lower()))
 
 
 # test arg pass-throughs
@@ -155,6 +155,8 @@ DIA_URLS = {
 # ci
 GH = ROOT / ".github"
 ENV_GH = GH / "environment.yml"
+ENV_GH_CB = GH / "environment-conda-build.yml"
+ENV_GH_CB_WIN = GH / "environment-conda-build-win.yml"
 
 # tools
 PY = ["python"]
@@ -543,7 +545,11 @@ CONDA_PKGS = {
 }
 
 # env inheritance
-ENV_INHERITS = {ENV_BINDER: [ENV_GH, ENV_DOCS], ENV_DOCS: [ENV_GH]}
+ENV_INHERITS = {
+    ENV_BINDER: [ENV_GH, ENV_DOCS],
+    ENV_DOCS: [ENV_GH],
+    ENV_GH_CB_WIN: [ENV_GH_CB],
+}
 
 
 def get_atest_stem(attempt=1, extra_args=None, browser=None):
@@ -590,11 +596,8 @@ def fetch_one(url, path):
 
 
 def patch_one_env(source, target):
-    print("env", source)
-    print("-->", target)
     source_text = source.read_text(encoding="utf-8")
     name = re.findall(r"name: (.*)", source_text)[0]
-
     comment = f"  ### {name}-deps ###"
     old_target = target.read_text(encoding="utf-8").split(comment)
     new_source = source_text.split(comment)

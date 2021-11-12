@@ -5,6 +5,7 @@
     This file generated from https://github.com/jgraph/drawio
 */
 
+import '!!file-loader?name=[path][name].[ext]&context=.!../dio/CITATION.cff';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/clear.html';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/disableUpdate.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/export-fonts.css';
@@ -167,6 +168,7 @@ import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/sidebar-fl
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/sidebar-gcp.png';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/sidebar-gcp19.png';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/sidebar-gcp2.png';
+import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/sidebar-gcp3.png';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/sidebar-general.png';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/sidebar-gmdl.png';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/sidebar-ibm.png';
@@ -1770,6 +1772,7 @@ import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/grapheditor/Me
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/grapheditor/Shapes.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/grapheditor/Sidebar.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/grapheditor/Toolbar.js';
+import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/jquery/jquery-3.3.1.min.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/jscolor/jscolor.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/jszip/jszip.min.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/math-print.js';
@@ -2500,6 +2503,7 @@ import '!!file-loader?name=[path][name].[ext]&context=.!../dio/styles/sprites.pn
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/styles/thumb_horz.png';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/styles/thumb_vertical.png';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/styles/up.gif';
+import '!!file-loader?name=[path][name].[ext]&context=.!../dio/teams.html';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/templates/LICENSE';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/templates/basic/classes.png';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/templates/basic/classes.xml';
@@ -2806,5 +2810,7 @@ import '!!file-loader?name=[path][name].[ext]&context=.!../dio/templates/wirefra
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/vsdxImporter.html';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-9fe249eb.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-9fe249eb.js.map';
+import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-bed83ea8.js';
+import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-bed83ea8.js.map';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-f163abaa.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-f163abaa.js.map';

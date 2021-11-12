@@ -4,9 +4,9 @@
     "contents": ["."],
     "federated_extensions": [
       "../py_packages/ipydrawio/dist/ipydrawio-1.1.2-py3-none-any.whl",
-      "https://github.com/conda-forge/releases/releases/download/noarch/bqplot-0.12.30-pyhd8ed1ab_0.tar.bz2/bqplot-0.12.30-pyhd8ed1ab_0.tar.bz2",
-      "https://github.com/conda-forge/releases/releases/download/noarch/jupyterlab-tour-3.1.2-pyhd8ed1ab_0.tar.bz2/jupyterlab-tour-3.1.2-pyhd8ed1ab_0.tar.bz2",
-      "https://github.com/conda-forge/releases/releases/download/noarch/jupyterlab_widgets-1.0.0-pyhd8ed1ab_1.tar.bz2/jupyterlab_widgets-1.0.0-pyhd8ed1ab_1.tar.bz2",
+      "https://github.com/conda-forge/releases/releases/download/noarch/bqplot-0.12.31-pyhd8ed1ab_0.tar.bz2/bqplot-0.12.31-pyhd8ed1ab_0.tar.bz2",
+      "https://github.com/conda-forge/releases/releases/download/noarch/jupyterlab-tour-3.1.4-pyhd8ed1ab_0.tar.bz2/jupyterlab-tour-3.1.4-pyhd8ed1ab_0.tar.bz2",
+      "https://github.com/conda-forge/releases/releases/download/noarch/jupyterlab_widgets-1.0.2-pyhd8ed1ab_0.tar.bz2/jupyterlab_widgets-1.0.2-pyhd8ed1ab_0.tar.bz2",
       "https://github.com/conda-forge/releases/releases/download/noarch/wxyz_datagrid-0.5.1-pyhd8ed1ab_0.tar.bz2/wxyz_datagrid-0.5.1-pyhd8ed1ab_0.tar.bz2",
       "https://github.com/conda-forge/releases/releases/download/noarch/wxyz_json_schema_form-0.5.1-pyhd8ed1ab_0.tar.bz2/wxyz_json_schema_form-0.5.1-pyhd8ed1ab_0.tar.bz2",
       "https://github.com/conda-forge/releases/releases/download/noarch/wxyz_lab-0.5.1-pyhd8ed1ab_0.tar.bz2/wxyz_lab-0.5.1-pyhd8ed1ab_0.tar.bz2",
