@@ -157,8 +157,8 @@ jobs:
       - name: install (conda)
         uses: conda-incubator/setup-miniconda@v2
         with:
-          condarc-file: ${{ env.GITHUB_WORKSPACE }}/.github/.condarc
-          environment-file: ${{ env.GITHUB_WORKSPACE }}/.github/environment-conda-build.yml
+          condarc-file: ${{ github.workspace }}/.github/.condarc
+          environment-file: ${{ github.workspace }}/.github/environment-conda-build.yml
           miniforge-variant: Mambaforge
           use-mamba: true
 
@@ -206,8 +206,8 @@ jobs:
       - name: install (conda)
         uses: conda-incubator/setup-miniconda@v2
         with:
-          condarc-file: ${{ env.GITHUB_WORKSPACE }}/.github/.condarc
-          environment-file: ${{ env.GITHUB_WORKSPACE }}/.github/environment-conda-build.yml
+          condarc-file: ${{ github.workspace }}/.github/.condarc
+          environment-file: ${{ github.workspace }}/.github/environment-conda-build.yml
           miniforge-variant: Mambaforge
           use-mamba: true
 
@@ -259,10 +259,10 @@ jobs:
       - name: install (conda)
         uses: conda-incubator/setup-miniconda@v2
         with:
-          condarc-file: ${{ env.GITHUB_WORKSPACE }}/.github/.condarc
+          condarc-file: ${{ github.workspace }}/.github/.condarc
           miniforge-variant: Mambaforge
           python-version: ${{ matrix.python-version }}
-          environment-file: ${{ env.GITHUB_WORKSPACE }}/.github/environment.yml
+          environment-file: ${{ github.workspace }}/.github/environment.yml
           use-only-tar-bz2: true
           use-mamba: true
 
@@ -353,10 +353,10 @@ jobs:
       - name: install (conda)
         uses: conda-incubator/setup-miniconda@v2
         with:
-          condarc-file: ${{ env.GITHUB_WORKSPACE }}/.github/.condarc
+          condarc-file: ${{ github.workspace }}/.github/.condarc
           miniforge-variant: Mambaforge
           python-version: ${{ matrix.python-version }}
-          environment-file: ${{ env.GITHUB_WORKSPACE }}/docs/environment.yml
+          environment-file: ${{ github.workspace }}/docs/environment.yml
           use-only-tar-bz2: true
           use-mamba: true
 
