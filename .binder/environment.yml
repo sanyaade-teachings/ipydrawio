@@ -95,7 +95,7 @@ dependencies:
   - pytest-cov
   - pytest-tornasync
   # acceptance testing
-  - firefox =78
+  - firefox =91
   - geckodriver >=0.28.0
   - robotframework >=4
   - robotframework-pabot
