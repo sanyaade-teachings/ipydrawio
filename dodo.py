@@ -122,7 +122,8 @@ def task_setup():
     if not P.TESTING_IN_CI:
         yield dict(
             name="js",
-            file_dep=[P.YARN_LOCK, P.PACKAGE, P.OK_SUBMODULES],
+            file_dep=[P.PACKAGE, P.OK_SUBMODULES]
+            + ([P.YARN_LOCK] if P.YARN_LOCK.exists() else []),
             actions=[
                 [*P.JLPM, "--ignore-optional", "--prefer-offline"],
                 [*P.LERNA, "bootstrap"],
