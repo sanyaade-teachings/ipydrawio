@@ -210,6 +210,16 @@ jobs:
           miniforge-variant: Mambaforge
           use-mamba: true
 
+      - name: list (conda, base)
+        shell: bash -l {0}
+        run: |
+          conda list --explicit -n base
+
+      - name: list (conda, test)
+        shell: bash -l {0}
+        run: |
+          conda list --explicit
+
       - name: download (conda)
         uses: actions/download-artifact@v2
         with:
