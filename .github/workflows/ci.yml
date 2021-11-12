@@ -210,15 +210,10 @@ jobs:
           miniforge-variant: Mambaforge
           use-mamba: true
 
-      - name: list (conda, base)
-        shell: bash -l {0}
-        run: |
-          conda list --explicit -n base
-
-      - name: list (conda, test)
-        shell: bash -l {0}
-        run: |
-          conda list --explicit
+      - name: pywin32 (windows)
+        if: ${{ contains(matrix.os, 'windows') }}
+        shell: cmd /C CALL {0}
+        run: conda install pywin32!=302
 
       - name: download (conda)
         uses: actions/download-artifact@v2
