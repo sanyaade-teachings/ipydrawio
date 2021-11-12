@@ -26,7 +26,6 @@ env:
   PYTHONUNBUFFERED: '1'
   PYTHONIOENCODING: 'utf-8'
   PIP_DISABLE_PIP_VERSION_CHECK: '1'
-  CONDARC: ${{ env.GITHUB_WORKSPACE }}/.github/.condarc
   CI: '1'
 
   # our stuff
