@@ -56,7 +56,7 @@ ${CSS DIO READY}    css:.jp-Diagram-ready
 ${CSS DIO IFRAME}    ${CSS DIO READY} iframe
 # drawio
 ${CSS DIO BG}     css:.geDiagramContainer svg
-${CSS DIO SHAPE POPUP}    css:.geToolbarContainer.geSidebarContainer.geSidebar
+${CSS DIO SHAPE POPUP}    css:.geToolbarContainer.geSidebarContainer
 ${CSS DIO SHAPE POPUP SHAPE}    ${CSS DIO SHAPE POPUP} .geItem
 ${CSS DIO EDITABLE}    css:.mxCellEditor.geContentEditable
 # advanced
