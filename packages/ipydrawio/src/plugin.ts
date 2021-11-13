@@ -58,14 +58,8 @@ import widgetPlugin from './widgetPlugin';
 const plugin: JupyterFrontEndPlugin<IDiagramManager> = {
   activate,
   id: PLUGIN_ID,
-  requires: [
-    IFileBrowserFactory,
-    ILayoutRestorer,
-    IMainMenu,
-    ICommandPalette,
-    ISettingRegistry,
-  ],
-  optional: [ILauncher, IStatusBar],
+  requires: [IFileBrowserFactory, IMainMenu, ICommandPalette, ISettingRegistry],
+  optional: [ILayoutRestorer, ILauncher, IStatusBar],
   provides: IDiagramManager,
   autoStart: true,
 };
@@ -75,10 +69,10 @@ export default [plugin, widgetPlugin];
 function activate(
   app: JupyterLab,
   browserFactory: IFileBrowserFactory,
-  restorer: ILayoutRestorer,
   menu: IMainMenu,
   palette: ICommandPalette,
   settingsRegistry: ISettingRegistry,
+  restorer: ILayoutRestorer | null,
   launcher: ILauncher | null,
   statusBar: IStatusBar | null
 ): IDiagramManager {

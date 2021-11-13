@@ -59,7 +59,7 @@ export class DiagramManager implements IDiagramManager {
   private _settings: ISettingRegistry.ISettings;
   private _palette: ICommandPalette;
   private _browserFactory: IFileBrowserFactory;
-  private _restorer: ILayoutRestorer;
+  private _restorer: ILayoutRestorer | null;
   private _app: JupyterLab;
   private _status: DrawioStatus.Model;
   private _mimeExport = new Map<string, IFormat>();
@@ -512,14 +512,16 @@ export class DiagramManager implements IDiagramManager {
     });
     const tracker = new WidgetTracker<DiagramDocument>({ namespace });
 
-    // Handle state restoration.
-    this._restorer
-      .restore(tracker, {
-        command: 'docmanager:open',
-        args: (widget) => ({ path: widget.context.path, factory: name }),
-        name: (widget) => widget.context.path,
-      })
-      .catch(console.warn);
+    if (this._restorer) {
+      // Handle state restoration.
+      this._restorer
+        .restore(tracker, {
+          command: 'docmanager:open',
+          args: (widget) => ({ path: widget.context.path, factory: name }),
+          name: (widget) => widget.context.path,
+        })
+        .catch(console.warn);
+    }
 
     factory.widgetCreated.connect((sender, widget) => {
       this._status.status = `Loading Diagram...`;
@@ -578,7 +580,7 @@ export namespace DiagramManager {
    */
   export interface IOptions extends IDiagramManager.IOptions {
     app: JupyterLab;
-    restorer: ILayoutRestorer;
+    restorer: ILayoutRestorer | null;
     palette: ICommandPalette;
     browserFactory: IFileBrowserFactory;
   }
