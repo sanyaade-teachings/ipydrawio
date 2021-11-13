@@ -202,3 +202,20 @@
   padding: 0 0.25em;
   margin: 0.25em 0 0 0.25em;
 }
+
+/* some overrides for retro-like applications */
+.jp-IPyDiagram-main #main-panel {
+  max-width: unset;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100% !important;
+  left: 0 !important;
+}
+
+.jp-IPyDiagram-big-dialog .jp-Dialog-content {
+  min-width: 95vw;
+  min-height: 95vh;
+  max-width: 95vw;
+  max-height: 95vh;
+}

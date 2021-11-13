@@ -51,6 +51,7 @@ import {
 import { DiagramManager } from './manager';
 import { RenderedDiagram } from './mime';
 import widgetPlugin from './widgetPlugin';
+import retroPlugin from './retroPlugin';
 
 /**
  * The editor tracker extension.
@@ -63,8 +64,6 @@ const plugin: JupyterFrontEndPlugin<IDiagramManager> = {
   provides: IDiagramManager,
   autoStart: true,
 };
-
-export default [plugin, widgetPlugin];
 
 function activate(
   app: JupyterLab,
@@ -95,11 +94,6 @@ function activate(
     });
   }
 
-  // add first-party file types
-  for (const format of IO.ALL_FORMATS) {
-    manager.addFormat(format);
-  }
-
   settingsRegistry
     .load(PLUGIN_ID)
     .then((loadedSettings) => {
@@ -121,17 +115,6 @@ function activate(
       rank: 2,
       category: IO.XML_NATIVE.label,
     });
-
-    // for (const ui of UI_THEMES) {
-    //   launcher.add({
-    //     command: CommandIds.createNew,
-    //     args: {
-    //       drawioUrlParams: { ui },
-    //     },
-    //     rank: 2,
-    //     category: IO.XML_NATIVE.label,
-    //   });
-    // }
   }
 
   commands.addCommand(CommandIds.setUrlParams, {
@@ -178,9 +161,12 @@ function activate(
   }
 
   if (menu) {
+    const { fileMenu, settingsMenu } = menu;
+
     // Add new text file creation to the file menu.
     menu.fileMenu.newMenu.addGroup([{ command: CommandIds.createNew }], 40);
 
+    // themes
     const theme = new Menu({ commands });
     theme.title.label = `${IO.XML_NATIVE.label} Theme`;
 
@@ -192,13 +178,46 @@ function activate(
       });
     }
 
-    // actually add the thing
-    menu.settingsMenu.addGroup(
+    // exports
+    const exportMenu = new Menu({ commands });
+    exportMenu.title.label = `Save and Export ${IO.XML_NATIVE.label} As...`;
+
+    let added = [] as string[];
+
+    manager.formatsChanged.connect(() => {
+      for (const format of manager.formats) {
+        const { key } = format;
+        if (added.includes(key)) {
+          continue;
+        }
+        added.push(key);
+        exportMenu.addItem({
+          command: `drawio:export-${key}`,
+          args: { justValue: true },
+          type: 'command',
+        });
+      }
+    });
+
+    // actually add the menus
+    settingsMenu.addGroup(
       [{ submenu: theme, type: 'submenu' }],
+      DIAGRAM_MENU_RANK
+    );
+    fileMenu.addGroup(
+      [{ submenu: exportMenu, type: 'submenu' }],
       DIAGRAM_MENU_RANK
     );
   }
 
   RenderedDiagram.manager = manager;
+
+  // add first-party file types
+  for (const format of IO.ALL_FORMATS) {
+    manager.addFormat(format);
+  }
+
   return manager;
 }
+
+export default [plugin, widgetPlugin, retroPlugin];

@@ -65,6 +65,7 @@ export class DiagramManager implements IDiagramManager {
   private _mimeExport = new Map<string, IFormat>();
   private _templates = new Map<string, ITemplate>();
   private _templatesChanged = new Signal<IDiagramManager, void>(this);
+  private _formatsChanged = new Signal<IDiagramManager, void>(this);
 
   constructor(options: DiagramManager.IOptions) {
     this._app = options.app;
@@ -125,8 +126,12 @@ export class DiagramManager implements IDiagramManager {
   /**
    * Retrieve a list of the supported formats
    */
-  get formats() {
+  get formats(): IFormat[] {
     return [...this._formats.values()];
+  }
+
+  get formatsChanged(): Signal<IDiagramManager, void> {
+    return this._formatsChanged;
   }
 
   /**
@@ -346,6 +351,7 @@ export class DiagramManager implements IDiagramManager {
       format.isDefault ? [format] : []
     );
     DEBUG && console.warn(`...tracked ${format.name}`);
+    this._formatsChanged.emit(void 0);
   }
 
   protected updateWidgetSettings(widget: DiagramDocument) {
@@ -438,7 +444,7 @@ export class DiagramManager implements IDiagramManager {
     };
 
     this._app.commands.addCommand(`drawio:export-${key}`, {
-      label: `Export ${IO.XML_NATIVE.label} as ${label}`,
+      label: (args) => args.justLabel ? label : `Export ${IO.XML_NATIVE.label} as ${label}`,
       icon,
       execute: () => {
         let cwd = this._browserFactory.defaultBrowser.model.path;
@@ -512,8 +518,8 @@ export class DiagramManager implements IDiagramManager {
     });
     const tracker = new WidgetTracker<DiagramDocument>({ namespace });
 
+    // Handle state restoration.
     if (this._restorer) {
-      // Handle state restoration.
       this._restorer
         .restore(tracker, {
           command: 'docmanager:open',
