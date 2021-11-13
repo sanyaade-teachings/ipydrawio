@@ -35,6 +35,7 @@ dependencies:
   - pillow
   - pypdf2
   - requests_cache
+  - retrolab
   # building
   - pip
   - twine

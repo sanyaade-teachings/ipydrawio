@@ -28,7 +28,7 @@ const LIGHT = ['light'];
 let THEME_TAGS: Record<SCHEMA.UITheme, string[]> = {
   kennedy: [...FULL_UI, ...LIGHT],
   dark: [...FULL_UI, ...DARK],
-  sketch: [...LIGHT, ...DARK],
+  sketch: [...FULL_UI, ...LIGHT, ...DARK],
   min: [...FULL_UI, ...LIGHT, ...DARK],
   atlas: [...FULL_UI, ...LIGHT],
 };
