@@ -14,7 +14,7 @@
   limitations under the License.
 */
 
-import { PLUGIN_ID, CommandIds } from '.';
+import { PLUGIN_ID, CommandIds, DEBUG } from '.';
 import { IDiagramManager } from './tokens';
 import { PageConfig } from '@jupyterlab/coreutils';
 import { DocumentRegistry } from '@jupyterlab/docregistry';
@@ -43,6 +43,7 @@ function activate(
 ) {
   const retroPage = PageConfig.getOption('retroPage');
   const { commands } = app;
+  DEBUG && console.warn('retro page is', retroPage);
   switch (retroPage) {
     case null:
       break;

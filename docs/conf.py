@@ -67,7 +67,10 @@ autosectionlabel_prefix_document = True
 myst_heading_anchors = 3
 suppress_warnings = ["autosectionlabel.*"]
 
-rediraffe_redirects = {"demo/index": "_static/lab/index"}
+rediraffe_redirects = {
+    "demo/index": "_static/lab/index",
+    "demo/retro/index": "_static/retro/tree/index",
+}
 
 # files
 templates_path = ["_templates"]
