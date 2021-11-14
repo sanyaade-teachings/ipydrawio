@@ -43,63 +43,55 @@ function activate(
 ) {
   const retroPage = PageConfig.getOption('retroPage');
   const { commands } = app;
+
   DEBUG && console.warn('retro page is', retroPage);
-  switch (retroPage) {
-    case null:
-      break;
-    case 'tree':
-      const newDiagram = new CommandToolbarButton({
-        commands,
-        id: CommandIds.createNew,
+
+  if (retroPage == 'tree') {
+    const newDiagram = new CommandToolbarButton({
+      commands,
+      id: CommandIds.createNew,
+    });
+    fileBrowser.defaultBrowser.toolbar.insertItem(2, 'new-diagram', newDiagram);
+  } else if (retroPage === 'edit') {
+    app.shell.currentChanged.connect(async (changed) => {
+      const { currentWidget } = app.shell;
+      if (!currentWidget || currentWidget instanceof DiagramDocument) {
+        return;
+      }
+      const context = (currentWidget as any)
+        .context as DocumentRegistry.Context;
+      if (!context) {
+        return;
+      }
+      await context.ready;
+      if (!context.contentsModel) {
+        return;
+      }
+      const format = manager.formatForModel(context.contentsModel);
+      if (!format || !format.isDefault) {
+        return;
+      }
+      const factory = app.docRegistry.getWidgetFactory(format.factoryName);
+      if (!factory) {
+        return;
+      }
+      const favicon = document.querySelector(
+        'link[rel="icon"], link.favicon'
+      ) as HTMLLinkElement;
+      favicon.href = `data:image/svg+xml;utf8,${encodeURIComponent(
+        format.icon.svgstr
+      )}`;
+      favicon.type = 'image/svg+xml';
+      app.shell.addClass('jp-IPyDiagram-main');
+
+      currentWidget.dispose();
+
+      await app.commands.execute('docmanager:open', {
+        path: context.path,
+        factory: factory.name,
+        options: { ref: '_noref' },
       });
-
-      fileBrowser.defaultBrowser.toolbar.insertItem(
-        2,
-        'new-diagram',
-        newDiagram
-      );
-      break;
-    case 'edit':
-      app.shell.currentChanged.connect(async (changed) => {
-        const { currentWidget } = app.shell;
-        if (!currentWidget || currentWidget instanceof DiagramDocument) {
-          return;
-        }
-        const context = (currentWidget as any)
-          .context as DocumentRegistry.Context;
-        if (!context) {
-          return;
-        }
-        await context.ready;
-        if (!context.contentsModel) {
-          return;
-        }
-        const format = manager.formatForModel(context.contentsModel);
-        if (!format || !format.isDefault) {
-          return;
-        }
-        const factory = app.docRegistry.getWidgetFactory(format.factoryName);
-        if (!factory) {
-          return;
-        }
-        const favicon = document.querySelector(
-          'link.favicon'
-        ) as HTMLLinkElement;
-        favicon.href = `data:image/svg+xml;utf8,${encodeURIComponent(
-          format.icon.svgstr
-        )}`;
-        favicon.type = 'image/svg+xml';
-        app.shell.addClass('jp-IPyDiagram-main');
-
-        currentWidget.dispose();
-
-        await app.commands.execute('docmanager:open', {
-          path: context.path,
-          factory: factory.name,
-          options: { ref: '_noref' },
-        });
-      });
-      break;
+    });
   }
 }
 
