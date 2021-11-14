@@ -444,7 +444,8 @@ export class DiagramManager implements IDiagramManager {
     };
 
     this._app.commands.addCommand(`drawio:export-${key}`, {
-      label: (args) => args.justLabel ? label : `Export ${IO.XML_NATIVE.label} as ${label}`,
+      label: (args) =>
+        args.justLabel ? label : `Export ${IO.XML_NATIVE.label} as ${label}`,
       icon,
       execute: () => {
         let cwd = this._browserFactory.defaultBrowser.model.path;

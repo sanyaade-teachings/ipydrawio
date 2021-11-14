@@ -84,7 +84,9 @@ function activate(
         const favicon = document.querySelector(
           'link.favicon'
         ) as HTMLLinkElement;
-        favicon.href = `data:image/svg+xml;utf8,${encodeURIComponent(format.icon.svgstr)}`;
+        favicon.href = `data:image/svg+xml;utf8,${encodeURIComponent(
+          format.icon.svgstr
+        )}`;
         favicon.type = 'image/svg+xml';
         app.shell.addClass('jp-IPyDiagram-main');
 
