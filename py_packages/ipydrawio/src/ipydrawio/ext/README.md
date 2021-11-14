@@ -13,8 +13,9 @@ reusable by other _federated modules_.
     - the Jupyter Widgets
 - `@deathbeds/ipydrawio-notebook`
     - the custom `ipynb` format
-- `@deathbeds/ipydrawio-pdf`
-    - a **work-in-progress** attempt to provide an easy-to-install PDF toolchain
-      for drawio (and more?)
+- `@deathbeds/ipydrawio`
+    - the core renderer library
+- `@deathbeds/ipydrawio-jupyter-templates`
+    - some templates for building Jupyter-related diagrams
 
 [drawio]: https://github.com/jgraph/drawio
