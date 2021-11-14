@@ -25,12 +25,14 @@ pip install ipydrawio[all]
 ## Features
 
 - `ipydrawio`
+  - full support for JupyterLab
+  - best-effort support for JupyterLiteⓁ and RetroLabⓡ
   - Edit multi-page [documents][]
     - with nearly the same UI and features as [diagrams.net][drawio]
     - in many file formats
       - Drawio/mxgraph XML, SVG, PNG
-      - or Jupyter Notebooks
-    - with all the Drawio templates
+      - or Jupyter Notebooksⓡ
+    - with all the Drawio templatesⓡ
       - plus some Jupyter ones
   - Jupyter [rich display][] output
   - Jupyter [Widgets][]
@@ -40,7 +42,7 @@ pip install ipydrawio[all]
       known yet)
     - no presence indicators for other editors
 - `ipydrawio-export`
-  - Export print-quality PDF from diagrams
+  - Export print-quality PDF from diagramsⓁⓡ
     - optionally include editable Drawio XML as a PDF attachment
     - > _BEWARE: some **heavy**, maybe fragile dependencies, `mamba`
       > recommended_
@@ -49,6 +51,8 @@ pip install ipydrawio[all]
       conda install -c conda-forge ipydrawio-export  # or...
       pip install ipydrawio ipydrawio-export
       ```
+
+> ⓡ: unavailable in RetroLab Ⓛ: unavailable in JupyterLite
 
 ## Examples
 
