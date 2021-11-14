@@ -288,7 +288,10 @@ def task_lint():
         yield P._ok(
             dict(
                 name="prettier",
-                file_dep=[P.YARN_INTEGRITY, *P.ALL_PRETTIER],
+                file_dep=[
+                    P.YARN_INTEGRITY,
+                    *[p for p in P.ALL_PRETTIER if P != P.DEMO_CONFIG],
+                ],
                 actions=[[*prettier_args, *P.ALL_PRETTIER]],
             ),
             P.OK_PRETTIER,
