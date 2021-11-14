@@ -268,7 +268,6 @@ Clean Up After Working With File
     [Arguments]    ${file}
     Remove File    ${OUTPUT DIR}${/}home${/}${file}
     Reset Application State
-    Lab Log Should Not Contain Known Error Messages
 
 Wait For Dialog
     Wait Until Page Contains Element    ${DIALOG WINDOW}    timeout=180s
@@ -331,3 +330,10 @@ Launch Custom Diagram
 Accept Custom Options
     Click Element    ${CSS ACCEPT CUSTOM}
     Wait Until Element is Visible    ${CSS DIO IFRAME}    timeout=20s
+
+Wait for a Diagram to be Ready
+    ${doc id} =    Get Element Attribute    ${CSS DIO READY}    id
+    Select Frame    ${CSS DIO IFRAME}
+    Double Click Element    ${CSS DIO BG}
+    Capture Page Screenshot    00-launched.png
+    [Return]    ${doc id}

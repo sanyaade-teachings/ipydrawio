@@ -27,3 +27,13 @@ Open Retro Tree
     Go To    ${URL}retro/tree
     Wait Until Page Contains Element    css:#main
     Sleep    1s
+
+Open Retro Path
+    [Arguments]    ${path}
+    Go To    ${URL}retro/edit/${path}
+
+Create a Diagram from Retro Tree
+    Wait Until Page Contains Element    ${CSS RETRO TREE DIO BTN}
+    Click Element    ${CSS RETRO TREE DIO BTN}
+    Switch Window    NEW
+    Wait Until Keyword Succeeds    5x    5s    Wait for a Diagram to be Ready

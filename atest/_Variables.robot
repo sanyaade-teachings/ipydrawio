@@ -47,7 +47,8 @@ ${JLAB XP CLOSE SETTINGS}    ${JLAB XP DOCK TAB}\[contains(., 'Settings')]/*[con
 # launcher
 ${XP LAUNCH TAB}    ${JLAB XP DOCK TAB}//*[contains(text(), 'Launcher')]
 ${CSS LAUNCHER}    css:.jp-Launcher-body
-${CSS LAUNCH DIO}    css:.jp-LauncherCard[title='Create a blank .dio file'] svg
+${CREATE A BLANK}    Create a blank .dio file
+${CSS LAUNCH DIO}    css:.jp-LauncherCard[title='${CREATE A BLANK}'] svg
 ${CSS LAUNCH CUSTOM}    css:.jp-LauncherCard[title='Create a diagram with customized formats, templates, and UI'] svg
 # ipykernel 5 is "Python 3". ipykernel 6 is "Python 3 (ipykernel)"... but only works on python 3.7+
 # TODO: consider capturing this information as a tag
@@ -94,3 +95,5 @@ ${XP DIO FORMAT PANE VISIBLE}    ${XP DIO FORMAT PANE}\[not(contains(@style, 'di
 ${XP DIO PAGE SIZE}    //div[contains(@class, "geFormatSection")][contains(., "Paper Size")]//select
 # mime
 ${MIME STDERR}    application/vnd.jupyter.stderr
+# retro
+${CSS RETRO TREE DIO BTN}    css:button[title='${CREATE A BLANK}']
