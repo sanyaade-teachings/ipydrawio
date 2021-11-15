@@ -109,6 +109,7 @@ export interface IDiagramManager {
   templates(): Promise<ITemplate[]>;
   addTemplates(...template: ITemplate[]): void;
   templatesChanged: ISignal<IDiagramManager, void>;
+  formatsChanged: ISignal<IDiagramManager, void>;
 }
 
 /**

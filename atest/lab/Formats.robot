@@ -83,10 +83,7 @@ Validate Export Format
 
 Prepare a Diagram for Export
     Launch Untitled Diagram
-    ${doc id} =    Get Element Attribute    ${CSS DIO READY}    id
-    Select Frame    ${CSS DIO IFRAME}
-    Double Click Element    ${CSS DIO BG}
-    Capture Page Screenshot    00-launched.png
+    ${doc id} =    Wait for a Diagram to be Ready
     [Return]    ${doc id}
 
 Add a Shape to a Diagram

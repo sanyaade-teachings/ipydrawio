@@ -9,10 +9,15 @@
     id="demo-room-button"
   >
     <i class="fas fa-lightbulb"></i>
-    Try <strong>IPyDrawio</strong> Now <span id="demo-room-label"></span>
+    Try <strong>IPyDrawio</strong> Now <span id="demo-room-label"></span> <span id="demo-app-label"></span>
   </a>
   <details>
-    <summary><i class="fas fa-users"></i>Collaboration...</summary>
+    <summary><i class="fas fa-flask"></i> App...</summary>
+    <input type="checkbox" id="demo-app"></input>
+    <em>Use RetroLab (some features disabled)</em>
+  </details>
+  <details>
+    <summary><i class="fas fa-users"></i> Collaboration...</summary>
     <input type="text" placeholder="room name" id="demo-room-name"></input><br/>
     <em>everyone who uses this room name will be able to edit all files</em>
   </details>
@@ -29,14 +34,20 @@
   <hr/>
   <em>Powered by <a href="https://jupyterlite.rtfd.io" target="_blank">JupyterLite</a></em>
   <script>$(function() {
-    $('[data-toggle="tooltip"]').tooltip();
-    $("#demo-room-name").on('input', () => {
+    const labUrl = `{{ pathto('demo/index') }}`;
+    const retroUrl = `{{ pathto('demo/retro/index') }}`;
+    function updateUrl() {
       const room = $("#demo-room-name").val().trim();
+      const useRetro = $("#demo-app").prop("value") === "on";
       $("#demo-room-button").attr(
         "href",
-        `{{ pathto('demo/index') }}` + (room ? `?room=${room}` : '')
+        (useRetro ? retroUrl : labUrl) + (room ? `?room=${room}` : '')
       );
+      $("#demo-app-label").text(useRetro ? ` in RetroLab` : '');
       $("#demo-room-label").text(room ? ` with ${room}` : '');
-    });
+    }
+    $('[data-toggle="tooltip"]').tooltip();
+    $('#demo-app').on('change', updateUrl);
+    $("#demo-room-name").on('input', updateUrl);
   });</script>
 </div>

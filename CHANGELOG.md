@@ -6,6 +6,8 @@
 
 #### @deathbeds/ipydrawio 1.1.2
 
+- minimal support for RetroLab [#72]
+
 #### @deathbeds/ipydrawio-notebook 1.1.2
 
 #### @deathbeds/ipydrawio-webpack 15.7.400
@@ -17,6 +19,8 @@
 ### ipydrawio-export 1.1.2
 
 #### @deathbeds/ipydrawio-pdf 1.1.2
+
+[#72]: https://github.com/deathbeds/ipydrawio/issues/72
 
 ## Releases
 

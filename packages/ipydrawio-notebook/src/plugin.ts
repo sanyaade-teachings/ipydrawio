@@ -16,6 +16,7 @@
 
 import { JupyterLab, JupyterFrontEndPlugin } from '@jupyterlab/application';
 
+import { PageConfig } from '@jupyterlab/coreutils';
 import { drawioPlainIcon, IDiagramManager } from '@deathbeds/ipydrawio';
 
 import { CommandIds, PLUGIN_ID } from './tokens';
@@ -39,6 +40,13 @@ function activate(
   diagrams: IDiagramManager,
   notebooks: INotebookTracker
 ) {
+  if (PageConfig.getOption('retroPage')) {
+    console.warn('Unavailable in', app.name, ':', ALL_FORMATS[0].factoryName);
+    console.info(
+      'Please open a full JupyterLab from View -> Open with JupyterLab'
+    );
+    return;
+  }
   for (const format of ALL_FORMATS) {
     diagrams.addFormat(format);
   }
