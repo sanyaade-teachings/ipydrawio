@@ -186,6 +186,10 @@ export class DiagramFactory extends ABCWidgetFactory<
     });
     return doc;
   }
+
+  create(context: DocumentRegistry.Context): DiagramDocument {
+    return this.createNewWidget(context);
+  }
 }
 
 export namespace DiagramFactory {

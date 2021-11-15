@@ -288,7 +288,10 @@ def task_lint():
         yield P._ok(
             dict(
                 name="prettier",
-                file_dep=[P.YARN_INTEGRITY, *P.ALL_PRETTIER],
+                file_dep=[
+                    P.YARN_INTEGRITY,
+                    *[p for p in P.ALL_PRETTIER if P != P.DEMO_CONFIG],
+                ],
                 actions=[[*prettier_args, *P.ALL_PRETTIER]],
             ),
             P.OK_PRETTIER,
@@ -384,15 +387,14 @@ def task_lint():
         P.OK_RFLINT,
     )
 
-    # TODO: try to get this back
-    # yield P._ok(
-    #     dict(
-    #         name="robot:dryrun",
-    #         file_dep=[*P.ALL_ROBOT, P.OK_RFLINT],
-    #         actions=[[*P.PYM, "scripts.atest", "--dryrun"]],
-    #     ),
-    #     P.OK_ROBOT_DRYRUN,
-    # )
+    yield P._ok(
+        dict(
+            name="robot:dryrun",
+            file_dep=[*P.ALL_ROBOT, P.OK_RFLINT],
+            actions=[[*P.PYM, "scripts.atest", "--dryrun"]],
+        ),
+        P.OK_ROBOT_DRYRUN,
+    )
 
 
 def task_build():
@@ -916,8 +918,7 @@ def task_test():
 
     if not P.TESTING_IN_CI:
         file_dep += [
-            # TODO: try to get this back
-            # P.OK_ROBOT_DRYRUN,
+            P.OK_ROBOT_DRYRUN,
             P.DEMO_HASHES,
             *P.OK_SERVEREXT.values(),
         ]

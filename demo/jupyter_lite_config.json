@@ -1,6 +1,5 @@
 {
   "LiteBuildConfig": {
-    "apps": ["lab"],
     "contents": ["."],
     "federated_extensions": [
       "../py_packages/ipydrawio/dist/ipydrawio-1.1.2-py3-none-any.whl",
@@ -13,7 +12,7 @@
       "https://github.com/conda-forge/releases/releases/download/noarch/wxyz_svg-0.5.1-pyhd8ed1ab_0.tar.bz2/wxyz_svg-0.5.1-pyhd8ed1ab_0.tar.bz2"
     ],
     "ignore_contents": [
-      "(lab/|_output|.gitignore|doit.db|\\.json$|jupyter_config|log$|\\.cache)"
+      "(lab/|_output|.gitignore|doit.db|\\.json$|jupyter_config|log$|\\.cache|\\.ipynb_checkpoints)"
     ],
     "ignore_sys_prefix": true,
     "lite_dir": ".",

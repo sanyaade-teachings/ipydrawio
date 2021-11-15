@@ -841,6 +841,7 @@ def _sync_lite_config(from_env, to_json, marker, extras):
     config = json.loads(to_json.read_text(encoding="utf-8"))
     config["LiteBuildConfig"]["federated_extensions"] = sorted(tarball_urls)
     to_json.write_text(json.dumps(config, indent=2, sort_keys=True))
+    subprocess.call([*PRETTIER, "--write", to_json])
 
 
 # Late environment hacks
