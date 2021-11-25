@@ -2156,7 +2156,6 @@ import '!!file-loader?name=[path][name].[ext]&context=.!../dio/newDiagramCats/im
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/newDiagramCats/images/icon-uml-erd.svg';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/newDiagramCats/index.xml';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/open.html';
-import '!!file-loader?name=[path][name].[ext]&context=.!../dio/package.json';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/plugins/animation.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/plugins/anonymize.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/plugins/cConf-1-4-8.js';

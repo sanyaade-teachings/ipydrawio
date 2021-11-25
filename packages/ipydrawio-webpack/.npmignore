@@ -15,6 +15,7 @@ dio/math/jax/output/HTML-CSS/*
 dio/META-INF/*
 dio/onedrive*
 dio/onedrive*.html
+dio/package.json
 dio/WEB-INF/*
 dio/yarn.lock
 drawio/
