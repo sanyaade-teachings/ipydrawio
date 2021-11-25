@@ -16,4 +16,13 @@ module.exports = {
   optimization: {
     minimize: false,
   },
+  module: {
+    rules: [
+      {
+        test: /dio\/.*/,
+        type: 'asset/resource'
+      },
+    ]
+  },
+
 };

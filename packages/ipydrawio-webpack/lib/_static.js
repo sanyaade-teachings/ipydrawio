@@ -89,11 +89,6 @@ import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/google-dri
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/google-share.png';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/grid.gif';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/handle-connect.png';
-import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/handle-fixed.png';
-import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/handle-main.png';
-import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/handle-rotate.png';
-import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/handle-secondary.png';
-import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/handle-terminal.png';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/help.png';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/hs.png';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/hv.png';
@@ -112,6 +107,7 @@ import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/logo-quip.
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/logo-small.gif';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/logo-white.png';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/logo.png';
+import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/manifest.json';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/move.png';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/mstile-150x150.png';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/my-diagrams-sel.svg';
@@ -2160,6 +2156,7 @@ import '!!file-loader?name=[path][name].[ext]&context=.!../dio/newDiagramCats/im
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/newDiagramCats/images/icon-uml-erd.svg';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/newDiagramCats/index.xml';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/open.html';
+import '!!file-loader?name=[path][name].[ext]&context=.!../dio/package.json';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/plugins/animation.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/plugins/anonymize.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/plugins/cConf-1-4-8.js';

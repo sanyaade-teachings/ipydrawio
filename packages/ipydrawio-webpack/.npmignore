@@ -1,10 +1,8 @@
 *.tgz
 **/.ipynb_checkpoints
 dio/.git*
-dio/*.json
 dio/*.md
 dio/*/.npmignore
-dio/*/*.json
 dio/*/*.orig
 dio/connect/*
 dio/dropbox*
