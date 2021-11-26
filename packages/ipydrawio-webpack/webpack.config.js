@@ -20,9 +20,8 @@ module.exports = {
     rules: [
       {
         test: /dio\/.*/,
-        type: 'asset/resource'
+        type: 'asset/resource',
       },
-    ]
+    ],
   },
-
 };
