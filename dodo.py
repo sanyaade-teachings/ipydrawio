@@ -695,9 +695,14 @@ def task_watch():
     )
 
 
-def task_pre_demo():
+def task_demo():
     if not P.LITE_PREFIX:
+        print("jupyterlite not found, this might be okay", flush=True)
         return
+
+    demo_dest = []
+    demo_tasks = []
+    final_dest = []
 
     yield dict(
         name="pyodide:packages",
@@ -707,19 +712,14 @@ def task_pre_demo():
         actions=[P.fetch_pyodide_packages],
     )
 
+    demo_tasks += ["demo:wheels"]
+
     yield dict(
         name="wheels",
         doc="fetch wheels",
         file_dep=[P.PYODIDE_PACKAGES, P.DEMO_REQS],
         actions=[P.fetch_wheels],
     )
-
-
-@doit.create_after("pre_demo")
-def task_demo():
-    if not P.LITE_PREFIX:
-        print("jupyterlite not found, this might be okay", flush=True)
-        return
 
     yield dict(
         name="extensions",
@@ -739,9 +739,6 @@ def task_demo():
         ],
     )
 
-    demo_dest = []
-    demo_tasks = []
-    final_dest = []
     for path in P.ALL_DEMO_CONTENTS:
         name = f"stage:{path.name}"
         dest = P.DEMO / path.name.replace(" ", "_")
@@ -765,6 +762,7 @@ def task_demo():
         if not p.is_dir()
         and "/_output/" not in str(p)
         and not p.name.endswith(".tgz")
+        and not p.name.endswith(".whl")
         and ".doit" not in p.name
     ]
 
