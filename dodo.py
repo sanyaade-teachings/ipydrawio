@@ -695,6 +695,27 @@ def task_watch():
     )
 
 
+def task_pre_demo():
+    if not P.LITE_PREFIX:
+        return
+
+    yield dict(
+        name="pyodide:packages",
+        doc="fetch the pyodide packages.json",
+        uptodate=[doit.tools.config_changed(P.PYODIDE_URL)],
+        targets=[P.PYODIDE_PACKAGES],
+        actions=[P.fetch_pyodide_packages],
+    )
+
+    yield dict(
+        name="wheels",
+        doc="fetch wheels",
+        file_dep=[P.PYODIDE_PACKAGES, P.DEMO_REQS],
+        actions=[P.fetch_wheels],
+    )
+
+
+@doit.create_after("pre_demo")
 def task_demo():
     if not P.LITE_PREFIX:
         print("jupyterlite not found, this might be okay", flush=True)
@@ -750,7 +771,7 @@ def task_demo():
     yield dict(
         name="archive",
         task_dep=demo_tasks,
-        file_dep=[*demo_dest, *lite_src_files],
+        file_dep=[*demo_dest, *lite_src_files, *P.DEMO_WHEELS.glob(f"*{P.NOARCH_WHL}")],
         targets=[P.DEMO_ARCHIVE, P.DEMO_HASHES, *final_dest, P.DEMO_CONTENTS_API],
         actions=[P._build_lite],
     )

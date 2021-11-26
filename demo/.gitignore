@@ -4,3 +4,4 @@ _output
 *.ipynb
 *doit.db
 files/
+pypi/
