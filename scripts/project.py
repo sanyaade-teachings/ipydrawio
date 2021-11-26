@@ -431,7 +431,11 @@ ALL_JSON = [
     *PACKAGES.glob("*/schema/*.json"),
     *ATEST.glob("fixtures/*.json"),
     *BINDER.glob("*.json"),
-    *[p for p in DEMO.rglob("*.json") if "/_output/" not in str(p)],
+    *[
+        p
+        for p in DEMO.rglob("*.json")
+        if "/_output/" not in str(p) and "/.cache/" not in str(p)
+    ],
 ]
 ALL_DIO = [*DOCS_DIO, *IPJT_TMPL_DIO, *ATEST_DIO]
 ALL_MD = [*ROOT.glob("*.md"), *PACKAGES.glob("*/*.md"), *DOCS_MD]
@@ -823,11 +827,11 @@ def _build_lite():
     if MATHJAX_DIR:
         args += ["--mathjax-dir", str(MATHJAX_DIR)]
 
-    for act in ["build", "check", "archive"]:
+    for act in ["build", "archive"]:
         act_args = list(map(str, [*lite, act, *args]))
-        if subprocess.call(act_args, cwd=DEMO) == 0:
-            continue
-        return False
+        if subprocess.call(act_args, cwd=DEMO) != 0:
+            print("FAILED", *act_args)
+            return False
 
 
 def _sync_lite_config(from_env, to_json, marker, extras):
