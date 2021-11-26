@@ -363,7 +363,7 @@ jobs:
       - name: build docs
         shell: bash -l {0}
         run: |
-          doit $DOIT_N_TEST docs || doit docs|| doit docs
+          doit $DOIT_N_TEST docs || doit docs || doit docs
 
       - name: check docs
         shell: bash -l {0}
@@ -373,7 +373,7 @@ jobs:
       - name: lite tests
         shell: bash -l {0}
         run: |
-          doit $DOIT_N_TEST test
+          doit $DOIT_N_TEST test:robot
 
       - name: upload (atest lite)
         if: always()

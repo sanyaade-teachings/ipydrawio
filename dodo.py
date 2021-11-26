@@ -939,7 +939,7 @@ def task_test():
                     P.OK_PROVISION,
                     P.OK_PIP_CHECK,
                 ],
-                actions=[PythonInteractiveAction(_pytest(setup))],
+                actions=[CmdAction(_pytest(setup))],
             ),
             P.OK_PYTEST[pkg],
         )
