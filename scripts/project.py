@@ -811,6 +811,14 @@ def _build_lite():
     lite = ["jupyter", "lite"]
     args = ["--source-date-epoch", SOURCE_DATE_EPOCH]
 
+    try:
+        from jupyter_server_mathjax.app import STATIC_ASSETS_PATH as MATHJAX_DIR
+    except Exception:
+        MATHJAX_DIR = None
+
+    if MATHJAX_DIR:
+        args += ["--mathjax-dir", str(MATHJAX_DIR)]
+
     for act in ["build", "check", "archive"]:
         act_args = list(map(str, [*lite, act, *args]))
         if subprocess.call(act_args, cwd=DEMO) == 0:

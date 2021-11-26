@@ -49,14 +49,16 @@ dependencies:
   ############################################################################
   ### ipydrawio-docs-deps ###
 
+  - jupyter-server-mathjax
   - myst-nb
+  - pkginfo
   - pydata-sphinx-theme
   - pytest-check-links
   - sphinx
   - sphinx-jsonschema
   - sphinxext-rediraffe
   - pip:
-      - jupyterlite ==0.1.0a16
+      - jupyterlite ==0.1.0a17
 
   ### ipydrawio-docs-deps ###
 
