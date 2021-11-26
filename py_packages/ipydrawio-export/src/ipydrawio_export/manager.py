@@ -362,7 +362,8 @@ class IPyDrawioExportManager(LoggingConfigurable):
                 self.drawio_export_app,
             )
             subprocess.check_call(
-                [str(JLPM), "--silent"], cwd=str(self.drawio_export_app)
+                [str(JLPM), "--silent", "--ignore-optional"],
+                cwd=str(self.drawio_export_app),
             )
         self.is_provisioning = False
 

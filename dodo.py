@@ -131,6 +131,19 @@ def task_setup():
             targets=[P.YARN_INTEGRITY],
         )
 
+        yield dict(
+            name="js:ipde",
+            file_dep=[P.IPDE_DIE2_PACKAGE_JSON],
+            targets=[P.IPDE_DIE2_YARN_LOCK],
+            actions=[
+                CmdAction(
+                    [*P.JLPM, "--ignore-optional", "--prefer-offline"],
+                    shell=False,
+                    cwd=P.IPDE_DIE2,
+                ),
+            ],
+        )
+
     for pkg, pkg_setup in P.PY_SETUP.items():
         # TODO: refactor
         ext_deps = [
@@ -495,6 +508,10 @@ def task_build():
                 ]
             )
         )
+
+        if py_setup.parent == P.IPDE:
+            file_dep += [P.IPDE_DIE2_YARN_LOCK]
+
         yield dict(
             name=f"sdist:{py_pkg}",
             file_dep=file_dep,

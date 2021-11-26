@@ -20,6 +20,9 @@
 
 #### @deathbeds/ipydrawio-pdf 1.1.2
 
+- a `yarn.lock` is shipped to reduce provisioning time and increase
+  reproducibility
+
 [#72]: https://github.com/deathbeds/ipydrawio/issues/72
 
 ## Releases

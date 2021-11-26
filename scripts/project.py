@@ -310,6 +310,10 @@ PY_VERSION = {
 
 IPD = PY_SETUP["ipydrawio"].parent
 IPDE = PY_SETUP["ipydrawio-export"].parent
+IPDE_VENDOR = IPDE / "src/ipydrawio_export/vendor"
+IPDE_DIE2 = IPDE_VENDOR / "draw-image-export2"
+IPDE_DIE2_PACKAGE_JSON = IPDE_DIE2 / "package.json"
+IPDE_DIE2_YARN_LOCK = IPDE_DIE2 / "yarn.lock"
 
 IPD_VERSION = PY_VERSION["ipydrawio"]
 IPDE_VERSION = PY_VERSION["ipydrawio-export"]
