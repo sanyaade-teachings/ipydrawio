@@ -352,6 +352,7 @@ RE_CONDA_FORGE_URL = r"/conda-forge/(.*/)?(noarch|linux-64|win-64|osx-64)/([^/]+
 CONDA_FORGE_RELEASE = "https://github.com/conda-forge/releases/releases/download"
 FED_EXT_MARKER = "### FEDERATED EXTENSIONS ###"
 DEMO = ROOT / "demo"
+DEMO_FILES = DEMO / "files"
 DEMO_CONFIG = DEMO / "jupyter_lite_config.json"
 DEMO_REQS = DEMO / "requirements.txt"
 DEMO_APPS = ["lab"]

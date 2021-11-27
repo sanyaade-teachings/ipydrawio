@@ -700,7 +700,7 @@ def task_demo():
         print("jupyterlite not found, this might be okay", flush=True)
         return
 
-    demo_dest = []
+    demo_dest = [*P.DEMO.glob("*.json")]
     demo_tasks = []
     final_dest = []
 
@@ -741,7 +741,7 @@ def task_demo():
 
     for path in P.ALL_DEMO_CONTENTS:
         name = f"stage:{path.name}"
-        dest = P.DEMO / path.name.replace(" ", "_")
+        dest = P.DEMO_FILES / path.name.replace(" ", "_")
         demo_dest += [dest]
         demo_tasks += [f"demo:{name}"]
         final_dest += [P.DEMO_BUILD / f"files/{path.name}"]
@@ -756,20 +756,10 @@ def task_demo():
     assert final_dest
     assert demo_tasks
 
-    lite_src_files = [
-        p
-        for p in P.DEMO.rglob("*")
-        if not p.is_dir()
-        and "/_output/" not in str(p)
-        and not p.name.endswith(".tgz")
-        and not p.name.endswith(".whl")
-        and ".doit" not in p.name
-    ]
-
     yield dict(
         name="archive",
         task_dep=demo_tasks,
-        file_dep=[*demo_dest, *lite_src_files, *P.DEMO_WHEELS.glob(f"*{P.NOARCH_WHL}")],
+        file_dep=[*demo_dest, *P.DEMO_WHEELS.glob(f"*{P.NOARCH_WHL}")],
         targets=[P.DEMO_ARCHIVE, P.DEMO_HASHES, *final_dest, P.DEMO_CONTENTS_API],
         actions=[P._build_lite],
     )
