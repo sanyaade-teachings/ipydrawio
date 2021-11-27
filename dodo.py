@@ -898,12 +898,9 @@ def task_provision():
 
 
 def _pytest(setup_py):
-    def _test():
-        subprocess.check_call(
-            [*P.PYM, "pytest", *P.PYTEST_ARGS], shell=False, cwd=str(setup_py.parent)
-        )
-
-    return _test
+    return CmdAction(
+        [*P.PYM, "pytest", *P.PYTEST_ARGS], shell=False, cwd=str(setup_py.parent)
+    )
 
 
 def task_test():
@@ -939,7 +936,7 @@ def task_test():
                     P.OK_PROVISION,
                     P.OK_PIP_CHECK,
                 ],
-                actions=[CmdAction(_pytest(setup))],
+                actions=[_pytest(setup)],
             ),
             P.OK_PYTEST[pkg],
         )
