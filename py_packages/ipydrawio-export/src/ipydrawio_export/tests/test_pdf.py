@@ -46,7 +46,7 @@ def test_export_merged(tmp_path, export_app, empty_dio, svg, png, ipynb, attach_
     assert out.exists(), f"{out} was not created"
 
     reader = PdfFileReader(str(out), "rb")
-    assert reader.getNumPages() == 4, "unexpectged number of pages"
+    assert reader.getNumPages() == 4, "unexpected number of pages"
 
     attachments = sorted(manager.attachments(out))
     assert len(attachments) == attach_xml, "unexpected attachment status"
