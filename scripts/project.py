@@ -76,6 +76,16 @@ def _clean(*paths_or_globs):
     return cleaned
 
 
+def delete_some(*paths_or_globs):
+    for p_or_g in paths_or_globs:
+        paths = [p_or_g] if isinstance(p_or_g, Path) else [*p_or_g]
+        for p in paths:
+            if p.is_dir():
+                shutil.rmtree(p)
+            elif p.exists():
+                p.unlink()
+
+
 _SESSION = None
 
 

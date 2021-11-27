@@ -897,9 +897,11 @@ def task_provision():
     )
 
 
-def _pytest(setup_py):
+def _pytest(setup_py, *pytest_args):
     return CmdAction(
-        [*P.PYM, "pytest", *P.PYTEST_ARGS], shell=False, cwd=str(setup_py.parent)
+        [*P.PYM, "pytest", *P.PYTEST_ARGS, *pytest_args],
+        shell=False,
+        cwd=str(setup_py.parent),
     )
 
 
@@ -925,6 +927,13 @@ def task_test():
         )
 
     for pkg, setup in P.PY_SETUP.items():
+        html = P.BUILD / f"pytest/{pkg}/test.html"
+        htmlcov = P.BUILD / f"pytest/{pkg}/htmlcov"
+        pytest_args = [
+            f"--cov-report=html:{htmlcov}",
+            f"--html={html}",
+            "--self-contained-html",
+        ]
         yield P._ok(
             dict(
                 name=f"pytest:{pkg}",
@@ -936,7 +945,11 @@ def task_test():
                     P.OK_PROVISION,
                     P.OK_PIP_CHECK,
                 ],
-                actions=[_pytest(setup)],
+                actions=[
+                    (P.delete_some, [htmlcov, html]),
+                    _pytest(setup, *pytest_args),
+                ],
+                targets=[htmlcov / "status.json", html],
             ),
             P.OK_PYTEST[pkg],
         )

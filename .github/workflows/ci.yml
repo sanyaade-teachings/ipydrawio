@@ -302,6 +302,15 @@ jobs:
           cd ../ipydrawio-export
           codecov --root ../..
 
+      - name: upload (utest)
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name:
+            ipydrawio ${{ github.run_number }} utest ${{ matrix.os }}${{
+            matrix.python-version }}
+          path: ./build/pytest
+
       - name: upload (atest)
         if: always()
         uses: actions/upload-artifact@v2

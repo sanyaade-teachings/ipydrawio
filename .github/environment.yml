@@ -50,6 +50,7 @@ dependencies:
   - pytest
   - pytest-console-scripts
   - pytest-cov
+  - pytest-html
   - pytest-tornasync
   # acceptance testing
   - firefox =91
