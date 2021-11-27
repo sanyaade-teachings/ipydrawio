@@ -16,6 +16,7 @@
 */
 import { Widget } from '@lumino/widgets';
 import { ISignal, Signal } from '@lumino/signaling';
+import { PromiseDelegate } from '@lumino/coreutils';
 import {
   IWidgetTracker,
   WidgetTracker,
@@ -96,7 +97,7 @@ export class DiagramManager implements IDiagramManager {
       caption: `Create a blank ${IO.XML_NATIVE.ext} file`,
       execute: async (args) => {
         let cwd = this._browserFactory.defaultBrowser.model.path;
-        return this.createNew({ ...(args as any), cwd });
+        return await this.createNew({ ...(args as any), cwd });
       },
     });
 
@@ -110,14 +111,27 @@ export class DiagramManager implements IDiagramManager {
         this._templatesChanged.connect(onChange);
         const content = new CreateCustom(model);
         const main = new MainAreaWidget({ content });
-        model.documentRequested.connect(async () => {
-          await commands.execute(CommandIds.createNew, model.args as any);
+        const promiseDelegate = new PromiseDelegate<DiagramDocument>();
+
+        const onDisposed = async () => promiseDelegate.reject(void 0);
+
+        const onRequested = async () => {
+          const diagramDocument: DiagramDocument = await commands.execute(
+            CommandIds.createNew,
+            model.args as any
+          );
           this._settings.changed.disconnect(onChange);
           this._templatesChanged.disconnect(onChange);
+          main.disposed.disconnect(onDisposed);
+          promiseDelegate.resolve(diagramDocument);
           main.dispose();
           model.dispose();
-        });
+        };
+
+        model.documentRequested.connect(onRequested);
+        main.disposed.connect(onDisposed);
         this._app.shell.add(main);
+        return promiseDelegate.promise;
       },
       icon: IO.drawioIcon,
     });
@@ -210,7 +224,7 @@ export class DiagramManager implements IDiagramManager {
   /**
    * Create a new untitled diagram file, given the current working directory.
    */
-  async createNew(args: ICreateNewArgs) {
+  async createNew(args: ICreateNewArgs): Promise<DiagramDocument> {
     let { cwd } = args;
 
     const format =

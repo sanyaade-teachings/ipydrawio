@@ -37,7 +37,7 @@ class BaseApp(Application):
 
 
 class ManagedApp(BaseApp):
-    drawio_manager = T.Instance(IPyDrawioExportManager)
+    drawio_manager: IPyDrawioExportManager = T.Instance(IPyDrawioExportManager)
     io_loop = T.Instance(ioloop.IOLoop)
 
     @T.default("io_loop")

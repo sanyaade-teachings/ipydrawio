@@ -131,6 +131,19 @@ def task_setup():
             targets=[P.YARN_INTEGRITY],
         )
 
+        yield dict(
+            name="js:ipde",
+            file_dep=[P.IPDE_DIE2_PACKAGE_JSON],
+            targets=[P.IPDE_DIE2_YARN_LOCK],
+            actions=[
+                CmdAction(
+                    [*P.JLPM, "--ignore-optional", "--prefer-offline"],
+                    shell=False,
+                    cwd=P.IPDE_DIE2,
+                ),
+            ],
+        )
+
     for pkg, pkg_setup in P.PY_SETUP.items():
         # TODO: refactor
         ext_deps = [
@@ -495,6 +508,10 @@ def task_build():
                 ]
             )
         )
+
+        if py_setup.parent == P.IPDE:
+            file_dep += [P.IPDE_DIE2_YARN_LOCK]
+
         yield dict(
             name=f"sdist:{py_pkg}",
             file_dep=file_dep,
@@ -683,6 +700,27 @@ def task_demo():
         print("jupyterlite not found, this might be okay", flush=True)
         return
 
+    demo_dest = [*P.DEMO.glob("*.json")]
+    demo_tasks = []
+    final_dest = []
+
+    yield dict(
+        name="pyodide:packages",
+        doc="fetch the pyodide packages.json",
+        uptodate=[doit.tools.config_changed(P.PYODIDE_URL)],
+        targets=[P.PYODIDE_PACKAGES],
+        actions=[P.fetch_pyodide_packages],
+    )
+
+    demo_tasks += ["demo:wheels"]
+
+    yield dict(
+        name="wheels",
+        doc="fetch wheels",
+        file_dep=[P.PYODIDE_PACKAGES, P.DEMO_REQS],
+        actions=[P.fetch_wheels],
+    )
+
     yield dict(
         name="extensions",
         doc="update jupyter-lite.json from the conda env",
@@ -701,12 +739,9 @@ def task_demo():
         ],
     )
 
-    demo_dest = []
-    demo_tasks = []
-    final_dest = []
     for path in P.ALL_DEMO_CONTENTS:
         name = f"stage:{path.name}"
-        dest = P.DEMO / path.name.replace(" ", "_")
+        dest = P.DEMO_FILES / path.name.replace(" ", "_")
         demo_dest += [dest]
         demo_tasks += [f"demo:{name}"]
         final_dest += [P.DEMO_BUILD / f"files/{path.name}"]
@@ -721,19 +756,10 @@ def task_demo():
     assert final_dest
     assert demo_tasks
 
-    lite_src_files = [
-        p
-        for p in P.DEMO.rglob("*")
-        if not p.is_dir()
-        and "/_output/" not in str(p)
-        and not p.name.endswith(".tgz")
-        and ".doit" not in p.name
-    ]
-
     yield dict(
         name="archive",
         task_dep=demo_tasks,
-        file_dep=[*demo_dest, *lite_src_files],
+        file_dep=[*demo_dest, *P.DEMO_WHEELS.glob(f"*{P.NOARCH_WHL}")],
         targets=[P.DEMO_ARCHIVE, P.DEMO_HASHES, *final_dest, P.DEMO_CONTENTS_API],
         actions=[P._build_lite],
     )
@@ -861,13 +887,12 @@ def task_provision():
     )
 
 
-def _pytest(setup_py):
-    def _test():
-        subprocess.check_call(
-            [*P.PYM, "pytest", *P.PYTEST_ARGS], shell=False, cwd=str(setup_py.parent)
-        )
-
-    return _test
+def _pytest(setup_py, *pytest_args):
+    return CmdAction(
+        [*P.PYM, "pytest", *P.PYTEST_ARGS, *pytest_args],
+        shell=False,
+        cwd=str(setup_py.parent),
+    )
 
 
 def task_test():
@@ -892,6 +917,13 @@ def task_test():
         )
 
     for pkg, setup in P.PY_SETUP.items():
+        html = P.BUILD / f"pytest/{pkg}/test.html"
+        htmlcov = P.BUILD / f"pytest/{pkg}/htmlcov"
+        pytest_args = [
+            f"--cov-report=html:{htmlcov}",
+            f"--html={html}",
+            "--self-contained-html",
+        ]
         yield P._ok(
             dict(
                 name=f"pytest:{pkg}",
@@ -903,7 +935,11 @@ def task_test():
                     P.OK_PROVISION,
                     P.OK_PIP_CHECK,
                 ],
-                actions=[PythonInteractiveAction(_pytest(setup))],
+                actions=[
+                    (P.delete_some, [htmlcov, html]),
+                    _pytest(setup, *pytest_args),
+                ],
+                targets=[htmlcov / "status.json", html],
             ),
             P.OK_PYTEST[pkg],
         )

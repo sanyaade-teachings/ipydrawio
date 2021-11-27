@@ -269,6 +269,8 @@ class IPyDrawioExportManager(LoggingConfigurable):
                 for diagram in self.extract_diagrams(pdf_request):
                     tree.append(diagram)
                 next_pdf = tdp / f"doc-{i}.pdf"
+                if pdf_request.get("pdf") is None:  # pragma: no cover
+                    raise ValueError("PDF request is empty")
                 wrote = next_pdf.write_bytes(b64decode(pdf_request["pdf"]))
                 if wrote:
                     merger.append(PdfFileReader(str(next_pdf)))
@@ -362,7 +364,8 @@ class IPyDrawioExportManager(LoggingConfigurable):
                 self.drawio_export_app,
             )
             subprocess.check_call(
-                [str(JLPM), "--silent"], cwd=str(self.drawio_export_app)
+                [str(JLPM), "--silent", "--ignore-optional"],
+                cwd=str(self.drawio_export_app),
             )
         self.is_provisioning = False
 

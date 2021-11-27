@@ -76,6 +76,16 @@ def _clean(*paths_or_globs):
     return cleaned
 
 
+def delete_some(*paths_or_globs):
+    for p_or_g in paths_or_globs:
+        paths = [p_or_g] if isinstance(p_or_g, Path) else [*p_or_g]
+        for p in paths:
+            if p.is_dir():
+                shutil.rmtree(p)
+            elif p.exists():
+                p.unlink()
+
+
 _SESSION = None
 
 
@@ -86,6 +96,7 @@ OSX = PLATFORM == "Darwin"
 UNIX = not WIN
 PREFIX = Path(sys.prefix)
 ENC = dict(encoding="utf-8")
+JSON_FMT = dict(indent=2, sort_keys=True)
 
 BUILDING_IN_CI = bool(json.loads(os.environ.get("BUILDING_IN_CI", "0")))
 TESTING_IN_CI = bool(json.loads(os.environ.get("TESTING_IN_CI", "0")))
@@ -199,9 +210,7 @@ NO_TYPEDOC = ["_meta", "ipydrawio-webpack"]
 # so many js packages
 JS_PKG_JSON = {p.parent.name: p for p in PACKAGES.glob("*/package.json")}
 
-JS_PKG_DATA = {
-    k: json.loads(v.read_text(encoding="utf-8")) for k, v in JS_PKG_JSON.items()
-}
+JS_PKG_DATA = {k: json.loads(v.read_text(**ENC)) for k, v in JS_PKG_JSON.items()}
 
 JS_PKG_JSON_LABEXT = {
     k: v
@@ -310,6 +319,10 @@ PY_VERSION = {
 
 IPD = PY_SETUP["ipydrawio"].parent
 IPDE = PY_SETUP["ipydrawio-export"].parent
+IPDE_VENDOR = IPDE / "src/ipydrawio_export/vendor"
+IPDE_DIE2 = IPDE_VENDOR / "draw-image-export2"
+IPDE_DIE2_PACKAGE_JSON = IPDE_DIE2 / "package.json"
+IPDE_DIE2_YARN_LOCK = IPDE_DIE2 / "yarn.lock"
 
 IPD_VERSION = PY_VERSION["ipydrawio"]
 IPDE_VERSION = PY_VERSION["ipydrawio-export"]
@@ -339,7 +352,9 @@ RE_CONDA_FORGE_URL = r"/conda-forge/(.*/)?(noarch|linux-64|win-64|osx-64)/([^/]+
 CONDA_FORGE_RELEASE = "https://github.com/conda-forge/releases/releases/download"
 FED_EXT_MARKER = "### FEDERATED EXTENSIONS ###"
 DEMO = ROOT / "demo"
+DEMO_FILES = DEMO / "files"
 DEMO_CONFIG = DEMO / "jupyter_lite_config.json"
+DEMO_REQS = DEMO / "requirements.txt"
 DEMO_APPS = ["lab"]
 DEMO_BUILD = BUILD / "demo"
 DEMO_HASHES = DEMO_BUILD / "SHA256SUMS"
@@ -347,6 +362,12 @@ DEMO_CONTENTS_API = DEMO_BUILD / "api/contents/all.json"
 DEMO_ARCHIVE = (
     DEMO_BUILD / f"""ipydrawio-lite-{JS_PKG_DATA["ipydrawio"]["version"]}.tgz"""
 )
+DEMO_WHEELS = DEMO / "pypi"
+NOARCH_WHL = "py3-none-any.whl"
+IGNORED_WHEELS = ["widgetsnbextension", "nbformat", "ipykernel", "pyolite"]
+PYODIDE_URL = "https://cdn.jsdelivr.net/pyodide/v0.18.1/full"
+PYODIDE_PACKAGES = BUILD / "pyodide-packages.json"
+
 
 # docs
 SPHINX_ARGS = json.loads(os.environ.get("SPHINX_ARGS", "[]"))
@@ -421,7 +442,11 @@ ALL_JSON = [
     *PACKAGES.glob("*/schema/*.json"),
     *ATEST.glob("fixtures/*.json"),
     *BINDER.glob("*.json"),
-    *[p for p in DEMO.rglob("*.json") if "/_output/" not in str(p)],
+    *[
+        p
+        for p in DEMO.rglob("*.json")
+        if "/_output/" not in str(p) and "/.cache/" not in str(p)
+    ],
 ]
 ALL_DIO = [*DOCS_DIO, *IPJT_TMPL_DIO, *ATEST_DIO]
 ALL_MD = [*ROOT.glob("*.md"), *PACKAGES.glob("*/*.md"), *DOCS_MD]
@@ -596,10 +621,10 @@ def fetch_one(url, path):
 
 
 def patch_one_env(source, target):
-    source_text = source.read_text(encoding="utf-8")
+    source_text = source.read_text(**ENC)
     name = re.findall(r"name: (.*)", source_text)[0]
     comment = f"  ### {name}-deps ###"
-    old_target = target.read_text(encoding="utf-8").split(comment)
+    old_target = target.read_text(**ENC).split(comment)
     new_source = source_text.split(comment)
     target.write_text(
         "\n".join(
@@ -635,7 +660,7 @@ def typedoc_conf():
 
     if json.dumps(original_entry_points) != json.dumps(new_entry_points):
         typedoc["entryPoints"] = new_entry_points
-        TYPEDOC_JSON.write_text(json.dumps(typedoc, indent=2, sort_keys=True), **ENC)
+        TYPEDOC_JSON.write_text(json.dumps(typedoc, **JSON_FMT), **ENC)
 
     tsconfig = json.loads(TSCONFIG_TYPEDOC.read_text(**ENC))
     original_references = tsconfig["references"]
@@ -653,9 +678,7 @@ def typedoc_conf():
 
     if json.dumps(original_references) != json.dumps(new_references):
         tsconfig["references"] = new_references
-        TSCONFIG_TYPEDOC.write_text(
-            json.dumps(tsconfig, indent=2, sort_keys=True), **ENC
-        )
+        TSCONFIG_TYPEDOC.write_text(json.dumps(tsconfig, **JSON_FMT), **ENC)
 
 
 def mystify():
@@ -807,11 +830,19 @@ def _build_lite():
     lite = ["jupyter", "lite"]
     args = ["--source-date-epoch", SOURCE_DATE_EPOCH]
 
-    for act in ["build", "check", "archive"]:
+    try:
+        from jupyter_server_mathjax.app import STATIC_ASSETS_PATH as MATHJAX_DIR
+    except Exception:
+        MATHJAX_DIR = None
+
+    if MATHJAX_DIR:
+        args += ["--mathjax-dir", str(MATHJAX_DIR)]
+
+    for act in ["build", "archive"]:
         act_args = list(map(str, [*lite, act, *args]))
-        if subprocess.call(act_args, cwd=DEMO) == 0:
-            continue
-        return False
+        if subprocess.call(act_args, cwd=DEMO) != 0:
+            print("FAILED", *act_args)
+            return False
 
 
 def _sync_lite_config(from_env, to_json, marker, extras):
@@ -819,7 +850,7 @@ def _sync_lite_config(from_env, to_json, marker, extras):
     raw_lock = subprocess.check_output(["conda", "list", "--explicit"])
     ext_packages = [
         p.strip().split(" ")[0]
-        for p in from_env.read_text(encoding="utf-8").split(marker)[1].split(" - ")
+        for p in from_env.read_text(**ENC).split(marker)[1].split(" - ")
         if p.strip()
     ]
 
@@ -838,10 +869,35 @@ def _sync_lite_config(from_env, to_json, marker, extras):
             if pkg.startswith(ext):
                 tarball_urls += ["/".join([CONDA_FORGE_RELEASE, subdir, pkg, pkg])]
 
-    config = json.loads(to_json.read_text(encoding="utf-8"))
+    config = json.loads(to_json.read_text(**ENC))
     config["LiteBuildConfig"]["federated_extensions"] = sorted(tarball_urls)
-    to_json.write_text(json.dumps(config, indent=2, sort_keys=True))
+    to_json.write_text(json.dumps(config, **JSON_FMT))
     subprocess.call([*PRETTIER, "--write", to_json])
+
+
+def fetch_pyodide_packages():
+    import urllib.request
+
+    url = f"{PYODIDE_URL}/packages.json"
+    print("fetching pyodide packages from", url)
+    with urllib.request.urlopen(url) as response:
+        packages = json.loads(response.read().decode("utf-8"))
+    PYODIDE_PACKAGES.parent.mkdir(exist_ok=True, parents=True)
+    PYODIDE_PACKAGES.write_text(json.dumps(packages, **JSON_FMT))
+
+
+def fetch_wheels():
+    DEMO_WHEELS.mkdir(exist_ok=True, parents=True)
+    subprocess.check_call(
+        ["pip", "download", "-r", str(DEMO_REQS), "--prefer-binary"],
+        cwd=str(DEMO_WHEELS),
+    )
+    for pkg in sorted(DEMO_WHEELS.glob("*")):
+        if not pkg.name.endswith(NOARCH_WHL):
+            pkg.unlink
+            continue
+        if any(re.findall(f"{p}-\\d", pkg.name) for p in IGNORED_WHEELS):
+            pkg.unlink()
 
 
 # Late environment hacks

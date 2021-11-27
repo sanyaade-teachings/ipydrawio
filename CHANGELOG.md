@@ -10,15 +10,18 @@
 
 #### @deathbeds/ipydrawio-notebook 1.1.2
 
-#### @deathbeds/ipydrawio-webpack 15.7.300
+#### @deathbeds/ipydrawio-webpack 15.8.600
 
-- upgrade to drawio v15.7.3 for enhancements and bug fixes
+- upgrade to drawio v15.8.6 for enhancements and bug fixes
 
 #### @deathbeds/ipydrawio-jupyter-templates 1.1.2
 
 ### ipydrawio-export 1.1.2
 
 #### @deathbeds/ipydrawio-pdf 1.1.2
+
+- a `yarn.lock` is shipped to reduce provisioning time and increase
+  reproducibility
 
 [#72]: https://github.com/deathbeds/ipydrawio/issues/72
 

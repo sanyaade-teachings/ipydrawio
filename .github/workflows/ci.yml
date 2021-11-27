@@ -302,6 +302,15 @@ jobs:
           cd ../ipydrawio-export
           codecov --root ../..
 
+      - name: upload (utest)
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name:
+            ipydrawio ${{ github.run_number }} utest ${{ matrix.os }}${{
+            matrix.python-version }}
+          path: ./build/pytest
+
       - name: upload (atest)
         if: always()
         uses: actions/upload-artifact@v2
@@ -354,10 +363,16 @@ jobs:
           use-only-tar-bz2: true
           use-mamba: true
 
+      - name: download (dist)
+        uses: actions/download-artifact@v2
+        with:
+          name: ipydrawio ${{ github.run_number }} dist
+          path: ./dist
+
       - name: build docs
         shell: bash -l {0}
         run: |
-          doit $DOIT_N_TEST docs || doit docs
+          doit $DOIT_N_TEST docs || doit docs || doit docs
 
       - name: check docs
         shell: bash -l {0}
@@ -367,7 +382,7 @@ jobs:
       - name: lite tests
         shell: bash -l {0}
         run: |
-          doit $DOIT_N_TEST test
+          doit $DOIT_N_TEST test:robot
 
       - name: upload (atest lite)
         if: always()

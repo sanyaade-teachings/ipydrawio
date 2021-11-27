@@ -49,14 +49,16 @@ dependencies:
   ############################################################################
   ### ipydrawio-docs-deps ###
 
+  - jupyter-server-mathjax
   - myst-nb
+  - pkginfo
   - pydata-sphinx-theme
   - pytest-check-links
   - sphinx
   - sphinx-jsonschema
   - sphinxext-rediraffe
   - pip:
-      - jupyterlite ==0.1.0a16
+      - jupyterlite ==0.1.0a17
 
   ### ipydrawio-docs-deps ###
 
@@ -71,7 +73,7 @@ dependencies:
   - python # this gets patched in ci
   # run
   - ipywidgets >=7.6
-  - jupyterlab >=3.1.9,<4.0.0a0
+  - jupyterlab >=3.2.4,<4.0.0a0
   - jupyterlab_widgets >=1
   - lxml
   - pillow
@@ -92,6 +94,7 @@ dependencies:
   - pytest
   - pytest-console-scripts
   - pytest-cov
+  - pytest-html
   - pytest-tornasync
   # acceptance testing
   - firefox =91

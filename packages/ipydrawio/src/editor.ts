@@ -76,6 +76,7 @@ export class Diagram extends IFrame {
   private _app: IMXApp;
   private _appChanged = new Signal<Diagram, void>(this);
   private _escaped = new Signal<Diagram, void>(this);
+  private _loaded = new Signal<Diagram, void>(this);
 
   constructor(options: Diagram.IOptions) {
     super({ sandbox: SANDBOX_EXCEPTIONS, ...options });
@@ -136,6 +137,13 @@ export class Diagram extends IFrame {
   }
 
   /**
+   * A signal emitted when a load action completes
+   */
+  get loaded(): ISignal<Diagram, void> {
+    return this._loaded;
+  }
+
+  /**
    * Handle messages from the iframe over the drawio embed protocol
    */
   handleMessageEvent(evt: MessageEvent) {
@@ -165,25 +173,19 @@ export class Diagram extends IFrame {
         break;
       case 'load':
         this.app = (this._frame?.contentWindow as any).IPYDRAWIO_APP;
-        this._ready.resolve(void 0);
-        this._initialLoad = true;
         this.addClass(READY_CLASS);
+        if (!this._initialLoad) {
+          this.onSaveMsg(msg);
+        }
+        this._initialLoad = true;
+        this._loaded.emit(void 0);
+        this._ready.resolve(void 0);
         break;
       case 'save':
-        if (this.format?.isTransformed) {
-          this.saveWithExport(true);
-          break;
-        }
-        this._lastEmitted = msg.xml;
-        this.save(msg.xml, true);
+        this.onSaveMsg(msg, true);
         break;
       case 'autosave':
-        if (this.adapter.saveNeedsExport()) {
-          this.saveWithExport();
-          break;
-        }
-        this._lastEmitted = msg.xml;
-        this.save(msg.xml);
+        this.onSaveMsg(msg);
         break;
       case 'export':
         if (this._exportPromise != null) {
@@ -199,6 +201,15 @@ export class Diagram extends IFrame {
       default:
         DEBUG && console.warn('unhandled message', msg.event, msg);
         break;
+    }
+  }
+
+  onSaveMsg(msg: any, hardSave: boolean = false) {
+    if (this.adapter.saveNeedsExport()) {
+      this.saveWithExport(hardSave);
+    } else {
+      this._lastEmitted = msg.xml;
+      this.save(msg.xml, hardSave);
     }
   }
 
