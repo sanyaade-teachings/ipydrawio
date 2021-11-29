@@ -167,7 +167,7 @@ export class CreateCustom extends VDomRenderer<CreateCustom.Model> {
           defaultChecked={index === -1}
         />
         <label htmlFor={id}>
-          {effectiveTheme}
+          {`${effectiveTheme} ${theme ? '' : '(default)'}`}
           <icon.react width={100} tag="span" />
           {this.renderTags(tags)}
         </label>
