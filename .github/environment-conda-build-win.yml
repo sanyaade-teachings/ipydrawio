@@ -21,7 +21,7 @@ channels:
   - nodefaults
 
 dependencies:
-  - pywin32 !=302
+  - pywin32 !=302,!=301
   ### ipydrawio-conda-build-deps ###
 
   - boa
