@@ -49,6 +49,7 @@ export class CreateCustom extends VDomRenderer<CreateCustom.Model> {
     return [
       <header key="header">
         <h1>New Diagram</h1>
+        <label>{this.model.cwd ? <pre>/{this.model.cwd}/</pre> : ''}</label>
         <input
           type="text"
           className="jp-mod-styled"
@@ -56,6 +57,7 @@ export class CreateCustom extends VDomRenderer<CreateCustom.Model> {
           placeholder="untitled"
           onChange={(evt) => (this.model.name = evt.currentTarget.value)}
         />
+        <label><pre>{this.model.format.ext}</pre></label>
         <button
           onClick={this.model.requestDocument}
           type="button"
@@ -167,7 +169,7 @@ export class CreateCustom extends VDomRenderer<CreateCustom.Model> {
           defaultChecked={index === -1}
         />
         <label htmlFor={id}>
-          {effectiveTheme}
+          {`${effectiveTheme} ${theme ? '' : '(default)'}`}
           <icon.react width={100} tag="span" />
           {this.renderTags(tags)}
         </label>
@@ -211,6 +213,7 @@ export class CreateCustom extends VDomRenderer<CreateCustom.Model> {
 export namespace CreateCustom {
   export interface IOptions {
     manager: IDiagramManager;
+    cwd?: string;
   }
 
   export class Model extends VDomModel {
@@ -222,10 +225,12 @@ export namespace CreateCustom {
     private _documentRequested = new Signal<Model, void>(this);
     private _format: IFormat = IO.XML_NATIVE;
     private _name: string = '';
+    private _cwd: string | null = null;
 
     constructor(options: IOptions) {
       super();
       this._manager = options.manager;
+      this._cwd = options.cwd || null;
       this._manager
         .templates()
         .then((templates) => {
@@ -250,6 +255,15 @@ export namespace CreateCustom {
 
     get manager() {
       return this._manager;
+    }
+
+    get cwd() {
+      return this._cwd;
+    }
+
+    set cwd(cwd: string | null) {
+      this._cwd = cwd;
+      this.stateChanged.emit(void 0);
     }
 
     get name() {

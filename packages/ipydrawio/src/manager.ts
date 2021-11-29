@@ -107,8 +107,15 @@ export class DiagramManager implements IDiagramManager {
       execute: () => {
         const model = new CreateCustom.Model({ manager: this });
         const onChange = () => model.stateChanged.emit(void 0);
+        const onPath = () => (model.cwd = defaultBrowser.model.path);
+        const { defaultBrowser } = this._browserFactory || {};
+
         this._settings.changed.connect(onChange);
         this._templatesChanged.connect(onChange);
+        if (defaultBrowser) {
+          defaultBrowser.model.pathChanged.connect(onPath);
+          onPath();
+        }
         const content = new CreateCustom(model);
         const main = new MainAreaWidget({ content });
         const promiseDelegate = new PromiseDelegate<DiagramDocument>();
@@ -122,6 +129,10 @@ export class DiagramManager implements IDiagramManager {
           );
           this._settings.changed.disconnect(onChange);
           this._templatesChanged.disconnect(onChange);
+          if (defaultBrowser) {
+            defaultBrowser.model.pathChanged.disconnect(onPath);
+          }
+
           main.disposed.disconnect(onDisposed);
           promiseDelegate.resolve(diagramDocument);
           main.dispose();

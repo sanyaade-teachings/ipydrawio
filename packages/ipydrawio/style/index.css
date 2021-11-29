@@ -52,7 +52,7 @@
 
 .jp-IPyDiagram-CreateCustom.jp-RenderedHTMLCommon ul {
   padding: 0;
-  margin: 0;
+  margin: 0 1em;
 }
 
 .jp-IPyDiagram-CreateCustom header {
@@ -62,6 +62,7 @@
   display: flex;
   border-bottom: solid 1px var(--jp-border-color0);
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .jp-IPyDiagram-CreateCustom header h1 {
@@ -72,18 +73,22 @@
 
 .jp-RenderedHTMLCommon.jp-IPyDiagram-CreateCustom h1,
 .jp-RenderedHTMLCommon.jp-IPyDiagram-CreateCustom h2 {
-  min-width: 260px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  padding: 0 0.5em;
 }
 
 .jp-IPyDiagram-CreateCustom header button {
   display: flex;
   align-items: center;
   padding: 1.5em;
+  margin-left: 1em;
 }
 
 .jp-IPyDiagram-CreateCustom input {
   flex: 1;
-  margin-right: 1em;
+  margin: 0 1em;
 }
 
 .jp-IPyDiagram-CreateCustom header button > * {
@@ -109,6 +114,7 @@
 
 .jp-IPyDiagram-CreateCustom section {
   display: flex;
+  flex-direction: column;
   margin-bottom: 1em;
 }
 
