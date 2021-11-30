@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+---
+
+## Releases
+
 ### ipydrawio 1.1.3
 
 #### @deathbeds/ipydrawio 1.1.3
@@ -14,9 +18,11 @@
 
 ### ipydrawio-export 1.1.3
 
+- revert to older PDF exporter for better robustness on binder, etc.
+
 #### @deathbeds/ipydrawio-pdf 1.1.3
 
-## Releases
+---
 
 ### ipydrawio 1.1.2
 
@@ -34,10 +40,11 @@
 
 ### ipydrawio-export 1.1.2
 
-#### @deathbeds/ipydrawio-pdf 1.1.2
-
 - a `yarn.lock` is shipped to reduce provisioning time and increase
   reproducibility
+- update to newer PDF exporter for better performance
+
+#### @deathbeds/ipydrawio-pdf 1.1.2
 
 [#72]: https://github.com/deathbeds/ipydrawio/issues/72
 
