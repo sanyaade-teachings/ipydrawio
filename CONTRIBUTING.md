@@ -63,6 +63,8 @@ doit dist
 
 - [ ] start a release issue with a checklist (maybe like this one)
 - [ ] ensure the versions have been bumped (check with `doit test:integrity`)
+- [ ] ensure the CHANGELOG is up-to-date
+  - [ ] move the new release to the top of the stack
 - [ ] validate on binder
 - [ ] validate on ReadTheDocs
 - [ ] wait for a successful build of `master`
