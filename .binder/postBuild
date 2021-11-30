@@ -26,9 +26,10 @@ SETTINGS.mkdir(parents=True, exist_ok=True)
 def doit(*args):
     return subprocess.call(["doit", *args])
 
-doit("jlpm", "cache", "clean")
+
 doit("list", "--all", "--status")
 doit("-n4")
+doit()
 doit("list", "--all", "--status")
 
 shutil.copy2(".binder/overrides.json", SETTINGS / "overrides.json")
