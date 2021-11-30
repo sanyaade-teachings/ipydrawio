@@ -29,6 +29,7 @@ def doit(*args):
 
 doit("list", "--all", "--status")
 doit("-n4")
+doit()
 doit("list", "--all", "--status")
 
 shutil.copy2(".binder/overrides.json", SETTINGS / "overrides.json")

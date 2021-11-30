@@ -133,7 +133,7 @@ def task_setup():
 
         yield dict(
             name="js:ipde",
-            file_dep=[P.IPDE_DIE2_PACKAGE_JSON],
+            file_dep=[P.IPDE_DIE2_PACKAGE_JSON, P.YARN_INTEGRITY],
             targets=[P.IPDE_DIE2_YARN_LOCK],
             actions=[
                 CmdAction(
