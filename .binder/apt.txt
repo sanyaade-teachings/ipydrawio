@@ -13,5 +13,6 @@ libxcursor1
 libxdamage1
 libxi6
 libxrandr2
+libxshmfence1
 libxss1
 libxtst6
