@@ -29,6 +29,11 @@ PATCHES = {
             "name": "global ref so we can get at the App at runtime",
             "before": "new App(new Editor",
             "after": "window.IPYDRAWIO_APP = new App(new Editor",
+        },
+        {
+            "name": "patch cors check for data URI",
+            "before": "this.editor.isCorsEnabledForUrl(n)||(n=",
+            "after": "(n.match(/^data:/) || this.editor.isCorsEnabledForUrl(n))||(n="
         }
     ]
 }
