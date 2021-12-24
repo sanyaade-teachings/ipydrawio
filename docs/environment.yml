@@ -55,7 +55,7 @@ dependencies:
   - retrolab
   # building
   - pip
-  - twine
+  - twine >=3.7.1
   - wheel
   # linting
   - black
