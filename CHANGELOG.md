@@ -2,21 +2,25 @@
 
 ## Unreleased
 
-### ipydrawio 1.1.4
+### ipydrawio 1.2.0
 
-#### @deathbeds/ipydrawio 1.1.4
+- minimum supported python is now to 3.7
 
-#### @deathbeds/ipydrawio-notebook 1.1.4
+#### @deathbeds/ipydrawio 1.2.0
+
+#### @deathbeds/ipydrawio-notebook 1.2.0
 
 #### @deathbeds/ipydrawio-webpack 16.1.0
 
 - updates to drawio v16.1.0
 
-#### @deathbeds/ipydrawio-jupyter-templates 1.1.4
+#### @deathbeds/ipydrawio-jupyter-templates 1.2.0
 
-### ipydrawio-export 1.1.4
+### ipydrawio-export 1.2.0
 
-#### @deathbeds/ipydrawio-pdf 1.1.4
+- minimum supported python is now to 3.7
+
+#### @deathbeds/ipydrawio-pdf 1.2.0
 
 ---
 

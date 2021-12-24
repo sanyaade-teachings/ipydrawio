@@ -88,20 +88,20 @@
     tslib "~1.13.0"
 
 "@deathbeds/ipydrawio-jupyter-templates@file:packages/ipydrawio-jupyter-templates":
-  version "1.1.4"
+  version "1.2.0"
   dependencies:
-    "@deathbeds/ipydrawio" "^1.1.4"
+    "@deathbeds/ipydrawio" "^1.2.0"
     "@jupyterlab/application" "^3.1.0"
 
 "@deathbeds/ipydrawio-notebook@file:packages/ipydrawio-notebook":
-  version "1.1.4"
+  version "1.2.0"
   dependencies:
-    "@deathbeds/ipydrawio" "^1.1.4"
+    "@deathbeds/ipydrawio" "^1.2.0"
     "@jupyterlab/application" "^3.1.0"
     "@jupyterlab/notebook" "^3.1.0"
 
 "@deathbeds/ipydrawio-pdf@file:packages/ipydrawio-pdf":
-  version "1.1.4"
+  version "1.2.0"
   dependencies:
     "@jupyterlab/application" "^3.1.0"
 
@@ -111,7 +111,7 @@
     "@jupyterlab/application" "^3.1.0"
 
 "@deathbeds/ipydrawio@file:packages/ipydrawio":
-  version "1.1.4"
+  version "1.2.0"
   dependencies:
     "@deathbeds/ipydrawio-webpack" "^16.1.0"
     "@jupyterlab/application" "^3.1.0"
