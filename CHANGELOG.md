@@ -8,7 +8,9 @@
 
 #### @deathbeds/ipydrawio-notebook 1.1.4
 
-#### @deathbeds/ipydrawio-webpack 15.8.702
+#### @deathbeds/ipydrawio-webpack 16.1.0
+
+- updates to drawio v16.1.0
 
 #### @deathbeds/ipydrawio-jupyter-templates 1.1.4
 
