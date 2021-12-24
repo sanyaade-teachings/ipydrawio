@@ -62,6 +62,7 @@ doit dist
 ## Releasing
 
 - [ ] start a release issue with a checklist (maybe like this one)
+- [ ] merge all outstanding PRs
 - [ ] ensure the versions have been bumped (check with `doit test:integrity`)
 - [ ] ensure the CHANGELOG is up-to-date
   - [ ] move the new release to the top of the stack
