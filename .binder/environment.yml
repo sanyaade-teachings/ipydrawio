@@ -58,7 +58,7 @@ dependencies:
   - sphinx-jsonschema
   - sphinxext-rediraffe
   - pip:
-      - jupyterlite ==0.1.0a17
+      - jupyterlite ==0.1.0a18
 
   ### ipydrawio-docs-deps ###
 
@@ -72,7 +72,7 @@ dependencies:
   - nodejs >=12,!=13.*,<15
   - python # this gets patched in ci
   # run
-  - ipywidgets >=7.6
+  - ipywidgets >=7.6,<8
   - jupyterlab >=3.2.4,<4.0.0a0
   - jupyterlab_widgets >=1
   - lxml
@@ -82,7 +82,7 @@ dependencies:
   - retrolab
   # building
   - pip
-  - twine
+  - twine >=3.7.1
   - wheel
   # linting
   - black
