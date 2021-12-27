@@ -66,6 +66,8 @@ def run_tests(attempt=0, extra_args=None):
         f"PY:{P.PY_MAJOR}",
         "--variable",
         f"DEMO:{P.DEMO}",
+        "--variable",
+        f"DOCS:{P.DOCS}",
         "--randomize",
         "all",
         "--xunit",
