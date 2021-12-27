@@ -164,7 +164,7 @@ import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/sidebar-fl
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/sidebar-gcp.png';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/sidebar-gcp19.png';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/sidebar-gcp2.png';
-import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/sidebar-gcp3.png';
+import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/sidebar-gcpicons.png';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/sidebar-general.png';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/sidebar-gmdl.png';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/images/sidebar-ibm.png';
@@ -2808,5 +2808,7 @@ import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-9fe249eb.
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-9fe249eb.js.map';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-bed83ea8.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-bed83ea8.js.map';
+import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-dfbb910f.js';
+import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-dfbb910f.js.map';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-f163abaa.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-f163abaa.js.map';

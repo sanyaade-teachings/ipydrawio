@@ -1,5 +1,5 @@
 {% set name = "ipydrawio" %}
-{% set version = "1.1.4" %}
+{% set version = "1.2.0" %}
 
 {% set build_number = 0 %}
 
@@ -30,9 +30,9 @@ build:
 requirements:
   host:
     - pip
-    - python >=3.6
+    - python >=3.7
   run:
-    - python >=3.6
+    - python >=3.7
 
 test:
   commands:
@@ -51,13 +51,13 @@ outputs:
     requirements:
       host:
         - pip
-        - python >=3.6
+        - python >=3.7
       run:
-        - ipywidgets >=7.6
+        - ipywidgets >=7.6,<8
         - jupyterlab ==3.*
         - jupyterlab_widgets >=1
         - lxml
-        - python >=3.6
+        - python >=3.7
     test:
       imports:
         - ipydrawio
@@ -99,14 +99,14 @@ outputs:
     requirements:
       host:
         - pip
-        - python >=3.6
+        - python >=3.7
       run:
         - ipydrawio =={{ version }}.*
         - lxml
         - nodejs
         - pillow
         - pypdf2
-        - python >=3.6
+        - python >=3.7
         - requests_cache
     test:
       imports:
