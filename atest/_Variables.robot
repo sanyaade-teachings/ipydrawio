@@ -98,5 +98,5 @@ ${MIME STDERR}    application/vnd.jupyter.stderr
 # retro
 ${CSS RETRO TREE DIO BTN}    css:button[title='${CREATE A BLANK}']
 # docs
-${TUTORIALS}      ${DOCS}${/}tutorials
+${TUTORIALS}      ${ROOT}${/}docs${/}tutorials
 ${CLIB TUTORIAL}    ${TUTORIALS}${/}working-with-custom-libraries${/}index.ipynb

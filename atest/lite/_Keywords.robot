@@ -69,7 +69,7 @@ Clean Up Lite Test
 Start Lite Suite
     [Documentation]    Ensure lite assets are available
     Set Screenshot Directory    ${OUTPUT DIR}${/}lite
-    Start JupyterLite Server    ${DEMO}
+    Start JupyterLite Server    ${ROOT}${/}demo
 
 Clean Up Lite Suite
     [Documentation]    Clean up after lite

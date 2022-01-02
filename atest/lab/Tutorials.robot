@@ -19,6 +19,12 @@ Library           OperatingSystem
 Force Tags        component:tutorials
 Suite Setup       Set Screenshot Directory    ${OUTPUT DIR}${/}screenshots${/}tutorials
 
+*** Variables ***
+${XP MY LIBRARY TITLE}    xpath://a[starts-with(@title, 'my+library')]
+${XP MY LIBRARY SHAPES}    ${XP MY LIBRARY TITLE}/following-sibling::div[1]//a[contains(@class, 'geItem')]
+${XP SHAPE TOOLTIP}    xpath://*[contains(@class, 'geSidebarTooltip')]
+@{SHAPE TITLES}    Exit    Machine    Queue    Source
+
 *** Test Cases ***
 Custom Library URL Hack
     [Documentation]    Does using a custom library work?
@@ -26,11 +32,16 @@ Custom Library URL Hack
     Copy File    ${CLIB TUTORIAL}    ${HOME}${/}clib.ipynb
     Wait Until Keyword Succeeds    5x    5s    Open clib.ipynb in ${MENU NOTEBOOK}
     Lab Command    Run All Cells
-    Wait Until Page Does Not Contain    [*]
     Click Element    css:.jp-Cell:last-child
     Wait Until Keyword Succeeds    5x    5s    Wait for a Diagram to be Ready
-    Current Frame Should Contain    my+library
-    Current Frame Should Contain    banana
+    Wait Until Page Contains Element    ${XP MY LIBRARY TITLE}
+    ${shapes} =    Get WebElements    ${XP MY LIBRARY SHAPES}
+    Should be Equal as Integers    ${shapes.__len__()}    4
+    FOR    ${idx}    ${shape}    IN ENUMERATE    ${shapes}
+        Mouse Over    ${shape}
+        Wait Until Page Contains Element
+        ...    ${XP SHAPE TOOLTIP}\[contains(., '${SHAPE TITLES[${idx}]}')]
+    END
     [Teardown]    Tear Down Custom Library Tutorial
 
 *** Keywords ***
