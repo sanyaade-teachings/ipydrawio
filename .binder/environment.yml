@@ -20,7 +20,7 @@ channels:
   - conda-forge
 
 dependencies:
-  - python >=3.9
+  - python >=3.7
   # demo toys
   - graphviz2drawio
   - jupyter-lsp-python-lsp-server

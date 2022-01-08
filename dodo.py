@@ -902,12 +902,15 @@ def task_test():
             dict(
                 name="integrity",
                 file_dep=[
-                    P.SCRIPTS / "integrity.py",
-                    P.OK_LINT,
-                    P.DEMO_CONFIG,
                     *[*P.OK_SERVEREXT.values()],
-                    *[*P.PY_WHEEL.values()],
                     *[*P.PY_SDIST.values()],
+                    *[*P.PY_WHEEL.values()],
+                    *P.ALL_SETUP_CFG,
+                    P.DEMO_CONFIG,
+                    P.ENV_BINDER,
+                    P.OK_LINT,
+                    P.RECIPE,
+                    P.SCRIPTS / "integrity.py",
                 ],
                 actions=[
                     ["python", "-m", "pytest", "--pyargs", "scripts.integrity", "-vv"]

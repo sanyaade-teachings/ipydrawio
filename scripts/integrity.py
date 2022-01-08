@@ -14,13 +14,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import configparser
 import json
+import re
 import sys
 import tarfile
 from pathlib import Path
 
 import jsonpointer
 import pytest
+import yaml
 
 if True:
     sys.path.append(str(Path(__file__).parent.parent))
@@ -35,6 +38,24 @@ def the_changelog():
 @pytest.fixture
 def the_demo_config():
     return json.loads(P.DEMO_CONFIG.read_text(**P.ENC))
+
+
+@pytest.fixture
+def the_ci():
+    return yaml.safe_load(P.CI_YML.read_text(**P.ENC))
+
+
+@pytest.fixture
+def the_pythons(the_ci):
+    return sorted(
+        the_ci["jobs"]["test"]["strategy"]["matrix"]["python-version"],
+        key=lambda x: list(map(int, x.split("."))),
+    )
+
+
+@pytest.fixture
+def the_min_python(the_pythons):
+    return the_pythons[0]
 
 
 @pytest.mark.parametrize(
@@ -86,6 +107,7 @@ def test_demo_paths(the_demo_config, pointer, value):
 
 @pytest.mark.parametrize("path", P.ALL_HEADERS)
 def test_headers(path):
+    """are the license headers correct?"""
     text = path.read_text(encoding="utf-8")
     assert (
         "Copyright 2021 ipydrawio contributors" in text
@@ -97,9 +119,35 @@ def test_headers(path):
 
 @pytest.mark.parametrize("key,tarball", [*P.JS_TARBALL.items(), *P.PY_SDIST.items()])
 def test_tarball(key, tarball):
+    """do the distributons have key metadata files?"""
     with tarfile.open(str(tarball), "r") as tar:
         all_names = list(tar.getnames())
         licenses = [p for p in all_names if "LICENSE.txt" in p]
         assert licenses, f"{key} doesn't have LICENSE"
         readmes = [p for p in all_names if "README.md" in p]
         assert readmes, f"{key} doesn't have README"
+
+
+@pytest.mark.parametrize("path", [p for p in P.ALL_SETUP_CFG if p.parent != P.ROOT])
+def test_setup_cfg_pythons(path, the_pythons, the_min_python):
+    """are the python versions correctly noted?"""
+    cfg = configparser.ConfigParser()
+    cfg.read_file(path.open())
+    python_requires = cfg["options"]["python_requires"]
+    assert python_requires == f">={the_min_python}"
+    for the_py in the_pythons:
+        classifier = f"Programming Language :: Python :: {the_py}"
+        assert classifier in cfg["metadata"]["classifiers"]
+
+
+@pytest.mark.parametrize(
+    "path,py_count",
+    [
+        [P.RECIPE, 6],
+        [P.ENV_BINDER, 1],
+    ],
+)
+def test_yaml_pythons(path, py_count, the_min_python):
+    yaml_text = path.read_text(**P.ENC)
+    matches = re.findall(f"- python >={the_min_python}", yaml_text)
+    assert len(matches) == py_count, [len(matches), py_count]
