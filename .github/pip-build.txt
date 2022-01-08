@@ -1,4 +1,4 @@
-# basically ipydrawio[all,test] and ipydrawio-export... plus robot
+# basically ipydrawio[all,test] and ipydrawio-export... plus robot, pyyaml
 black
 doit
 flake8
@@ -13,6 +13,7 @@ pip
 pyflakes
 pypdf2
 pytest
+pyyaml
 requests
 requests-cache
 robotframework

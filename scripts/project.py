@@ -165,6 +165,7 @@ DIA_URLS = {
 
 # ci
 GH = ROOT / ".github"
+CI_YML = GH / "workflows/ci.yml"
 ENV_GH = GH / "environment.yml"
 ENV_GH_CB = GH / "environment-conda-build.yml"
 ENV_GH_CB_WIN = GH / "environment-conda-build-win.yml"
