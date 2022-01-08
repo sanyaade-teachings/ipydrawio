@@ -31,7 +31,8 @@ Custom Library URL Hack
     [Tags]    component:widget
     Copy File    ${CLIB TUTORIAL}    ${HOME}${/}clib.ipynb
     Wait Until Keyword Succeeds    5x    5s    Open clib.ipynb in ${MENU NOTEBOOK}
-    Lab Command    Run All Cells
+    Lab Command    Restart Kernel and Run All Cells
+    Accept Default Dialog Option
     Click Element    css:.jp-Cell:last-child
     Wait Until Keyword Succeeds    5x    5s    Wait for a Diagram to be Ready
     Wait Until Page Contains Element    ${XP MY LIBRARY TITLE}
