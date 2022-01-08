@@ -89,6 +89,7 @@ dependencies:
   - flake8
   - isort >=5
   - pyflakes
+  - pyyaml
   - robotframework-lint
   # unit testing
   - pytest
