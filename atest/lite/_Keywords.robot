@@ -23,12 +23,12 @@ ${NEXT LITE LOG}    ${0}
 
 *** Keywords ***
 Start JupyterLite Process
-    [Arguments]    ${task}    ${cwd}    @{args}
+    [Arguments]    ${cwd}    ${task}    @{args}
     [Documentation]    Start a `jupyter lite` process
-    ${p} =    Start Process    jupyter    lite    ${task}    @{args}
-    ...    cwd=${cwd}    stdout=${OUTPUT DIR}${/}lite-${NEXT LITE LOG}.log    stderr=STDOUT
+    ${proc} =    Start Process    jupyter    lite    ${task}    @{args}    cwd=${cwd}
+    ...    stdout=${OUTPUT DIR}${/}lite-${NEXT LITE LOG}-${task}.log    stderr=STDOUT
     Set Global Variable    ${NEXT LITE LOG}    ${NEXT LITE LOG + 1}
-    [Return]    ${p}
+    [Return]    ${proc}
 
 Start JupyterLite Server
     [Documentation]    Start _the_ `jupyter lite` server
@@ -38,14 +38,18 @@ Start JupyterLite Server
     ${port} =    Get Unused Port
     ${url} =    Set Variable    http://localhost:${port}${prefix}lab/index.html
     Set Global Variable    ${LITE URL}    ${url}
-    ${p} =    Start JupyterLite Process    serve    ${cwd}
-    ...    @{args}    --port    ${port}    --base-url    ${prefix}
-    Set Global Variable    ${LITE SERVER}    ${p}
+    @{final args} =    Set Variable    @{args}    --port    ${port}    --base-url    ${prefix}    --debug
+    ${status} =    Start JupyterLite Process    ${cwd}    status    @{final args}
+    Wait For Process    ${status}
+    ${proc} =    Start JupyterLite Process    ${cwd}    doit    @{final args}    --    -s    serve
+    Set Global Variable    ${LITE SERVER}    ${proc}
     Close All Browsers
     ${service args} =    Create List    --log    warn
     Create WebDriver    Firefox
     ...    service_log_path=${OUTPUT DIR}${/}geckodriver-lite.log
     ...    service_args=${service args}
+    Wait For URL Status    ${url}    ${200}
+    [Return]    ${proc}
 
 Open JupyterLite
     Set Environment Variable    MOZ_HEADLESS    1
