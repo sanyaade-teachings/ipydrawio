@@ -464,7 +464,7 @@ export interface IMXGraph extends IMXEventSource<TMXGraphEvent> {
   gridSize: number;
   selectionCellsHandler: IMXGraphSelectionHandler;
   selectionModel: IMXGraphSelectionModel;
-  getCellsById(id: string): IMXCell[];
+  getCellsById(id: string[]): IMXCell[];
 }
 
 export interface IMXEditor extends IMXEventSource<TMXMEditorEvent> {
