@@ -7,12 +7,11 @@
 > [Drawio][] diagrams for [JupyterLab][]. Forked with ❤️ from
 > [QuantStack/jupyterlab-drawio][].
 
-**[Install](#installation)** &middot; **[History]** &middot; **[Roadmap]**
-&middot; **[Contribute][contributing]** &middot; **[Open Source](#open-source)**
+**[Install](#installation)** &middot; **[History]** &middot; **[Roadmap]** &middot;
+**[Contribute][contributing]** &middot; **[Open Source](#open-source)**
 
-> > This is BETA software. Native drawio files created with these tools _should_
-> > work with any other [drawio][] client, but any UI/API is liable to change at
-> > any time.
+> > This is BETA software. Native drawio files created with these tools _should_ work
+> > with any other [drawio][] client, but any UI/API is liable to change at any time.
 
 ## Installation
 
@@ -38,14 +37,13 @@ pip install ipydrawio[all]
   - Jupyter [Widgets][]
   - Basic collaborative editing
     - requires the `--collaborative` flag, added in JupyterLab 3.1+
-    - token sharing, _a la_ [jupyterlab-link-share], or a custom connector (no
-      known yet)
+    - token sharing, _a la_ [jupyterlab-link-share], or a custom connector (no known
+      yet)
     - no presence indicators for other editors
 - `ipydrawio-export`
   - Export print-quality PDF from diagramsⓁⓡ
     - optionally include editable Drawio XML as a PDF attachment
-    - > _BEWARE: some **heavy**, maybe fragile dependencies, `mamba`
-      > recommended_
+    - > _BEWARE: some **heavy**, maybe fragile dependencies, `mamba` recommended_
       ```bash
       mamba install -c conda-forge ipydrawio-export  # recommended, or...
       conda install -c conda-forge ipydrawio-export  # or...
@@ -67,22 +65,19 @@ pip install ipydrawio[all]
 > Please see the [docs] for full information
 
 - Try on [![binder-badge][]][binder]
-  - or follow the [Installation instructions](#installation) and **Start
-    JupyterLab**
+  - or follow the [Installation instructions](#installation) and **Start JupyterLab**
 - Open a diagram, by doing one of:
   - Creating a
     <img src="https://raw.githubusercontent.com/deathbeds/ipydrawio/master/packages/ipydrawio/style/img/drawio.svg" width="24"/>
     Diagram\_ from the [Launcher][]
-  - Uploading a diagram created on [diagrams.net](https://diagrams.net) with the
-    _[File Manager][]_ and double clicking it
-  - Building diagrams by interactively computing in `IPython` with
-    `ipydrawio.Diagram`
+  - Uploading a diagram created on [diagrams.net](https://diagrams.net) with the _[File
+    Manager][]_ and double clicking it
+  - Building diagrams by interactively computing in `IPython` with `ipydrawio.Diagram`
   - Use the `application/x-drawio` MIME renderer
 - Use the _[Command Palette][]_ to _Export Diagram_ to various formats
-  - > **NOTE**: some of the built-in UI features of drawio don't work properly
-    > inside an IFrame in JupyterLab, and are difficult to robustly disable:
-    > please see _Diagram_ options available in the _Command Palette_ and
-    > various _Main Menu_ menus.
+  - > **NOTE**: some of the built-in UI features of drawio don't work properly inside an
+    > IFrame in JupyterLab, and are difficult to robustly disable: please see _Diagram_
+    > options available in the _Command Palette_ and various _Main Menu_ menus.
 
 ## Configuring
 
@@ -112,28 +107,25 @@ The different themes have some advantages and disadvantages:
 
 Use _Advanced Settings_ to modify drawio embedding parameters
 
-> See the [schema] for full details of the (known) supported options as well as
-> the [upstream docs] for all parameters, though IPyDrawio might not support
-> them... yet.
+> See the [schema] for full details of the (known) supported options as well as the
+> [upstream docs] for all parameters, though IPyDrawio might not support them... yet.
 
 [schema]: https://ipydrawio.readthedocs.io/en/stable/api/schema.html
 [upstream docs]: https://www.diagrams.net/doc/faq/supported-url-parameters
 
 ### PDF: Lab and Server extensions
 
-`ipydrawio-export` can generate print-quality PDF. This approach relies on a
-headless browser, powered by [@jgraph/draw-image-export2], `puppeteer`, and
-`nodejs`.
+`ipydrawio-export` can generate print-quality PDF. This approach relies on a headless
+browser, powered by [@jgraph/draw-image-export2], `puppeteer`, and `nodejs`.
 
 - **native dependencies** as required to appease `puppeteer`
   - if running in `docker`, this can be a bit trial-and-error
   - for more, see the [binder][apt-txt] and CI.
 - `nodejs>10,<14` from `conda` or your system package manager
-  - **NOTE**: this relies on being able to install `puppeteer` (and other
-    **arbitrary dependencies** with `jlpm` for now **when first used**
+  - **NOTE**: this relies on being able to install `puppeteer` (and other **arbitrary
+    dependencies** with `jlpm` for now **when first used**
     - _we'll figure out a better approach soon enough_
-- `pip install ipydrawio-export` or
-  `conda install -c conda-forge ipydrawio-export`
+- `pip install ipydrawio-export` or `conda install -c conda-forge ipydrawio-export`
 
 > For example to install all the dependencies:
 >
@@ -141,8 +133,8 @@ headless browser, powered by [@jgraph/draw-image-export2], `puppeteer`, and
 > conda install -yc conda-forge ipydrawio-export
 > ```
 
-Once installed, you can use the in-browser tools _Export Diagram as PDF_ as well
-as the command line:
+Once installed, you can use the in-browser tools _Export Diagram as PDF_ as well as the
+command line:
 
 ```bash
 jupyter ipydrawio-export <name of document>
@@ -152,19 +144,15 @@ jupyter ipydrawio-export <name of document>
 
 ### License
 
-All files herein, unless otherwise noted, are free software licensed under
-[Apache 2.0].
+All files herein, unless otherwise noted, are free software licensed under [Apache 2.0].
 
 ### Copyright
 
-The copyright holders of this extension are the [contributors][] to this
-repository.
+The copyright holders of this extension are the [contributors][] to this repository.
 
-Portions of the JupyterLab components are derived from
-[QuantStack/jupyterlab-drawio][].
+Portions of the JupyterLab components are derived from [QuantStack/jupyterlab-drawio][].
 
-The copyright holders of drawio and drawio-export is
-[jgraph](http://www.jgraph.com).
+The copyright holders of drawio and drawio-export is [jgraph](http://www.jgraph.com).
 
 The original source code vendored in this package from:
 
@@ -214,8 +202,7 @@ limitations under the License.
 [cov]: https://codecov.io/gh/deathbeds/ipydrawio
 [docs-badge]: https://readthedocs.org/projects/ipydrawio/badge/?version=latest
 [docs]: https://ipydrawio.rtfd.io
-[contributing]:
-  https://github.com/deathbeds/ipydrawio/blob/master/CONTRIBUTING.md
+[contributing]: https://github.com/deathbeds/ipydrawio/blob/master/CONTRIBUTING.md
 [documents]:
   https://github.com/deathbeds/ipydrawio/blob/master/docs/Diagram%20Document.ipynb
 [rich display]:
@@ -236,5 +223,4 @@ limitations under the License.
 [launcher]:
   https://jupyterlab.readthedocs.io/en/stable/user/files.html?highlight=Launcher#creating-files-and-activities
 [file manager]: https://jupyterlab.readthedocs.io/en/stable/user/files.html
-[jupyterlab-link-share]:
-  https://github.com/jupyterlab-contrib/jupyterlab-link-share
+[jupyterlab-link-share]: https://github.com/jupyterlab-contrib/jupyterlab-link-share
