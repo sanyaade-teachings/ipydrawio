@@ -6,6 +6,7 @@
 
 - fixes selection in widget diagrams with more than 10 shapes [#85]
 - adds `cell_ids` to widget diagrams [#88]
+- `jupyter ipydrawio clean` can now cleans `.ipynb` metadata and outputs [#88]
 - minimum supported python is now to 3.7
 
 #### @deathbeds/ipydrawio 1.2.0

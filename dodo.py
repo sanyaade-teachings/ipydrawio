@@ -347,7 +347,7 @@ def task_lint():
 
     dio_tasks = []
 
-    for dio_file in P.ALL_DIO:
+    for dio_file in P.ALL_DIO + P.EXAMPLE_IPYNB + P.DOCS_IPYNB:
         name = f"dio:clean:{dio_file.relative_to(P.ROOT)}"
         dio_tasks += [f"lint:{name}"]
         yield dict(
