@@ -742,7 +742,7 @@ def task_demo():
         ],
     )
 
-    for path in P.ALL_DEMO_CONTENTS:
+    for path in [*P.ALL_DEMO_CONTENTS, *P.DOCS.glob("*.ipynb")]:
         name = f"stage:{path.name}"
         dest = P.DEMO_FILES / path.name.replace(" ", "_")
         demo_dest += [dest]
