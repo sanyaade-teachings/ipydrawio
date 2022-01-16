@@ -744,7 +744,7 @@ def task_demo():
 
     for path in [*P.ALL_DEMO_CONTENTS, *P.DOCS.glob("*.ipynb")]:
         name = f"stage:{path.name}"
-        dest = P.DEMO_FILES / path.name.replace(" ", "_")
+        dest = P.DEMO_FILES / path.name
         demo_dest += [dest]
         demo_tasks += [f"demo:{name}"]
         final_dest += [P.DEMO_BUILD / f"files/{path.name}"]
