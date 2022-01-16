@@ -58,7 +58,7 @@ dependencies:
   - sphinx-jsonschema
   - sphinxext-rediraffe
   - pip:
-      - jupyterlite ==0.1.0a18
+      - jupyterlite ==0.1.0a19
 
   ### ipydrawio-docs-deps ###
 
