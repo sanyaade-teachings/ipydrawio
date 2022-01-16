@@ -29,6 +29,14 @@ def test_cli_version(script_runner):
     assert __version__ in ret.stdout
 
 
+def test_clean_fail_not_supported(script_runner, tmp_path):
+    foo = tmp_path / "foo.not-supported"
+    foo.touch()
+    args = ["jupyter", "ipydrawio", "clean"]
+    ret = script_runner.run(*args, str(foo))
+    assert not ret.success
+
+
 @pytest.mark.parametrize(
     "pretty,indent,tabs,mx_attrs",
     [
@@ -76,10 +84,15 @@ def test_cli_clean(
         else:
             assert f"{attr}=" in cleaned, f"should have contained {attr}"
 
-    if pretty:
-        assert len(cleaned.splitlines()) > 1, "should have been multiple lines"
-    else:
-        assert len(cleaned.splitlines()) == 1, "should have been one line"
+    if dest.suffix != ".ipynb":
+        if pretty:
+            assert (
+                len(cleaned.splitlines()) > 1
+            ), "should have been multiple lines {cleaned}"
+        else:
+            assert (
+                len(cleaned.splitlines()) == 1
+            ), f"should have been one line {cleaned}"
 
     ret2 = script_runner.run(*args)
 

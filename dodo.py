@@ -932,6 +932,10 @@ def task_test():
             f"--html={html}",
             "--self-contained-html",
         ]
+
+        if pkg == P.IPD.name:
+            pytest_args += ["-n", "auto"]
+
         yield P._ok(
             dict(
                 name=f"pytest:{pkg}",

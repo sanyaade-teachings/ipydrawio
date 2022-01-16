@@ -22,6 +22,6 @@ HERE = Path(__file__).parent
 FIXTURES = HERE / "fixtures"
 
 
-@pytest.fixture(params=["dio", "dio.svg"])
+@pytest.fixture(params=["dio", "dio.svg", "ipynb"])
 def an_empty_dio_file(request: str) -> Path:
     return FIXTURES / f"empty.{request.param}"

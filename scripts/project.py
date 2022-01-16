@@ -446,7 +446,9 @@ ALL_JSON = [
     *[
         p
         for p in DEMO.rglob("*.json")
-        if "/_output/" not in str(p) and "/.cache/" not in str(p)
+        if "/_output/" not in str(p)
+        and "/.cache/" not in str(p)
+        and p not in [DEMO_CONFIG]
     ],
 ]
 ALL_DIO = [*DOCS_DIO, *IPJT_TMPL_DIO, *ATEST_DIO]

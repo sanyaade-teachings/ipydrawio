@@ -70,6 +70,7 @@ dependencies:
   - pytest-cov
   - pytest-html
   - pytest-tornasync
+  - pytest-xdist
   # acceptance testing
   - firefox =91
   - geckodriver >=0.28.0
