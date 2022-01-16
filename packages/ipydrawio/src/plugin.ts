@@ -130,21 +130,16 @@ function activate(
     },
     isToggleable: true,
     isToggled: (args) => {
-      const drawioUrlParams =
-        manager.settings?.composite?.drawioUrlParams || {};
+      const drawioUrlParams = manager.settings?.composite?.drawioUrlParams || {};
       for (const [k, v] of Object.entries(args.drawioUrlParams || {})) {
-        if (
-          drawioUrlParams.hasOwnProperty(k) &&
-          (drawioUrlParams as any)[k] !== v
-        ) {
+        if (drawioUrlParams.hasOwnProperty(k) && (drawioUrlParams as any)[k] !== v) {
           return false;
         }
       }
       return true;
     },
     execute: async (args) => {
-      const drawioUrlParams =
-        manager.settings?.composite?.drawioUrlParams || {};
+      const drawioUrlParams = manager.settings?.composite?.drawioUrlParams || {};
       await manager.settings.set('drawioUrlParams', {
         ...(drawioUrlParams as any),
         ...(args.drawioUrlParams as any),
@@ -200,14 +195,8 @@ function activate(
     });
 
     // actually add the menus
-    settingsMenu.addGroup(
-      [{ submenu: theme, type: 'submenu' }],
-      DIAGRAM_MENU_RANK
-    );
-    fileMenu.addGroup(
-      [{ submenu: exportMenu, type: 'submenu' }],
-      DIAGRAM_MENU_RANK
-    );
+    settingsMenu.addGroup([{ submenu: theme, type: 'submenu' }], DIAGRAM_MENU_RANK);
+    fileMenu.addGroup([{ submenu: exportMenu, type: 'submenu' }], DIAGRAM_MENU_RANK);
   }
 
   RenderedDiagram.manager = manager;

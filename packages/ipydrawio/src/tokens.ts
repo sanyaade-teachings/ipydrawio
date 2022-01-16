@@ -140,9 +140,7 @@ export type TUIThemes = SCHEMA.UITheme;
 /**
  * A concrete list of themes
  */
-export const UI_THEMES = SCHEMA_JSON.definitions['ui-theme'][
-  'enum'
-] as TUIThemes[];
+export const UI_THEMES = SCHEMA_JSON.definitions['ui-theme']['enum'] as TUIThemes[];
 
 /**
  * The theme color to replace
@@ -398,9 +396,7 @@ export const MX_GRAPH_SELECT_EVENTS: TMXGraphSelectionEvent[] = ['change'];
 
 export type TMXGraphSelectionModelEvent = 'change';
 
-export const MX_GRAPH_SELECT_MODEL_EVENTS: TMXGraphSelectionModelEvent[] = [
-  'change',
-];
+export const MX_GRAPH_SELECT_MODEL_EVENTS: TMXGraphSelectionModelEvent[] = ['change'];
 
 type TMXEvent =
   | TMXAppModelEvent
@@ -440,8 +436,7 @@ export interface IMXGraphView extends IMXEventSource<TMXGraphViewEvent> {
   gridColor: string;
 }
 
-export interface IMXGraphPanningHandler
-  extends IMXEventSource<TMXGraphPanningEvent> {}
+export interface IMXGraphPanningHandler extends IMXEventSource<TMXGraphPanningEvent> {}
 
 export interface IMXGraphSelectionHandler
   extends IMXEventSource<TMXGraphSelectionEvent> {}

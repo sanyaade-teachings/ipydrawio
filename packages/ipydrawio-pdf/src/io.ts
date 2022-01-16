@@ -14,11 +14,7 @@
   limitations under the License.
 */
 
-import {
-  DRAWIO_ICON_CLASS_RE,
-  DRAWIO_ICON_SVG,
-  IFormat,
-} from '@deathbeds/ipydrawio';
+import { DRAWIO_ICON_CLASS_RE, DRAWIO_ICON_SVG, IFormat } from '@deathbeds/ipydrawio';
 
 import { stripDataURI } from '@deathbeds/ipydrawio';
 

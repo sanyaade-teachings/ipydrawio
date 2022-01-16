@@ -12,8 +12,7 @@ conda install -c conda-forge ipydrawio  # or...
 pip install ipydrawio
 ```
 
-See the [project repo](https://github.com/deathbeds/ipydrawio) for more
-information.
+See the [project repo](https://github.com/deathbeds/ipydrawio) for more information.
 
 ## Open Source
 

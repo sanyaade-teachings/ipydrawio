@@ -57,15 +57,11 @@ export const IPYNB_PLAIN: IFormat<any> = {
     return raw;
   },
   fromXML: (model: NotebookModel, xml) => {
-    const meta = model.metadata.get(
-      IPYDRAWIO_METADATA
-    ) as ReadonlyPartialJSONObject;
+    const meta = model.metadata.get(IPYDRAWIO_METADATA) as ReadonlyPartialJSONObject;
     model.metadata.set(IPYDRAWIO_METADATA, { ...(meta || {}), xml });
   },
   toXML: (model: NotebookModel) => {
-    const meta = model.metadata.get(
-      IPYDRAWIO_METADATA
-    ) as ReadonlyPartialJSONObject;
+    const meta = model.metadata.get(IPYDRAWIO_METADATA) as ReadonlyPartialJSONObject;
     return meta?.xml ? `${meta.xml}` : '';
   },
   exporter: async (widget, key, settings) => {

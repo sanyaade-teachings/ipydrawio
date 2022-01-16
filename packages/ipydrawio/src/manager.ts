@@ -43,11 +43,7 @@ import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
 import { DRAWIO_URL } from '@deathbeds/ipydrawio-webpack';
 import { CreateCustom } from './createCustom';
 
-const DEFAULT_EXPORTER = async (
-  drawio: Diagram,
-  key: string,
-  settings: any = null
-) => {
+const DEFAULT_EXPORTER = async (drawio: Diagram, key: string, settings: any = null) => {
   return await drawio.exportAs(key);
 };
 
@@ -173,11 +169,7 @@ export class DiagramManager implements IDiagramManager {
       if (fmt.wantsModel != null && fmt.wantsModel(contentsModel)) {
         return fmt;
       }
-      if (
-        path &&
-        path.endsWith(fmt.ext) &&
-        fmt.ext.length > longestExt.length
-      ) {
+      if (path && path.endsWith(fmt.ext) && fmt.ext.length > longestExt.length) {
         candidateFmt = fmt;
         longestExt = fmt.ext;
       }
@@ -255,10 +247,7 @@ export class DiagramManager implements IDiagramManager {
     if (args.name && args.name.trim()) {
       model = await this._app.serviceManager.contents.rename(
         model.path,
-        PathExt.join(
-          PathExt.dirname(model.path),
-          `${args.name.trim()}${format.ext}`
-        )
+        PathExt.join(PathExt.dirname(model.path), `${args.name.trim()}${format.ext}`)
       );
     }
 
@@ -316,9 +305,7 @@ export class DiagramManager implements IDiagramManager {
 
   protected async initTemplates(): Promise<void> {
     const templates: ITemplate[] = [];
-    const response = await fetch(
-      URLExt.join(DRAWIO_URL, '../templates/index.xml')
-    );
+    const response = await fetch(URLExt.join(DRAWIO_URL, '../templates/index.xml'));
     const xmlStr = await response.text();
     const parser = new DOMParser();
     const xml = parser.parseFromString(xmlStr, 'application/xml');
@@ -434,10 +421,7 @@ export class DiagramManager implements IDiagramManager {
 
       const newPath = await this._getAvaialablePath(cwd, stem, ext);
 
-      model = await this._app.serviceManager.contents.rename(
-        model.path,
-        newPath
-      );
+      model = await this._app.serviceManager.contents.rename(model.path, newPath);
 
       if (rawContent != null) {
         await this._app.serviceManager.contents.save(model.path, {
@@ -505,10 +489,7 @@ export class DiagramManager implements IDiagramManager {
     const { contents } = this._app.serviceManager;
     for (const salt in [...Array(retries).keys()]) {
       const padded = salt.length == 1 ? `0${salt}` : `${salt}`;
-      newPath = PathExt.join(
-        cwd,
-        salt ? `${stem}-${padded}${ext}` : `${stem}ext`
-      );
+      newPath = PathExt.join(cwd, salt ? `${stem}-${padded}${ext}` : `${stem}ext`);
       try {
         const model = await contents.get(newPath, opts);
         console.warn('Path not available', model);

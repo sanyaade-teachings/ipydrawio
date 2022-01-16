@@ -165,12 +165,7 @@ export const PNG_EDITABLE: IFormat = {
 
 export const ALL_BINARY_FORMATS = [PNG_PLAIN, PNG_EDITABLE];
 
-export const ALL_TEXT_FORMATS = [
-  SVG_EDITABLE,
-  SVG_PLAIN,
-  XML_NATIVE,
-  XML_LEGACY,
-];
+export const ALL_TEXT_FORMATS = [SVG_EDITABLE, SVG_PLAIN, XML_NATIVE, XML_LEGACY];
 
 /** these are last-in-wins, don't claim existing ones*/
 export const ALL_MIME_FORMATS = [XML_NATIVE];

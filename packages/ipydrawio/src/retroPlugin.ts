@@ -58,8 +58,7 @@ function activate(
       if (!currentWidget || currentWidget instanceof DiagramDocument) {
         return;
       }
-      const context = (currentWidget as any)
-        .context as DocumentRegistry.Context;
+      const context = (currentWidget as any).context as DocumentRegistry.Context;
       if (!context) {
         return;
       }

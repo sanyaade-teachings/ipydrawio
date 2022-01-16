@@ -42,9 +42,7 @@ function activate(
 ) {
   if (PageConfig.getOption('retroPage')) {
     console.warn('Unavailable in', app.name, ':', ALL_FORMATS[0].factoryName);
-    console.info(
-      'Please open a full JupyterLab from View -> Open with JupyterLab'
-    );
+    console.info('Please open a full JupyterLab from View -> Open with JupyterLab');
     return;
   }
   for (const format of ALL_FORMATS) {
