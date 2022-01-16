@@ -831,7 +831,7 @@ def _copy_one(src, dest):
         shutil.copy2(src, dest)
 
 
-def _build_lite():
+def _lite(lite_actions, extra_args=[]):
     lite = ["jupyter", "lite"]
     args = ["--source-date-epoch", SOURCE_DATE_EPOCH]
 
@@ -843,8 +843,8 @@ def _build_lite():
     if MATHJAX_DIR:
         args += ["--mathjax-dir", str(MATHJAX_DIR)]
 
-    for act in ["build", "archive"]:
-        act_args = list(map(str, [*lite, act, *args]))
+    for act in lite_actions:
+        act_args = list(map(str, [*lite, act, *args, *extra_args]))
         if subprocess.call(act_args, cwd=DEMO) != 0:
             print("FAILED", *act_args)
             return False

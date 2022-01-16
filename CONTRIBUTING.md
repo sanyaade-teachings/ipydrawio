@@ -32,6 +32,18 @@ source activate ipydrawio
 doit
 ```
 
+## Start JupyterLab
+
+```bash
+doit serve:lab
+```
+
+### Start JupyterLite
+
+```bash
+doit serve:demo
+```
+
 ## Prepare a Release
 
 ```bash

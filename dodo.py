@@ -601,8 +601,8 @@ def task_conda_test():
         )
 
 
-def task_lab():
-    """run JupyterLab "normally" (not watching sources)"""
+def task_serve():
+    """run processes "normally" (not watching sources)"""
     if P.TESTING_IN_CI:
         return
 
@@ -618,10 +618,18 @@ def task_lab():
 
         proc.wait()
 
-    return dict(
+    yield dict(
+        name="lab",
         uptodate=[lambda: False],
         file_dep=[*P.OK_SERVEREXT.values()],
         actions=[PythonInteractiveAction(lab)],
+    )
+
+    yield dict(
+        name="demo",
+        uptodate=[lambda: False],
+        file_dep=[P.DEMO_ARCHIVE],
+        actions=[(P._lite, [["doit"], ["--", "-s", "serve"]])],
     )
 
 
@@ -764,7 +772,7 @@ def task_demo():
         task_dep=demo_tasks,
         file_dep=[*demo_dest, *P.DEMO_WHEELS.glob(f"*{P.NOARCH_WHL}")],
         targets=[P.DEMO_ARCHIVE, P.DEMO_HASHES, *final_dest, P.DEMO_CONTENTS_API],
-        actions=[P._build_lite],
+        actions=[(P._lite, [["build", "archive"], []])],
     )
 
 
