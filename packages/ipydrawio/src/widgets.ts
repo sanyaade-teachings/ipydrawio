@@ -135,6 +135,7 @@ export class DiagramModel extends BoxModel {
       page_ids: [],
       selected_page: 0,
       selected_cells: [],
+      cell_ids: [],
       grid_enabled: true,
       grid_color: '#66666666',
       grid_size: 10,
@@ -279,6 +280,9 @@ export class DiagramView extends BoxView {
       const throttle = new Throttler(fn, bounceOpts);
       this.model.on(evt, () => throttle.invoke(), this);
     });
+
+    this.model.set('cell_ids', this.getCellIds());
+    this.touch();
   }
 
   onModelZoom = () => {
@@ -327,16 +331,21 @@ export class DiagramView extends BoxView {
   };
 
   onModelSelectedCells = () => {
-    const cells = this.model
-      .get('selected_cells')
-      .reduce((m: IMXCell[], id: string) => {
-        return [...m, ...this.app.editor.graph.getCellsById(id)];
-      }, []);
+    const cells: IMXCell[] = this.app.editor.graph.getCellsById(
+      this.model.get('selected_cells')
+    );
+
     this.app.editor.graph.selectionModel.setCells(cells);
   };
 
   get app() {
     return this.diagram.app;
+  }
+
+  getCellIds(): string[] {
+    return Object.values(this.app.editor.graph.model.cells).map((cell) =>
+      cell.getId()
+    );
   }
 
   // handle "native" mxEvent stuff
@@ -376,6 +385,11 @@ export class DiagramView extends BoxView {
         break;
       case 'gridColorChanged':
         needsUpdate = { grid_color: this.app.editor.graph.view.gridColor };
+        break;
+      case 'removeCells':
+      case 'cellsAdded':
+      case 'cellsInserted':
+        needsUpdate = { cell_ids: this.getCellIds() };
         break;
       case 'fireMouseEvent':
         break; // these are too noisy, even for us

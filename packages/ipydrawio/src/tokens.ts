@@ -330,6 +330,7 @@ type TMXGraphEvent =
   | 'gridSizeChanged'
   | 'moveCells'
   | 'pan'
+  | 'removeCells'
   | 'resizeCells'
   | 'root'
   | 'shadowVisibleChanged'
@@ -351,6 +352,7 @@ export const MX_GRAPH_EVENTS: TMXGraphEvent[] = [
   'moveCells',
   'pan',
   'resizeCells',
+  'removeCells',
   'root',
   'shadowVisibleChanged',
   'size',
@@ -427,6 +429,7 @@ export interface IMXEvent {
 export interface IMXGraphModel extends IMXEventSource<TMXGraphModelEvent> {
   dx: number;
   dy: number;
+  cells: IMXCell[];
 }
 
 export interface IMXGraphView extends IMXEventSource<TMXGraphViewEvent> {
