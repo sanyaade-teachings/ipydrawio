@@ -19,7 +19,7 @@ See the [project repo](https://github.com/deathbeds/ipydrawio) for more informat
 This work is licensed under the [Apache-2.0] License.
 
 ```
-Copyright 2021 ipydrawio contributors
+Copyright 2022 ipydrawio contributors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

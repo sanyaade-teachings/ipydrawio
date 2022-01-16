@@ -234,7 +234,7 @@ For pre-releases of the previously-named package, see the [old CHANGELOG][]
 [old changelog]: https://github.com/deathbeds/ipydrawio/tree/3a577ac/CHANGELOG.md
 
 ```
-Copyright 2021 ipydrawio contributors
+Copyright 2022 ipydrawio contributors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
