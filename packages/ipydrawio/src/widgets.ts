@@ -193,7 +193,7 @@ export class DiagramView extends BoxView {
   /**
    * A low-tech way to wait until we are quite sure the diagram is displayed.
    */
-  protected waitForDisplayed() {
+  protected waitForDisplayed = () => {
     if (!this.pWidget.isVisible) {
       return;
     }
@@ -204,7 +204,7 @@ export class DiagramView extends BoxView {
     this.diagram.onAfterShow();
     this.model.on('change:source', this.onModelSourceChange, this);
     this.onModelSourceChange();
-  }
+  };
 
   /**
    * The drawio App

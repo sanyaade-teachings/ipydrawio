@@ -446,7 +446,10 @@ def task_build():
         file_dep=[P.README],
         targets=[P.IPD / "README.md"],
         actions=[
-            lambda: [(P.IPD / "README.md").write_text(P.README.read_text()), None][-1]
+            lambda: [
+                (P.IPD / "README.md").write_text(P.README.read_text(), **P.ENC),
+                None,
+            ][-1]
         ],
     )
 
@@ -554,7 +557,7 @@ def task_build():
 
         output = "\n".join(lines)
         print(output)
-        P.SHA256SUMS.write_text(output)
+        P.SHA256SUMS.write_text(output, **P.ENC)
 
     yield dict(
         name="hash",
@@ -864,7 +867,9 @@ def task_check():
                     "pytest-check-links",
                     "--check-anchors",
                     "--check-links-ignore",
-                    "^https?://",
+                    "http://",
+                    "--check-links-ignore",
+                    "https://",
                     *[p for p in file_dep if p.name not in ["schema.html"]],
                 ]
             ],

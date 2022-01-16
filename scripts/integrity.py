@@ -95,6 +95,10 @@ def test_recipe_versions():
             "federated_extensions/0",
             f"""../{P.PY_WHEEL["ipydrawio"].relative_to(P.ROOT)}""",
         ],
+        [
+            "piplite_urls/0",
+            f"""../{P.PY_WHEEL["ipydrawio"].relative_to(P.ROOT)}""",
+        ],
     ],
 )
 def test_demo_paths(the_demo_config, pointer, value):

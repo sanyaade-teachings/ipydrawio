@@ -636,7 +636,8 @@ def patch_one_env(source, target):
                 comment.rstrip(),
                 old_target[2],
             ]
-        )
+        ),
+        **ENC,
     )
 
 
@@ -752,7 +753,7 @@ def mystify():
                 "```\n",
                 MD_FOOTER,
             ]
-        out_doc.write_text("\n".join(mod_lines))
+        out_doc.write_text("\n".join(mod_lines), **ENC)
 
     DOCS_TS_MYST_INDEX.write_text(
         "\n".join(
@@ -796,7 +797,7 @@ def _ok(task, ok):
     task["actions"] = [
         lambda: [ok.exists() and ok.unlink(), True][-1],
         *task["actions"],
-        lambda: [ok.parent.mkdir(exist_ok=True), ok.write_text("ok"), True][-1],
+        lambda: [ok.parent.mkdir(exist_ok=True), ok.write_text("ok", **ENC), True][-1],
     ]
     return task
 
@@ -855,7 +856,9 @@ def _sync_lite_config(from_env, to_json, marker, extras):
         if p.strip()
     ]
 
-    tarball_urls = ["../" + str(extra.relative_to(ROOT).as_posix()) for extra in extras]
+    tarball_urls = sorted(
+        ["../" + str(extra.relative_to(ROOT).as_posix()) for extra in extras]
+    )
     for raw_url in sorted(raw_lock.decode("utf-8").splitlines()):
         try:
             label, subdir, pkg = re.findall(RE_CONDA_FORGE_URL, raw_url)[0]
@@ -871,8 +874,9 @@ def _sync_lite_config(from_env, to_json, marker, extras):
                 tarball_urls += ["/".join([CONDA_FORGE_RELEASE, subdir, pkg, pkg])]
 
     config = json.loads(to_json.read_text(**ENC))
-    config["LiteBuildConfig"]["federated_extensions"] = sorted(tarball_urls)
-    to_json.write_text(json.dumps(config, **JSON_FMT))
+    config["LiteBuildConfig"]["federated_extensions"] = tarball_urls
+    config["LiteBuildConfig"]["piplite_urls"] = [tarball_urls[0]]
+    to_json.write_text(json.dumps(config, **JSON_FMT), **ENC)
     subprocess.call([*PRETTIER, "--write", to_json])
 
 
@@ -884,7 +888,7 @@ def fetch_pyodide_packages():
     with urllib.request.urlopen(url) as response:
         packages = json.loads(response.read().decode("utf-8"))
     PYODIDE_PACKAGES.parent.mkdir(exist_ok=True, parents=True)
-    PYODIDE_PACKAGES.write_text(json.dumps(packages, **JSON_FMT))
+    PYODIDE_PACKAGES.write_text(json.dumps(packages, **JSON_FMT), **ENC)
 
 
 def fetch_wheels():
