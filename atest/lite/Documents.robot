@@ -21,18 +21,20 @@ Force Tags        component:document
 Suite Setup       Set Screenshot Directory    ${OUTPUT DIR}${/}lite${/}documents
 
 *** Test Cases ***
-Test Examples
+Test Document Examples
     [Documentation]    Do all of the examples work?
-    ${examples} =    List Files In Directory    ${DEMO}    *.dio*
+    ${examples} =    List Files In Directory    ${DEMO}${/}files    *.dio*
     FOR    ${file}    IN    @{EXAMPLES}
         Try to Close All Tabs
-        Run Keyword If    ${file.__contains__('.dio')}    Example Should Load    ${file}
+        IF    ${file.__contains__('.dio')}
+            Example Document Should Load    ${file}
+        END
     END
 
 *** Keywords ***
-Example Should Load
+Example Document Should Load
     [Arguments]    ${file}
-    [Documentation]    Does one example work?
+    [Documentation]    Does one example document work?
     Ensure File Browser is Open
     Double Click Element    css:[title*\="${file}"]
     Unselect Frame
