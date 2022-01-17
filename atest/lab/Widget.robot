@@ -50,7 +50,7 @@ Create Diagram Widget
     [Arguments]    ${label}    ${add multiple}=${FALSE}
     Set Screenshot Directory    ${OUTPUT DIR}${/}screenshots${/}widget${/}${label}
     Launch Untitled Notebook
-    Add and Run JupyterLab Code Cell    import ipywidgets as W, traitlets as T; from ipydrawio import Diagram
+    Add and Run JupyterLab Code Cell    import ipywidgets as W, traitlets as T; from ipydrawio_widgets import Diagram
     Add and Run JupyterLab Code Cell    diagram = Diagram(layout\=dict(min_height\="60vh"));
     IF    ${add multiple}
         Create Linked SelectMultiple

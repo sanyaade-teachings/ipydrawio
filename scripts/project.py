@@ -907,7 +907,9 @@ def _sync_lite_config(from_env, to_json, marker, extras):
 
     config = json.loads(to_json.read_text(**ENC))
     config["LiteBuildConfig"]["federated_extensions"] = tarball_urls
-    config["LiteBuildConfig"]["piplite_urls"] = [tarball_urls[0]]
+    config["LiteBuildConfig"]["piplite_urls"] = [
+        "../" + str(PY_WHEEL["ipydrawio-widgets"].relative_to(ROOT).as_posix())
+    ]
     to_json.write_text(json.dumps(config, **JSON_FMT), **ENC)
     subprocess.call([*PRETTIER, "--write", to_json])
 

@@ -97,7 +97,7 @@ def test_recipe_versions():
         ],
         [
             "piplite_urls/0",
-            f"""../{P.PY_WHEEL["ipydrawio"].relative_to(P.ROOT)}""",
+            f"""../{P.PY_WHEEL["ipydrawio-widgets"].relative_to(P.ROOT)}""",
         ],
     ],
 )
@@ -164,7 +164,7 @@ def test_setup_cfg_version(path, upstream, version):
 @pytest.mark.parametrize(
     "path,py_count",
     [
-        [P.RECIPE, 6],
+        [P.RECIPE, 8],
         [P.ENV_BINDER, 1],
     ],
 )
