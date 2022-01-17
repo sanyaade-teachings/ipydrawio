@@ -2,8 +2,8 @@
 Widgets
 =======
 
-.. py:currentmodule:: ipydrawio
+.. py:currentmodule:: ipydrawio_widgets
 
-.. automodule:: ipydrawio.widget_diagram
+.. automodule:: ipydrawio_widgets.widget_diagram
     :members:
     :undoc-members:

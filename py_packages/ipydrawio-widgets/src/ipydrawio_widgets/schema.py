@@ -16,9 +16,9 @@
 
 import json
 
-from ._version import PKG_JSON, __js__
+from ._version import PKG_JSON
 
-SCHEMA = PKG_JSON.parent / f"""schemas/{__js__["name"]}/plugin.json"""
+SCHEMA = PKG_JSON.parent / "plugin.json"
 
 
 def get_schema():
