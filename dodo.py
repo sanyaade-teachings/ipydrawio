@@ -520,9 +520,9 @@ def task_build():
 
         if py_setup.parent == P.IPDE:
             file_dep += [P.IPDE_DIE2_YARN_LOCK]
-        if py_setup.parent == P.IPDW:
-
+        elif py_setup.parent == P.IPDW:
             for src, dest in P.IPDW_DEPS.items():
+                file_dep += [dest]
                 yield dict(
                     name=f"copy:{py_pkg}:{src.name}",
                     file_dep=[src],
