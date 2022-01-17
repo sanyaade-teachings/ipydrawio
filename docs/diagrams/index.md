@@ -1,11 +1,11 @@
 # Making Diagrams
 
 IPyDrawio lets you build and interact with diagram [documents] compatible with
-[diagrams.net](https://diagrams.net), or hosted drawio integrations in
-Confluence and other tools.
+[diagrams.net](https://diagrams.net), or hosted drawio integrations in Confluence and
+other tools.
 
-The same renderer powers different kinds of Jupyter outputs, including Jupyter
-[rich displays] and [widgets].
+The same renderer powers different kinds of Jupyter outputs, including Jupyter [rich
+displays] and [widgets].
 
 [documents]: ../Diagram%20Document.ipynb
 [rich displays]: ../Diagram%20Rich%20Display.ipynb
@@ -18,7 +18,7 @@ The same renderer powers different kinds of Jupyter outputs, including Jupyter
 ```
 
 <!--
-# Copyright 2021 ipydrawio contributors
+# Copyright 2022 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

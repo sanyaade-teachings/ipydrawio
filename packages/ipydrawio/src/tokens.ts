@@ -1,5 +1,5 @@
 /*
-  Copyright 2021 ipydrawio contributors
+  Copyright 2022 ipydrawio contributors
   Copyright 2020 jupyterlab-drawio contributors
   Copyright 2018 Wolf Vollprecht
 
@@ -140,9 +140,7 @@ export type TUIThemes = SCHEMA.UITheme;
 /**
  * A concrete list of themes
  */
-export const UI_THEMES = SCHEMA_JSON.definitions['ui-theme'][
-  'enum'
-] as TUIThemes[];
+export const UI_THEMES = SCHEMA_JSON.definitions['ui-theme']['enum'] as TUIThemes[];
 
 /**
  * The theme color to replace
@@ -330,6 +328,7 @@ type TMXGraphEvent =
   | 'gridSizeChanged'
   | 'moveCells'
   | 'pan'
+  | 'removeCells'
   | 'resizeCells'
   | 'root'
   | 'shadowVisibleChanged'
@@ -351,6 +350,7 @@ export const MX_GRAPH_EVENTS: TMXGraphEvent[] = [
   'moveCells',
   'pan',
   'resizeCells',
+  'removeCells',
   'root',
   'shadowVisibleChanged',
   'size',
@@ -396,9 +396,7 @@ export const MX_GRAPH_SELECT_EVENTS: TMXGraphSelectionEvent[] = ['change'];
 
 export type TMXGraphSelectionModelEvent = 'change';
 
-export const MX_GRAPH_SELECT_MODEL_EVENTS: TMXGraphSelectionModelEvent[] = [
-  'change',
-];
+export const MX_GRAPH_SELECT_MODEL_EVENTS: TMXGraphSelectionModelEvent[] = ['change'];
 
 type TMXEvent =
   | TMXAppModelEvent
@@ -427,6 +425,7 @@ export interface IMXEvent {
 export interface IMXGraphModel extends IMXEventSource<TMXGraphModelEvent> {
   dx: number;
   dy: number;
+  cells: IMXCell[];
 }
 
 export interface IMXGraphView extends IMXEventSource<TMXGraphViewEvent> {
@@ -437,8 +436,7 @@ export interface IMXGraphView extends IMXEventSource<TMXGraphViewEvent> {
   gridColor: string;
 }
 
-export interface IMXGraphPanningHandler
-  extends IMXEventSource<TMXGraphPanningEvent> {}
+export interface IMXGraphPanningHandler extends IMXEventSource<TMXGraphPanningEvent> {}
 
 export interface IMXGraphSelectionHandler
   extends IMXEventSource<TMXGraphSelectionEvent> {}
@@ -461,7 +459,7 @@ export interface IMXGraph extends IMXEventSource<TMXGraphEvent> {
   gridSize: number;
   selectionCellsHandler: IMXGraphSelectionHandler;
   selectionModel: IMXGraphSelectionModel;
-  getCellsById(id: string): IMXCell[];
+  getCellsById(id: string[]): IMXCell[];
 }
 
 export interface IMXEditor extends IMXEventSource<TMXMEditorEvent> {

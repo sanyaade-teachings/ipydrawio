@@ -1,5 +1,5 @@
 /*
-  Copyright 2021 ipydrawio contributors
+  Copyright 2022 ipydrawio contributors
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -42,9 +42,7 @@ function activate(
 ) {
   if (PageConfig.getOption('retroPage')) {
     console.warn('Unavailable in', app.name, ':', ALL_FORMATS[0].factoryName);
-    console.info(
-      'Please open a full JupyterLab from View -> Open with JupyterLab'
-    );
+    console.info('Please open a full JupyterLab from View -> Open with JupyterLab');
     return;
   }
   for (const format of ALL_FORMATS) {

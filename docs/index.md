@@ -1,7 +1,6 @@
 # IPyDrawio
 
-> Interactive diagram documents and [widgets] in [JupyterLab], powered by
-> [drawio].
+> Interactive diagram documents and [widgets] in [JupyterLab], powered by [drawio].
 
 [drawio]: https://github.com/jgraph/drawio
 [jupyterlab]: https://github.com/jupyterlab/jupyterlab
@@ -26,9 +25,8 @@
 </details>
 ```
 
-Click the _Try IPyDrawio Now_ button to launch a new browser tab running
-IPyDrawio. It contains all of the example _Diagrams_ from this documentation
-site.
+Click the _Try IPyDrawio Now_ button to launch a new browser tab running IPyDrawio. It
+contains all of the example _Diagrams_ from this documentation site.
 
 [demo]: ./demo/index
 
@@ -36,8 +34,7 @@ site.
 
 ## Get Started
 
-Install `ipydrawio` (and optionally `ipydrawio-export`) with `pip`, `mamba`, or
-`conda`:
+Install `ipydrawio` (and optionally `ipydrawio-export`) with `pip`, `mamba`, or `conda`:
 
 ```bash
 pip install ipydrawio[all]
@@ -59,8 +56,7 @@ Start JupyterLab and [start making diagrams](./diagrams/index.md)!
 
 ## More Screenshots and Examples
 
-> these are editable SVG files made with IPyDrawio, and can be found in the
-> [demo].
+> these are editable SVG files made with IPyDrawio, and can be found in the [demo].
 
 ### What can you draw with IPyDrawio
 
@@ -82,7 +78,7 @@ about/contributing
 ```
 
 <!--
-# Copyright 2021 ipydrawio contributors
+# Copyright 2022 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

@@ -1,5 +1,5 @@
 /*
-  Copyright 2021 ipydrawio contributors
+  Copyright 2022 ipydrawio contributors
   Copyright 2020 jupyterlab-drawio contributors
   Copyright 2018 Wolf Vollprecht
 
@@ -312,8 +312,7 @@ export class Diagram extends IFrame {
       }
       query.append(p, (params as any)[p]);
     }
-    const url =
-      this.adapter.drawioUrl() + '?' + query.toString() + `&p=${plugins}`;
+    const url = this.adapter.drawioUrl() + '?' + query.toString() + `&p=${plugins}`;
 
     if (force || this.url !== url) {
       DEBUG && console.warn('configuring iframe', params);

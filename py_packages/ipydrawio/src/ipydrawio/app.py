@@ -1,6 +1,6 @@
 """CLI for ipydrawio"""
 
-# Copyright 2021 ipydrawio contributors
+# Copyright 2022 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,18 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
 from pathlib import Path
 
 import traitlets as T
 from jupyter_core.application import JupyterApp, base_aliases, base_flags
 
 from ._version import __version__
-
-try:
-    # the clean command isn't _critical_
-    from .clean import MX_CLEAN_ATTRS, clean_drawio_file
-except ImportError:  # pragma: no cover
-    clean_drawio_file = None
+from .clean import clean_drawio_file
+from .constants import MX_CLEAN_ATTRS
 
 
 class BaseApp(JupyterApp):
@@ -36,58 +33,59 @@ class BaseApp(JupyterApp):
         return self.__doc__.splitlines()[0].strip()
 
 
-if clean_drawio_file:
+class CleanApp(BaseApp):
+    """clean drawio files"""
 
-    class CleanApp(BaseApp):
-        """clean drawio files"""
+    dio_files = T.Tuple()
+    pretty = T.Bool(True, help="pretty-print the XML").tag(config=True)
+    mx_attrs = T.Tuple(MX_CLEAN_ATTRS, help="attributes to clean").tag(config=True)
+    indent = T.Int(2, help="if pretty-printing, the indent level").tag(config=True)
+    tabs = T.Bool(False, help="indent with tabs instead of spaces").tag(config=True)
 
-        dio_files = T.Tuple()
-        pretty = T.Bool(True, help="pretty-print the XML").tag(config=True)
-        mx_attrs = T.Tuple(MX_CLEAN_ATTRS, help="attributes to clean").tag(config=True)
-        indent = T.Int(2, help="if pretty-printing, the indent level").tag(config=True)
-        tabs = T.Bool(False, help="indent with tabs instead of spaces").tag(config=True)
+    flags = dict(
+        **base_flags,
+        **{
+            "no-pretty": (
+                {"CleanApp": {"pretty": False}},
+                "Do not pretty-print the XML",
+            ),
+            "tabs": (
+                {"CleanApp": {"tabs": True}},
+                "Indent with tabs instead of spaces",
+            ),
+        }
+    )
+    aliases = dict(
+        **base_aliases, **{"mx-attrs": "CleanApp.mx_attrs", "indent": "CleanApp.indent"}
+    )
 
-        flags = dict(
-            **base_flags,
-            **{
-                "no-pretty": (
-                    {"CleanApp": {"pretty": False}},
-                    "Do not pretty-print the XML",
-                ),
-                "tabs": (
-                    {"CleanApp": {"tabs": True}},
-                    "Indent with tabs instead of spaces",
-                ),
-            }
-        )
-        aliases = dict(
-            **base_aliases,
-            **{"mx-attrs": "CleanApp.mx_attrs", "indent": "CleanApp.indent"}
-        )
+    def parse_command_line(self, argv=None):
+        super().parse_command_line(argv)
+        self.dio_files = [Path(p).resolve() for p in self.extra_args]
 
-        def parse_command_line(self, argv=None):
-            super().parse_command_line(argv)
-            self.dio_files = [Path(p).resolve() for p in self.extra_args]
-
-        def start(self):
-            for path in self.dio_files:
+    def start(self):
+        for path in self.dio_files:
+            try:
                 clean_drawio_file(
                     path,
                     pretty=self.pretty,
                     mx_attrs=self.mx_attrs,
                     indent=self.indent,
                     tabs=self.tabs,
+                    log=self.log,
                 )
+            except Exception as err:
+                self.log.error(err)
+                sys.exit(1)
 
 
 class IPyDrawioApp(BaseApp):
     """ipydrawio utilities"""
 
     name = "ipydrawio"
-    subcommands = dict()
-
-    if clean_drawio_file:
-        subcommands["clean"] = (CleanApp, CleanApp.__doc__.splitlines()[0])
+    subcommands = dict(
+        clean=(CleanApp, CleanApp.__doc__.splitlines()[0]),
+    )
 
 
 main = launch_instance = IPyDrawioApp.launch_instance

@@ -1,4 +1,4 @@
-# Copyright 2021 ipydrawio contributors
+# Copyright 2022 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,9 @@ Resource          ./_CodeMirror.robot
 Add and Run JupyterLab Code Cell
     [Arguments]    ${code}=print("hello world")
     [Documentation]    Add a ``code`` cell to the currently active notebook and run it.
-    Click Element    css:${JLAB CSS NB TOOLBAR} ${JLAB CSS ICON ADD}
+    ${add btn} =    Set Variable    css:${JLAB CSS NB TOOLBAR} ${JLAB CSS ICON ADD}
+    Wait Until Page Contains Element    ${add btn}    timeout=10s
+    Click Element    ${add btn}
     Sleep    0.1s
     ${cell} =    Get WebElement    css:${JLAB CSS ACTIVE INPUT}
     Click Element    ${cell}

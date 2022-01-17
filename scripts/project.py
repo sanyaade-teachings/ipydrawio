@@ -3,7 +3,7 @@
     this should not import anything not in py36+ stdlib, or any local paths
 """
 
-# Copyright 2021 ipydrawio contributors
+# Copyright 2022 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -198,6 +198,7 @@ ATEST = ROOT / "atest"
 ATEST_DIO = _clean(ATEST.rglob("*.dio"), ATEST.rglob("*.dio.svg"))
 ATEST_OUT = BUILD / "atest"
 ATEST_OUT_XML = "output.xml"
+ATEST_TEMPLATES = [*ATEST.rglob("*.robot.j2")]
 
 # js packages
 JS_NS = "deathbeds"
@@ -402,7 +403,7 @@ DOCS_RAW_TYPEDOC = BUILD / "typedoc"
 DOCS_RAW_TYPEDOC_README = DOCS_RAW_TYPEDOC / "README.md"
 MD_FOOTER = """
 ```
-Copyright 2021 ipydrawio contributors
+Copyright 2022 ipydrawio contributors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -446,7 +447,9 @@ ALL_JSON = [
     *[
         p
         for p in DEMO.rglob("*.json")
-        if "/_output/" not in str(p) and "/.cache/" not in str(p)
+        if "/_output/" not in str(p)
+        and "/.cache/" not in str(p)
+        and p not in [DEMO_CONFIG]
     ],
 ]
 ALL_DIO = [*DOCS_DIO, *IPJT_TMPL_DIO, *ATEST_DIO]
@@ -467,14 +470,17 @@ ALL_HEADERS = _clean(
     ALL_YML,
     ALL_ROBOT,
 )
-ALL_DEMO_CONTENTS = [
+
+ALL_DEMO_SOURCES = [
     d
     for d in ALL_DIO
     if "test" not in str(d.relative_to(ROOT)).lower()
     and ".doit" not in d.name
     and " " not in d.name
     and d.name not in ["A.dio"]
-]
+] + [*DOCS.glob("*.ipynb")]
+
+ALL_DEMO_CONTENTS = {p: DEMO_FILES / p.name for p in sorted(ALL_DEMO_SOURCES)}
 
 ESLINTRC = PACKAGES / ".eslintrc.js"
 
@@ -636,7 +642,8 @@ def patch_one_env(source, target):
                 comment.rstrip(),
                 old_target[2],
             ]
-        )
+        ),
+        **ENC,
     )
 
 
@@ -752,7 +759,7 @@ def mystify():
                 "```\n",
                 MD_FOOTER,
             ]
-        out_doc.write_text("\n".join(mod_lines))
+        out_doc.write_text("\n".join(mod_lines), **ENC)
 
     DOCS_TS_MYST_INDEX.write_text(
         "\n".join(
@@ -796,7 +803,7 @@ def _ok(task, ok):
     task["actions"] = [
         lambda: [ok.exists() and ok.unlink(), True][-1],
         *task["actions"],
-        lambda: [ok.parent.mkdir(exist_ok=True), ok.write_text("ok"), True][-1],
+        lambda: [ok.parent.mkdir(exist_ok=True), ok.write_text("ok", **ENC), True][-1],
     ]
     return task
 
@@ -827,7 +834,7 @@ def _copy_one(src, dest):
         shutil.copy2(src, dest)
 
 
-def _build_lite():
+def _lite(lite_actions, extra_args=[]):
     lite = ["jupyter", "lite"]
     args = ["--source-date-epoch", SOURCE_DATE_EPOCH]
 
@@ -839,8 +846,8 @@ def _build_lite():
     if MATHJAX_DIR:
         args += ["--mathjax-dir", str(MATHJAX_DIR)]
 
-    for act in ["build", "archive"]:
-        act_args = list(map(str, [*lite, act, *args]))
+    for act in lite_actions:
+        act_args = list(map(str, [*lite, act, *args, *extra_args]))
         if subprocess.call(act_args, cwd=DEMO) != 0:
             print("FAILED", *act_args)
             return False
@@ -855,7 +862,9 @@ def _sync_lite_config(from_env, to_json, marker, extras):
         if p.strip()
     ]
 
-    tarball_urls = ["../" + str(extra.relative_to(ROOT).as_posix()) for extra in extras]
+    tarball_urls = sorted(
+        ["../" + str(extra.relative_to(ROOT).as_posix()) for extra in extras]
+    )
     for raw_url in sorted(raw_lock.decode("utf-8").splitlines()):
         try:
             label, subdir, pkg = re.findall(RE_CONDA_FORGE_URL, raw_url)[0]
@@ -871,8 +880,9 @@ def _sync_lite_config(from_env, to_json, marker, extras):
                 tarball_urls += ["/".join([CONDA_FORGE_RELEASE, subdir, pkg, pkg])]
 
     config = json.loads(to_json.read_text(**ENC))
-    config["LiteBuildConfig"]["federated_extensions"] = sorted(tarball_urls)
-    to_json.write_text(json.dumps(config, **JSON_FMT))
+    config["LiteBuildConfig"]["federated_extensions"] = tarball_urls
+    config["LiteBuildConfig"]["piplite_urls"] = [tarball_urls[0]]
+    to_json.write_text(json.dumps(config, **JSON_FMT), **ENC)
     subprocess.call([*PRETTIER, "--write", to_json])
 
 
@@ -884,7 +894,7 @@ def fetch_pyodide_packages():
     with urllib.request.urlopen(url) as response:
         packages = json.loads(response.read().decode("utf-8"))
     PYODIDE_PACKAGES.parent.mkdir(exist_ok=True, parents=True)
-    PYODIDE_PACKAGES.write_text(json.dumps(packages, **JSON_FMT))
+    PYODIDE_PACKAGES.write_text(json.dumps(packages, **JSON_FMT), **ENC)
 
 
 def fetch_wheels():
@@ -899,6 +909,17 @@ def fetch_wheels():
             continue
         if any(re.findall(f"{p}-\\d", pkg.name) for p in IGNORED_WHEELS):
             pkg.unlink()
+
+
+def template_one(src, dest):
+    import jinja2
+
+    template = jinja2.Template(src.read_text(**ENC))
+    if not dest.parent.exists():
+        dest.parent.mkdir()
+    if dest.exists():
+        dest.unlink()
+    dest.write_text(template.render(P=globals()))
 
 
 # Late environment hacks

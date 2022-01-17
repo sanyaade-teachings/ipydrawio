@@ -1,5 +1,5 @@
 /*
-  Copyright 2021 ipydrawio contributors
+  Copyright 2022 ipydrawio contributors
   Copyright 2020 jupyterlab-drawio contributors
   Copyright 2018 Wolf Vollprecht
 
@@ -126,9 +126,7 @@ export class DiagramFactory extends ABCWidgetFactory<
     this.manager = options.manager;
   }
 
-  protected createNewWidget(
-    context: DocumentRegistry.Context
-  ): DiagramDocument {
+  protected createNewWidget(context: DocumentRegistry.Context): DiagramDocument {
     const doc: DiagramDocument = new DiagramDocument({
       context,
       content: new Diagram({
@@ -145,8 +143,7 @@ export class DiagramFactory extends ABCWidgetFactory<
             } as any;
           },
           drawioConfig: () => {
-            return this.getSettings()
-              ?.drawioConfig as ReadonlyPartialJSONObject;
+            return this.getSettings()?.drawioConfig as ReadonlyPartialJSONObject;
           },
           saveNeedsExport: () => {
             const isTransformed = doc.format?.isTransformed;

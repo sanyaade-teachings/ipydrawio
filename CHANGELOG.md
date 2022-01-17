@@ -4,6 +4,9 @@
 
 ### ipydrawio 1.2.0
 
+- fixes selection in widget diagrams with more than 10 shapes [#85]
+- adds `cell_ids` to widget diagrams [#88]
+- `jupyter ipydrawio clean` can now cleans `.ipynb` metadata and outputs [#88]
 - minimum supported python is now to 3.7
 
 #### @deathbeds/ipydrawio 1.2.0
@@ -21,6 +24,9 @@
 - minimum supported python is now to 3.7
 
 #### @deathbeds/ipydrawio-pdf 1.2.0
+
+[#85]: https://github.com/deathbeds/ipydrawio/issues/85
+[#88]: https://github.com/deathbeds/ipydrawio/issues/88
 
 ---
 
@@ -60,8 +66,7 @@
 
 ### ipydrawio-export 1.1.2
 
-- a `yarn.lock` is shipped to reduce provisioning time and increase
-  reproducibility
+- a `yarn.lock` is shipped to reduce provisioning time and increase reproducibility
 - update to newer PDF exporter for better performance
 
 #### @deathbeds/ipydrawio-pdf 1.1.2
@@ -72,8 +77,8 @@
 
 ### ipydrawio 1.1.1
 
-- adds `jupyter ipydrawio clean` for removing `host`, `agent`, `modified`
-  attributes and pretty printing, restoring `lxml` as a dependency [#44]
+- adds `jupyter ipydrawio clean` for removing `host`, `agent`, `modified` attributes and
+  pretty printing, restoring `lxml` as a dependency [#44]
 
 #### @deathbeds/ipydrawio 1.1.1
 
@@ -103,20 +108,20 @@
 ### ipydrawio 1.1.0
 
 - new documentation site at https://ipydrawio.rtfd.io [#40]
-- no longer depends on `lxml`, future XML-based features will hopefully support
-  the standard library `xml` module [#40]
+- no longer depends on `lxml`, future XML-based features will hopefully support the
+  standard library `xml` module [#40]
 
 #### @deathbeds/ipydrawio 1.1.0
 
 - the `sketch` theme is now available as the `ui` [#40]
-- the _Custom Diagram..._ Launcher card offers all the themes, templates, and
-  editable formats [#40]
+- the _Custom Diagram..._ Launcher card offers all the themes, templates, and editable
+  formats [#40]
   - templates can be added by extensions [#41]
 - additional configuration defaults added to `urlParams` [#40]
-- the <kbd>Esc</kbd> button now shifts focus back to the main application
-  allowing for use of more keyboard shortcuts. [#40]
-  - the previous inescapable behavior can be restored in _Adanced Settings_ by
-    setting `"disableEscapeFocus": true`
+- the <kbd>Esc</kbd> button now shifts focus back to the main application allowing for
+  use of more keyboard shortcuts. [#40]
+  - the previous inescapable behavior can be restored in _Adanced Settings_ by setting
+    `"disableEscapeFocus": true`
 
 #### @deathbeds/ipydrawio-notebook 1.1.0
 
@@ -175,15 +180,14 @@
 #### @deathbeds/ipydrawio 1.0.0
 
 - [#22] adds more _Main Menu_ options and _Command Palette_ Commands
-- [#22] new file names created by _Export Diagram as..._ commands use
-  best-effort, two-digit numbers (if needed) incrementer instead of timestamp
-- [#20] add `allow-downloads` sandbox exception for the drawio `iframe`,
-  enabling some more built-in features
+- [#22] new file names created by _Export Diagram as..._ commands use best-effort,
+  two-digit numbers (if needed) incrementer instead of timestamp
+- [#20] add `allow-downloads` sandbox exception for the drawio `iframe`, enabling some
+  more built-in features
 
 #### @deathbeds/ipydrawio-notebook 1.0.0
 
-- [#21] fixes overload of default _Notebook_ activity for _Edit with_ for
-  `.ipynb` files
+- [#21] fixes overload of default _Notebook_ activity for _Edit with_ for `.ipynb` files
 
 #### @deathbeds/ipydrawio-webpack 14.5.9
 
@@ -228,11 +232,10 @@
 
 For pre-releases of the previously-named package, see the [old CHANGELOG][]
 
-[old changelog]:
-  https://github.com/deathbeds/ipydrawio/tree/3a577ac/CHANGELOG.md
+[old changelog]: https://github.com/deathbeds/ipydrawio/tree/3a577ac/CHANGELOG.md
 
 ```
-Copyright 2021 ipydrawio contributors
+Copyright 2022 ipydrawio contributors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
