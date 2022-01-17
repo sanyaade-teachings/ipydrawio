@@ -348,7 +348,7 @@ PY_HAS_EXT = {
 PY_SETUP_DEPS = {
     IPD: lambda: [OK_PYSETUP["ipydrawio-widgets"]],
     IPDE: lambda: [OK_PYSETUP["ipydrawio"]],
-    IPDW: lambda: [],
+    IPDW: lambda: [*IPDW_DEPS.values()],
 }
 
 PY_SDIST = {
