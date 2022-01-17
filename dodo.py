@@ -750,7 +750,7 @@ def task_demo():
     yield dict(
         name="extensions",
         doc="update jupyter-lite.json from the conda env",
-        file_dep=[P.ENV_BINDER, P.PY_WHEEL[P.IPD.name]],
+        file_dep=[P.ENV_BINDER, *P.PY_WHEEL.values()],
         targets=[P.DEMO_CONFIG],
         actions=[
             (
