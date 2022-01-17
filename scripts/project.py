@@ -198,6 +198,7 @@ ATEST = ROOT / "atest"
 ATEST_DIO = _clean(ATEST.rglob("*.dio"), ATEST.rglob("*.dio.svg"))
 ATEST_OUT = BUILD / "atest"
 ATEST_OUT_XML = "output.xml"
+ATEST_TEMPLATES = [*ATEST.rglob("*.robot.j2")]
 
 # js packages
 JS_NS = "deathbeds"
@@ -470,14 +471,16 @@ ALL_HEADERS = _clean(
     ALL_ROBOT,
 )
 
-ALL_DEMO_CONTENTS = [
+ALL_DEMO_SOURCES = [
     d
     for d in ALL_DIO
     if "test" not in str(d.relative_to(ROOT)).lower()
     and ".doit" not in d.name
     and " " not in d.name
     and d.name not in ["A.dio"]
-]
+] + [*DOCS.glob("*.ipynb")]
+
+ALL_DEMO_CONTENTS = {p: DEMO_FILES / p.name for p in sorted(ALL_DEMO_SOURCES)}
 
 ESLINTRC = PACKAGES / ".eslintrc.js"
 
@@ -906,6 +909,17 @@ def fetch_wheels():
             continue
         if any(re.findall(f"{p}-\\d", pkg.name) for p in IGNORED_WHEELS):
             pkg.unlink()
+
+
+def template_one(src, dest):
+    import jinja2
+
+    template = jinja2.Template(src.read_text(**ENC))
+    if not dest.parent.exists():
+        dest.parent.mkdir()
+    if dest.exists():
+        dest.unlink()
+    dest.write_text(template.render(P=globals()))
 
 
 # Late environment hacks

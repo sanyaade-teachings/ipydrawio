@@ -24,20 +24,27 @@ Suite Setup       Set Screenshot Directory    ${OUTPUT DIR}${/}lite${/}notebooks
 ${PYOLITE BUSY}    Pyolite | Busy
 
 *** Test Cases ***
-Test Notebook Examples
-    [Documentation]    Do all of the example notebooks work?
-    ${examples} =    List Files In Directory    ${DEMO}${/}files    *.ipynb
-    FOR    ${file}    IN    @{EXAMPLES}
-        Try to Close All Tabs
-        IF    ${file.endswith('.ipynb')}
-            Notebook Should Run Without Error    ${file}
-        END
-    END
+Diagram Document
+    [Documentation]    Does the Diagram Document example notebook work?
+    Notebook Should Run Without Error    Diagram Document.ipynb
+
+Diagram Rich Display
+    [Documentation]    Does the Diagram Rich Display example notebook work?
+    Notebook Should Run Without Error    Diagram Rich Display.ipynb
+
+Diagram Widget
+    [Documentation]    Does the Diagram Widget example notebook work?
+    Notebook Should Run Without Error    Diagram Widget.ipynb
+
+Roadmap
+    [Documentation]    Does the ROADMAP example notebook work?
+    Notebook Should Run Without Error    ROADMAP.ipynb
 
 *** Keywords ***
 Notebook Should Run Without Error
     [Arguments]    ${file}
     [Documentation]    Does one example notebook work?
+    Try to Close All Tabs
     ${stem} =    Set Variable    ${file.lower().replace(" ", "-").split(".")[0]}
     Ensure File Browser is Open
     Double Click Element    css:[title*\="${file}"]

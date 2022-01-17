@@ -17,6 +17,7 @@ Documentation     A work-in-progress set of keywords for JupyterLite
 Library           OperatingSystem
 Library           Process
 Library           ../ports.py
+Variables         ../demo.py
 
 *** Variable ***
 ${NEXT LITE LOG}    ${0}

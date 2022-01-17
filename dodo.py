@@ -750,17 +750,16 @@ def task_demo():
         ],
     )
 
-    for path in [*P.ALL_DEMO_CONTENTS, *P.DOCS.glob("*.ipynb")]:
-        name = f"stage:{path.name}"
-        dest = P.DEMO_FILES / path.name
+    for src, dest in P.ALL_DEMO_CONTENTS.items():
+        name = f"stage:{src.name}"
         demo_dest += [dest]
         demo_tasks += [f"demo:{name}"]
-        final_dest += [P.DEMO_BUILD / f"files/{path.name}"]
+        final_dest += [P.DEMO_BUILD / f"files/{src.name}"]
         yield dict(
             name=name,
-            file_dep=[path],
+            file_dep=[src],
             targets=[dest],
-            actions=[(P._copy_one, [path, dest])],
+            actions=[(P._copy_one, [src, dest])],
         )
 
     assert demo_dest
@@ -978,6 +977,20 @@ def task_test():
             P.DEMO_HASHES,
             *P.OK_SERVEREXT.values(),
         ]
+
+        demo_files = [P.DEMO_FILES / p.name for p in P.ALL_DEMO_CONTENTS]
+
+        for tmpl in P.ATEST_TEMPLATES:
+            dest = tmpl.parent / tmpl.name.replace(".j2", "")
+            yield dict(
+                name=f"template:{tmpl.relative_to(P.ATEST)}",
+                file_dep=[tmpl, *demo_files],
+                targets=[dest],
+                actions=[
+                    (P.template_one, [tmpl, dest]),
+                    [*P.PYM, "robot.tidy", "--inplace", dest],
+                ],
+            )
 
     yield P._ok(
         dict(
