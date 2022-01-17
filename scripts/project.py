@@ -293,13 +293,13 @@ JS_SCHEMAS = {
 }
 
 # special things for ipydrawio-webpack
-IPDW = JS_PKG_JSON["ipydrawio-webpack"].parent
-IPDW_APP = IPDW / "dio/js/app.min.js"
-IPDW_PY = (IPDW / "scripts").rglob("*.py")
-DRAWIO = IPDW / "drawio"
-IPDW_LIB = IPDW / "lib"
-IPDW_IGNORE = IPDW / ".npmignore"
-ALL_IPDW_JS = IPDW_LIB.glob("*.js")
+IPDWP = JS_PKG_JSON["ipydrawio-webpack"].parent
+IPDWP_APP = IPDWP / "dio/js/app.min.js"
+IPDWP_PY = (IPDWP / "scripts").rglob("*.py")
+DRAWIO = IPDWP / "drawio"
+IPDWP_LIB = IPDWP / "lib"
+IPDWP_IGNORE = IPDWP / ".npmignore"
+ALL_IPDWP_JS = IPDWP_LIB.glob("*.js")
 
 IPJT = JS_PKG_JSON["ipydrawio-jupyter-templates"].parent
 IPJT_TMPL = IPJT / "tmpl"
@@ -317,21 +317,44 @@ PY_SETUP_CFG = {k: v.parent / "setup.cfg" for k, v in PY_SETUP.items()}
 PY_VERSION = {
     "ipydrawio": JS_PKG_DATA["ipydrawio"]["version"],
     "ipydrawio-export": JS_PKG_DATA["ipydrawio-pdf"]["version"],
+    "ipydrawio-widgets": JS_PKG_DATA["ipydrawio"]["version"],
 }
 
 IPD = PY_SETUP["ipydrawio"].parent
 IPDE = PY_SETUP["ipydrawio-export"].parent
+IPDW = PY_SETUP["ipydrawio-widgets"].parent
+
 IPDE_VENDOR = IPDE / "src/ipydrawio_export/vendor"
 IPDE_DIE2 = IPDE_VENDOR / "draw-image-export2"
 IPDE_DIE2_PACKAGE_JSON = IPDE_DIE2 / "package.json"
 IPDE_DIE2_YARN_LOCK = IPDE_DIE2 / "yarn.lock"
 
+IPDW_SRC = IPDW / "src/ipydrawio_widgets"
+IPDW_DEPS = {
+    JS_PKG_JSON["ipydrawio"]: IPDW_SRC / "js/package.json",
+    JS_PKG_JSON["ipydrawio"].parent / "schema/plugin.json": IPDW_SRC / "js/plugin.json",
+}
+
 IPD_VERSION = PY_VERSION["ipydrawio"]
+IPDW_VERSION = PY_VERSION["ipydrawio-widgets"]
 IPDE_VERSION = PY_VERSION["ipydrawio-export"]
+
+PY_HAS_EXT = {
+    IPD: True,
+    IPDE: True,
+    IPDW: False,
+}
+
+PY_SETUP_DEPS = {
+    IPD: lambda: [OK_PYSETUP["ipydrawio-widgets"]],
+    IPDE: lambda: [OK_PYSETUP["ipydrawio"]],
+    IPDW: lambda: [],
+}
 
 PY_SDIST = {
     IPDE.name: IPDE / "dist" / f"{IPDE.name}-{IPDE_VERSION}.tar.gz",
     IPD.name: IPD / "dist" / f"{IPD.name}-{IPD_VERSION}.tar.gz",
+    IPDW.name: IPDW / "dist" / f"{IPDW.name}-{IPDW_VERSION}.tar.gz",
 }
 PY_WHEEL = {
     IPDE.name: IPDE
@@ -340,6 +363,9 @@ PY_WHEEL = {
     IPD.name: IPD
     / "dist"
     / f"""{IPD.name.replace("-", "_")}-{IPD_VERSION}-py3-none-any.whl""",
+    IPDW.name: IPDW
+    / "dist"
+    / f"""{IPDW.name.replace("-", "_")}-{IPDW_VERSION}-py3-none-any.whl""",
 }
 PY_TEST_DEP = {}
 
@@ -423,7 +449,7 @@ limitations under the License.
 ALL_PY = [
     *ATEST.rglob("*.py"),
     *BINDER.glob("*.py"),
-    *IPDW_PY,
+    *IPDWP_PY,
     *PY_SETUP.values(),
     *SCRIPTS.glob("*.py"),
     *sum(JS_PY_SCRIPTS.values(), []),
@@ -510,10 +536,10 @@ JS_PKG_PACK = {
     for k, v in JS_TSBUILDINFO.items()
     if not k.startswith("_")
 ]
-JS_PKG_PACK[IPDW.name][0] += [
-    IPDW_IGNORE,
-    IPDW_APP,
-    *ALL_IPDW_JS,
+JS_PKG_PACK[IPDWP.name][0] += [
+    IPDWP_IGNORE,
+    IPDWP_APP,
+    *ALL_IPDWP_JS,
 ]
 
 # provisioning stuff

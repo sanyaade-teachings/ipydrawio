@@ -77,8 +77,8 @@ def test_changelog(pkg, version, the_changelog):
 
 def test_drawio_versions():
     """is the drawio version up-to-date with the submodule?"""
-    dv = (P.IPDW / "drawio/VERSION").read_text(encoding="utf-8")
-    pdv = P.JS_PKG_DATA[P.IPDW.name]["version"]
+    dv = (P.IPDWP / "drawio/VERSION").read_text(encoding="utf-8")
+    pdv = P.JS_PKG_DATA[P.IPDWP.name]["version"]
     assert pdv.startswith(dv), "drawio version out of sync"
 
 
@@ -142,6 +142,23 @@ def test_setup_cfg_pythons(path, the_pythons, the_min_python):
     for the_py in the_pythons:
         classifier = f"Programming Language :: Python :: {the_py}"
         assert classifier in cfg["metadata"]["classifiers"]
+
+
+@pytest.mark.parametrize(
+    "path,upstream,version",
+    [
+        [P.PY_SETUP_CFG["ipydrawio"], P.IPDW.name, P.PY_VERSION["ipydrawio-widgets"]],
+        [P.PY_SETUP_CFG["ipydrawio-export"], P.IPD.name, P.PY_VERSION["ipydrawio"]],
+    ],
+)
+def test_setup_cfg_version(path, upstream, version):
+    cfg = configparser.ConfigParser()
+    cfg.read_file(path.open())
+    install_requires = cfg["options"]["install_requires"]
+    spec = f"{upstream} =={version}"
+    assert (
+        spec in install_requires
+    ), f"{spec} not in {path.parent.name}: {install_requires}"
 
 
 @pytest.mark.parametrize(

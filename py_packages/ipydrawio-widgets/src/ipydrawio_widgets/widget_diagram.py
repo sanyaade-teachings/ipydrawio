@@ -37,13 +37,9 @@ class DiagramBase(W.Widget):
 class XML(DiagramBase, W.Widget):
     """A Drawio XML-native Document"""
 
-    value = T.Unicode().tag(sync=True)
+    value = T.Unicode(A_SHORT_DRAWIO).tag(sync=True)
     _model_name = T.Unicode("XMLModel").tag(sync=True)
     _view_name = T.Unicode("XMLView").tag(sync=True)
-
-    @T.default("value")
-    def _default_value(self):
-        return A_SHORT_DRAWIO
 
 
 class Diagram(DiagramBase, W.Box):

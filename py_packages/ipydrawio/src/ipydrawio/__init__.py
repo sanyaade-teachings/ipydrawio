@@ -17,8 +17,9 @@
 import json
 from pathlib import Path
 
+from ipydrawio_widgets import XML, Diagram
+
 from ._version import __js__, __version__
-from .widget_diagram import Diagram
 
 
 def _jupyter_labextension_paths():
@@ -40,4 +41,5 @@ __all__ = [
     "__version__",
     "_jupyter_labextension_paths",
     "Diagram",
+    "XML",
 ]

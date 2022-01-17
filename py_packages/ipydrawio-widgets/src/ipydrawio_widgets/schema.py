@@ -1,4 +1,4 @@
-"""constants for ipydrawio"""
+"""schema for ipydrawio-widgets"""
 
 # Copyright 2022 ipydrawio contributors
 #

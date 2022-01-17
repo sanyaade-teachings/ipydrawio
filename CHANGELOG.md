@@ -2,14 +2,19 @@
 
 ## Unreleased
 
+### ipydrawio-widgets 1.2.0
+
+- new kernel-only package for headless kernel installs [#63]
+- adds `cell_ids` to widget diagrams [#88]
+
 ### ipydrawio 1.2.0
 
-- fixes selection in widget diagrams with more than 10 shapes [#85]
-- adds `cell_ids` to widget diagrams [#88]
 - `jupyter ipydrawio clean` can now cleans `.ipynb` metadata and outputs [#88]
 - minimum supported python is now to 3.7
 
 #### @deathbeds/ipydrawio 1.2.0
+
+- fixes selection in widget diagrams with more than 10 shapes [#85]
 
 #### @deathbeds/ipydrawio-notebook 1.2.0
 
@@ -25,6 +30,7 @@
 
 #### @deathbeds/ipydrawio-pdf 1.2.0
 
+[#63]: https://github.com/deathbeds/ipydrawio/issues/63
 [#85]: https://github.com/deathbeds/ipydrawio/issues/85
 [#88]: https://github.com/deathbeds/ipydrawio/issues/88
 
