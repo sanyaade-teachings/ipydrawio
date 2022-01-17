@@ -1,5 +1,5 @@
 /*
-  Copyright 2021 ipydrawio contributors
+  Copyright 2022 ipydrawio contributors
   Copyright 2020 jupyterlab-drawio contributors
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,7 +47,11 @@ import {
 } from './tokens';
 
 import '../style/widget.css';
+import { IMXApp, IMXGraph, IMXGraphModel, IMXPage } from '.';
 
+/**
+ * An empty drawio diagaram.
+ */
 const A_SHORT_DRAWIO = `<mxfile version="13.3.6">
 <diagram id="x" name="Page-1">
     <mxGraphModel dx="1450" dy="467" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
@@ -60,6 +64,11 @@ const A_SHORT_DRAWIO = `<mxfile version="13.3.6">
 </mxfile>
 `;
 
+/**
+ * Some sensible default URL values
+ *
+ * Note that `stealth` must be enabled to use URL-encoded shape libraries.
+ */
 const DEFAULT_URL_PARAMS = {
   gapi: 0,
   gl: 0,
@@ -73,12 +82,18 @@ const DEFAULT_URL_PARAMS = {
   p: 'ex;tips;svgdata;sql;anim;trees;replay;anon;flow;webcola;tags',
 };
 
+/**
+ * Some sensible default config values.
+ */
 const DEFAULT_DRAWIO_CONFIG = {
   compressXml: false,
   showStartScreen: false,
   override: true,
 };
 
+/**
+ * A model of the underlying XML for a drawio diagram
+ */
 export class XMLModel extends WidgetModel {
   static model_name = 'XMLModel';
   static model_module = NS;
@@ -88,6 +103,9 @@ export class XMLModel extends WidgetModel {
   static view_module = NS;
   static view_module_version = VERSION;
 
+  /**
+   * The default tratlet values for an XML source
+   */
   defaults() {
     return {
       ...super.defaults(),
@@ -102,10 +120,16 @@ export class XMLModel extends WidgetModel {
   }
 }
 
+/**
+ * A dummy view for an XMLModel
+ */
 export class XMLView extends WidgetView {
   model: XMLModel;
 }
 
+/**
+ * A model of a Diagram
+ */
 export class DiagramModel extends BoxModel {
   static model_name = 'DiagramModel';
   static model_module = NS;
@@ -115,11 +139,11 @@ export class DiagramModel extends BoxModel {
   static view_module = NS;
   static view_module_version = VERSION;
 
-  static serializers = {
-    ...BoxModel.serializers,
-    source: { deserialize },
-  };
+  static serializers = { ...BoxModel.serializers, source: { deserialize } };
 
+  /**
+   * Default traitlet values for a diagram
+   */
   defaults() {
     return {
       ...super.defaults(),
@@ -135,6 +159,7 @@ export class DiagramModel extends BoxModel {
       page_ids: [],
       selected_page: 0,
       selected_cells: [],
+      cell_ids: [],
       grid_enabled: true,
       grid_color: '#66666666',
       grid_size: 10,
@@ -143,40 +168,69 @@ export class DiagramModel extends BoxModel {
       page_format: { x: 0, y: 0, width: 850, height: 1100 },
     };
   }
-
-  initialize(attributes: any, options: any) {
-    super.initialize(attributes, options);
-  }
 }
 
+/**
+ * A renderer for a Diagram.
+ */
 export class DiagramView extends BoxView {
   static diagrmManager: IDiagramManager;
+
   model: DiagramModel;
 
   protected diagram: Diagram;
+  private _displayInterval: number;
 
-  initialize(parameters: any) {
-    super.initialize(parameters);
-  }
-
+  /**
+   * Render the diagram, and schedule re-rerendering for when actually displayed.
+   */
   render() {
     super.render();
     this.pWidget.addClass('jp-IPyDiagram');
-    const init = setInterval(() => {
-      if (!this.pWidget.isVisible) {
-        return;
-      }
-      clearInterval(init);
-      this.initDiagram();
-      this.pWidget.addWidget(this.diagram);
-      this.diagram.onContentChanged();
-      this.diagram.onAfterShow();
-      this.model.on('change:source', this.onModelSourceChange, this);
-      this.onModelSourceChange();
-    }, 100);
+    this._displayInterval = setInterval(this.waitForDisplayed, 50);
   }
 
-  onModelSourceChange() {
+  /**
+   * A low-tech way to wait until we are quite sure the diagram is displayed.
+   */
+  protected waitForDisplayed = () => {
+    if (!this.pWidget.isVisible) {
+      return;
+    }
+    clearInterval(this._displayInterval);
+    this.initDiagram();
+    this.pWidget.addWidget(this.diagram);
+    this.diagram.onContentChanged();
+    this.diagram.onAfterShow();
+    this.model.on('change:source', this.onModelSourceChange, this);
+    this.onModelSourceChange();
+  };
+
+  /**
+   * The drawio App
+   */
+  get app(): IMXApp {
+    return this.diagram.app;
+  }
+
+  /**
+   * The drawio Graph
+   */
+  get graph(): IMXGraph {
+    return this.diagram.app.editor.graph;
+  }
+
+  /**
+   * The drawio Graph Model
+   */
+  get graphModel(): IMXGraphModel {
+    return this.diagram.app.editor.graph.model;
+  }
+
+  /**
+   * Handle the XML source changing in the kernel, subscribe to its value changing.
+   */
+  protected onModelSourceChange() {
     const oldSource = (this.model.changed as any).source as XMLModel;
     if (oldSource != null) {
       oldSource.off('change:value', this.onSourceValue, this);
@@ -187,12 +241,18 @@ export class DiagramView extends BoxView {
     }
   }
 
-  onSourceValue() {
+  /**
+   * Handle the XML source's value changing
+   */
+  protected onSourceValue() {
     DEBUG && console.warn('change:value');
     this.diagram.onContentChanged();
   }
 
-  initDiagram() {
+  /**
+   * Initialize the actual Diagram renderer.
+   */
+  protected initDiagram() {
     DEBUG && console.warn('creating diagram widget');
     // TODO: consider hoisting this to the source
     const format = DiagramView.diagrmManager.formatForModel({
@@ -200,8 +260,6 @@ export class DiagramView extends BoxView {
     });
     this.diagram = new Diagram({
       adapter: {
-        // this probably is evented
-        // format: () => XML_NATIVE,
         saveNeedsExport: () => false,
         drawioUrl: () => DRAWIO_URL,
         drawioConfig: () => this.model.get('config'),
@@ -219,7 +277,10 @@ export class DiagramView extends BoxView {
     this.diagram.appChanged.connect(this.onAppChanged, this);
   }
 
-  xml(value?: string) {
+  /**
+   * Set or get the source.
+   */
+  protected xml(value?: string) {
     const source: XMLModel = this.model.get('source');
 
     if (value == null) {
@@ -234,11 +295,16 @@ export class DiagramView extends BoxView {
     return;
   }
 
-  onAppChanged() {
+  /**
+   * Handle the drawio app actually being ready, connecting events, etc.
+   */
+  protected onAppChanged() {
     const { app } = this.diagram;
+
     if (!app) {
       return;
     }
+
     DEBUG && console.warn('installing handlers on', app);
 
     const { editor } = app;
@@ -256,7 +322,6 @@ export class DiagramView extends BoxView {
     ];
 
     // mxgraph model, not widget model
-    // app.editor.graph.model.eventListeners
     for (const { src, evts } of emitters) {
       for (const evt of evts) {
         (src as any).addListener(evt, this.onDrawioEvent);
@@ -279,18 +344,27 @@ export class DiagramView extends BoxView {
       const throttle = new Throttler(fn, bounceOpts);
       this.model.on(evt, () => throttle.invoke(), this);
     });
+
+    this.model.set('cell_ids', this.getCellIds());
+    this.touch();
   }
 
-  onModelZoom = () => {
-    const { view } = this.app.editor.graph;
+  /**
+   * Handle a zoom change from the kernel
+   */
+  protected onModelZoom = () => {
+    const { view } = this.graph;
     const wz = this.model.get('zoom');
     if (view.getScale() !== wz) {
       view.setScale(wz);
     }
   };
 
-  onModelScroll = () => {
-    const { view } = this.app.editor.graph;
+  /**
+   * Handle a scroll change from the kernel
+   */
+  protected onModelScroll = () => {
+    const { view } = this.graph;
     const wx = this.model.get('scroll_x');
     const wy = this.model.get('scroll_y');
     const tx = view.getTranslate();
@@ -299,83 +373,134 @@ export class DiagramView extends BoxView {
     }
   };
 
-  onModelPageFormat = () => {
-    const newFmt = this.model.get('page_format');
-    const oldFmt = this.app.editor.graph.pageFormat as any;
+  /**
+   * Handle a page format change from the kernel
+   */
+  protected onModelPageFormat = () => {
+    const { app, model, graph } = this;
+    const newFmt = model.get('page_format');
+    const oldFmt = graph.pageFormat as any;
     if (!JSONExt.deepEqual(newFmt, oldFmt)) {
       DEBUG && console.warn('pageFormat', newFmt);
-      this.app.setPageFormat({ ...newFmt });
+      app.setPageFormat({ ...newFmt });
     }
   };
 
-  onModelPageSelected = () => {
-    this.app.selectPage(this.app.pages[this.model.get('current_page')]);
+  /**
+   * Handle a page selection change from the kernel
+   */
+  protected onModelPageSelected = () => {
+    const { app } = this;
+    app.selectPage(app.pages[this.model.get('current_page')]);
   };
 
-  onModelGridEnabled = () => {
-    this.app.editor.graph.setGridEnabled(this.model.get('grid_enabled'));
-    this.app.editor.graph.refresh();
+  /**
+   * Handle a grid change from the kernel
+   */
+  protected onModelGridEnabled = () => {
+    const { graph } = this;
+    graph.setGridEnabled(this.model.get('grid_enabled'));
+    graph.refresh();
   };
 
-  onModelGridSize = () => {
-    this.app.editor.graph.setGridSize(this.model.get('grid_size'));
-    this.app.editor.graph.refresh();
+  /**
+   * Handle a grid size change from the kernel
+   */
+  protected onModelGridSize = () => {
+    const { graph } = this;
+    graph.setGridSize(this.model.get('grid_size'));
+    graph.refresh();
   };
 
-  onModelGridColor = () => {
+  /**
+   * Handle a grid color change from the kernel
+   */
+  protected onModelGridColor = () => {
     this.app.setGridColor(this.model.get('grid_color'));
   };
 
-  onModelSelectedCells = () => {
-    const cells = this.model
-      .get('selected_cells')
-      .reduce((m: IMXCell[], id: string) => {
-        return [...m, ...this.app.editor.graph.getCellsById(id)];
-      }, []);
-    this.app.editor.graph.selectionModel.setCells(cells);
+  /**
+   * Handle a selected cell change from the kernel
+   */
+  protected onModelSelectedCells = () => {
+    const { graph } = this;
+    const cells: IMXCell[] = graph.getCellsById(this.model.get('selected_cells'));
+
+    graph.selectionModel.setCells(cells);
   };
 
-  get app() {
-    return this.diagram.app;
+  /**
+   * convenience method for frequently-called loops
+   */
+  protected idGetter(cellOrPage: IMXCell | IMXPage) {
+    return cellOrPage.getId();
   }
 
-  // handle "native" mxEvent stuff
-  onDrawioEvent = (sender: IMXEventSource, event: IMXEvent) => {
-    let needsUpdate = {};
+  /**
+   * Extract the cell or page ids
+   */
+  protected getCellIds(): string[] {
+    return Object.values(this.graphModel.cells).map(this.idGetter);
+  }
+
+  /**
+   * Translate drawio view translation to scroll offsets
+   *
+   * Ideally this would be the center of the viewport to allow for synced views
+   */
+  translateToScroll() {
+    const { x, y } = this.graph.view.getTranslate();
+
+    return { scroll_x: x, scroll_y: y };
+  }
+
+  /**
+   * handle subscribed "native" mxEvents
+   *
+   * These are found throughout the code in the `mxEvent` namespace, though some
+   * magic strings do appear duplicated in a numebr of placess
+   */
+  protected onDrawioEvent = (sender: IMXEventSource, event: IMXEvent) => {
+    const { app, graph, model } = this;
+    const { view } = graph;
+
+    let change = {};
+
     switch (event.name) {
       case 'change':
-        needsUpdate = {
-          selected_cells: this.app.editor.graph.selectionModel.cells.map((c) =>
-            c.getId()
-          ),
-        };
+        change = { selected_cells: graph.selectionModel.cells.map(this.idGetter) };
         break;
       case 'scale':
       case 'scaleAndTranslate':
-        needsUpdate = { zoom: this.app.editor.graph.view.getScale() };
+        change = { zoom: view.getScale() };
         break;
       case 'pan':
       case 'translate':
       case 'size':
-        needsUpdate = this.translateToScroll();
+        change = this.translateToScroll();
         break;
       case 'pageSelected':
-        needsUpdate = {
-          current_page: this.app.pages.indexOf(this.app.currentPage),
-          page_ids: this.app.pages.map((p) => p.getId()),
+        change = {
+          current_page: app.pages.indexOf(app.currentPage),
+          page_ids: app.pages.map((p) => p.getId()),
         };
         break;
       case 'pageFormatChanged':
-        needsUpdate = { page_format: this.app.editor.graph.pageFormat };
+        change = { page_format: graph.pageFormat };
         break;
       case 'gridEnabledChanged':
-        needsUpdate = { grid_enabled: this.app.editor.graph.gridEnabled };
+        change = { grid_enabled: graph.gridEnabled };
         break;
       case 'gridSizeChanged':
-        needsUpdate = { grid_size: this.app.editor.graph.gridSize };
+        change = { grid_size: graph.gridSize };
         break;
       case 'gridColorChanged':
-        needsUpdate = { grid_color: this.app.editor.graph.view.gridColor };
+        change = { grid_color: view.gridColor };
+        break;
+      case 'removeCells':
+      case 'cellsAdded':
+      case 'cellsInserted':
+        change = { cell_ids: this.getCellIds() };
         break;
       case 'fireMouseEvent':
         break; // these are too noisy, even for us
@@ -386,18 +511,13 @@ export class DiagramView extends BoxView {
 
     const old: any = {};
 
-    for (const k of Object.keys(needsUpdate)) {
-      old[k] = this.model.attributes[k];
+    for (const k of Object.keys(change)) {
+      old[k] = model.attributes[k];
     }
 
-    if (!JSONExt.deepEqual(old, needsUpdate)) {
-      this.model.set(needsUpdate);
+    if (!JSONExt.deepEqual(old, change)) {
+      model.set(change);
       this.touch();
     }
   };
-
-  translateToScroll() {
-    const { x, y } = this.app.editor.graph.view.getTranslate();
-    return { scroll_x: x, scroll_y: y };
-  }
 }

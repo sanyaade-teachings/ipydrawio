@@ -1,4 +1,4 @@
-# Copyright 2021 ipydrawio contributors
+# Copyright 2022 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,18 +21,47 @@ Force Tags        component:document
 Suite Setup       Set Screenshot Directory    ${OUTPUT DIR}${/}lite${/}documents
 
 *** Test Cases ***
-Test Examples
-    [Documentation]    Do all of the examples work?
-    ${examples} =    List Files In Directory    ${DEMO}    *.dio*
-    FOR    ${file}    IN    @{EXAMPLES}
-        Try to Close All Tabs
-        Run Keyword If    ${file.__contains__('.dio')}    Example Should Load    ${file}
-    END
+Poster Dio Svg
+    [Documentation]    Does the Poster.dio.svg example document work?
+    Example Document Should Load    Poster.dio.svg
+
+Roadmap Dio Svg
+    [Documentation]    Does the ROADMAP.dio.svg example document work?
+    Example Document Should Load    ROADMAP.dio.svg
+
+Affinity Dio Svg
+    [Documentation]    Does the affinity.dio.svg example document work?
+    Example Document Should Load    affinity.dio.svg
+
+Comp Dio Svg
+    [Documentation]    Does the comp.dio.svg example document work?
+    Example Document Should Load    comp.dio.svg
+
+Deployment Dio Svg
+    [Documentation]    Does the deployment.dio.svg example document work?
+    Example Document Should Load    deployment.dio.svg
+
+Mermaid Dio Svg
+    [Documentation]    Does the mermaid.dio.svg example document work?
+    Example Document Should Load    mermaid.dio.svg
+
+Mindmap Dio Svg
+    [Documentation]    Does the mindmap.dio.svg example document work?
+    Example Document Should Load    mindmap.dio.svg
+
+Wireframe Dio Svg
+    [Documentation]    Does the wireframe.dio.svg example document work?
+    Example Document Should Load    wireframe.dio.svg
+
+What-Can-You-Draw Dio Svg
+    [Documentation]    Does the what-can-you-draw.dio.svg example document work?
+    Example Document Should Load    what-can-you-draw.dio.svg
 
 *** Keywords ***
-Example Should Load
+Example Document Should Load
     [Arguments]    ${file}
-    [Documentation]    Does one example work?
+    [Documentation]    Does one example document work?
+    Try to Close All Tabs
     Ensure File Browser is Open
     Double Click Element    css:[title*\="${file}"]
     Unselect Frame

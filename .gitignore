@@ -15,7 +15,7 @@ _output
 *.tgz
 *.tsbuildinfo
 **/*DRAWIO_DEBUG*
-*doit.db
+*doit.db*
 atest/output/
 build/
 dist/

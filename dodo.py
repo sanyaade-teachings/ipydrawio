@@ -15,7 +15,7 @@ maybe before you push
     doit -n8 lint
 """
 
-# Copyright 2021 ipydrawio contributors
+# Copyright 2022 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -347,7 +347,7 @@ def task_lint():
 
     dio_tasks = []
 
-    for dio_file in P.ALL_DIO:
+    for dio_file in P.ALL_DIO + P.EXAMPLE_IPYNB + P.DOCS_IPYNB:
         name = f"dio:clean:{dio_file.relative_to(P.ROOT)}"
         dio_tasks += [f"lint:{name}"]
         yield dict(
@@ -446,7 +446,10 @@ def task_build():
         file_dep=[P.README],
         targets=[P.IPD / "README.md"],
         actions=[
-            lambda: [(P.IPD / "README.md").write_text(P.README.read_text()), None][-1]
+            lambda: [
+                (P.IPD / "README.md").write_text(P.README.read_text(), **P.ENC),
+                None,
+            ][-1]
         ],
     )
 
@@ -554,7 +557,7 @@ def task_build():
 
         output = "\n".join(lines)
         print(output)
-        P.SHA256SUMS.write_text(output)
+        P.SHA256SUMS.write_text(output, **P.ENC)
 
     yield dict(
         name="hash",
@@ -598,8 +601,8 @@ def task_conda_test():
         )
 
 
-def task_lab():
-    """run JupyterLab "normally" (not watching sources)"""
+def task_serve():
+    """run processes "normally" (not watching sources)"""
     if P.TESTING_IN_CI:
         return
 
@@ -615,10 +618,18 @@ def task_lab():
 
         proc.wait()
 
-    return dict(
+    yield dict(
+        name="lab",
         uptodate=[lambda: False],
         file_dep=[*P.OK_SERVEREXT.values()],
         actions=[PythonInteractiveAction(lab)],
+    )
+
+    yield dict(
+        name="demo",
+        uptodate=[lambda: False],
+        file_dep=[P.DEMO_ARCHIVE],
+        actions=[(P._lite, [["doit"], ["--", "-s", "serve"]])],
     )
 
 
@@ -739,17 +750,16 @@ def task_demo():
         ],
     )
 
-    for path in P.ALL_DEMO_CONTENTS:
-        name = f"stage:{path.name}"
-        dest = P.DEMO_FILES / path.name.replace(" ", "_")
+    for src, dest in P.ALL_DEMO_CONTENTS.items():
+        name = f"stage:{src.name}"
         demo_dest += [dest]
         demo_tasks += [f"demo:{name}"]
-        final_dest += [P.DEMO_BUILD / f"files/{path.name}"]
+        final_dest += [P.DEMO_BUILD / f"files/{src.name}"]
         yield dict(
             name=name,
-            file_dep=[path],
+            file_dep=[src],
             targets=[dest],
-            actions=[(P._copy_one, [path, dest])],
+            actions=[(P._copy_one, [src, dest])],
         )
 
     assert demo_dest
@@ -761,7 +771,7 @@ def task_demo():
         task_dep=demo_tasks,
         file_dep=[*demo_dest, *P.DEMO_WHEELS.glob(f"*{P.NOARCH_WHL}")],
         targets=[P.DEMO_ARCHIVE, P.DEMO_HASHES, *final_dest, P.DEMO_CONTENTS_API],
-        actions=[P._build_lite],
+        actions=[(P._lite, [["build", "archive"], []])],
     )
 
 
@@ -864,7 +874,9 @@ def task_check():
                     "pytest-check-links",
                     "--check-anchors",
                     "--check-links-ignore",
-                    "^https?://",
+                    "http://",
+                    "--check-links-ignore",
+                    "https://",
                     *[p for p in file_dep if p.name not in ["schema.html"]],
                 ]
             ],
@@ -927,6 +939,10 @@ def task_test():
             f"--html={html}",
             "--self-contained-html",
         ]
+
+        if pkg == P.IPD.name:
+            pytest_args += ["-n", "auto"]
+
         yield P._ok(
             dict(
                 name=f"pytest:{pkg}",
@@ -961,6 +977,20 @@ def task_test():
             P.DEMO_HASHES,
             *P.OK_SERVEREXT.values(),
         ]
+
+        demo_files = [P.DEMO_FILES / p.name for p in P.ALL_DEMO_CONTENTS]
+
+        for tmpl in P.ATEST_TEMPLATES:
+            dest = tmpl.parent / tmpl.name.replace(".j2", "")
+            yield dict(
+                name=f"template:{tmpl.relative_to(P.ATEST)}",
+                file_dep=[tmpl, *demo_files],
+                targets=[dest],
+                actions=[
+                    (P.template_one, [tmpl, dest]),
+                    [*P.PYM, "robot.tidy", "--inplace", dest],
+                ],
+            )
 
     yield P._ok(
         dict(

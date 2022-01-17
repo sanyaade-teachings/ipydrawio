@@ -13,6 +13,7 @@
     "ignore_sys_prefix": true,
     "lite_dir": ".",
     "output_archive": "../build/demo/ipydrawio-lite-1.2.0.tgz",
-    "output_dir": "../build/demo"
+    "output_dir": "../build/demo",
+    "piplite_urls": ["../py_packages/ipydrawio/dist/ipydrawio-1.2.0-py3-none-any.whl"]
   }
 }

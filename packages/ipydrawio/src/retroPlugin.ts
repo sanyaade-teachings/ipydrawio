@@ -1,5 +1,5 @@
 /*
-  Copyright 2021 ipydrawio contributors
+  Copyright 2022 ipydrawio contributors
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -58,8 +58,7 @@ function activate(
       if (!currentWidget || currentWidget instanceof DiagramDocument) {
         return;
       }
-      const context = (currentWidget as any)
-        .context as DocumentRegistry.Context;
+      const context = (currentWidget as any).context as DocumentRegistry.Context;
       if (!context) {
         return;
       }

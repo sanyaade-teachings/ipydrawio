@@ -1,6 +1,6 @@
 """test customizations"""
 
-# Copyright 2021 ipydrawio contributors
+# Copyright 2022 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,6 +22,6 @@ HERE = Path(__file__).parent
 FIXTURES = HERE / "fixtures"
 
 
-@pytest.fixture(params=["dio", "dio.svg"])
+@pytest.fixture(params=["dio", "dio.svg", "ipynb"])
 def an_empty_dio_file(request: str) -> Path:
     return FIXTURES / f"empty.{request.param}"

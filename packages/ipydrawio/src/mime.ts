@@ -1,5 +1,5 @@
 /*
-  Copyright 2021 ipydrawio contributors
+  Copyright 2022 ipydrawio contributors
   Copyright 2020 jupyterlab-drawio contributors
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,27 +25,25 @@ import { ReadonlyPartialJSONObject } from '@lumino/coreutils';
 
 export const MIME_CLASS = 'jp-DiagramMedia';
 
-export const extensions: IRenderMime.IExtension[] = ALL_MIME_FORMATS.map(
-  (fmt) => {
-    const { name } = fmt;
-    return {
-      id: `${NS}:rendermime-${name}`,
-      name,
-      rendererFactory: {
-        safe: true,
-        mimeTypes: [fmt.mimetype],
-        createRenderer: (options) => {
-          DEBUG && console.error('creating renderer');
-          return new RenderedDiagram({
-            ...options,
-            format: fmt,
-          });
-        },
+export const extensions: IRenderMime.IExtension[] = ALL_MIME_FORMATS.map((fmt) => {
+  const { name } = fmt;
+  return {
+    id: `${NS}:rendermime-${name}`,
+    name,
+    rendererFactory: {
+      safe: true,
+      mimeTypes: [fmt.mimetype],
+      createRenderer: (options) => {
+        DEBUG && console.error('creating renderer');
+        return new RenderedDiagram({
+          ...options,
+          format: fmt,
+        });
       },
-      dataType: 'string',
-    };
-  }
-);
+    },
+    dataType: 'string',
+  };
+});
 
 export default extensions;
 

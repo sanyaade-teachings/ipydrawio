@@ -1,5 +1,5 @@
 /*
-  Copyright 2021 ipydrawio contributors
+  Copyright 2022 ipydrawio contributors
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -57,15 +57,11 @@ export const IPYNB_PLAIN: IFormat<any> = {
     return raw;
   },
   fromXML: (model: NotebookModel, xml) => {
-    const meta = model.metadata.get(
-      IPYDRAWIO_METADATA
-    ) as ReadonlyPartialJSONObject;
+    const meta = model.metadata.get(IPYDRAWIO_METADATA) as ReadonlyPartialJSONObject;
     model.metadata.set(IPYDRAWIO_METADATA, { ...(meta || {}), xml });
   },
   toXML: (model: NotebookModel) => {
-    const meta = model.metadata.get(
-      IPYDRAWIO_METADATA
-    ) as ReadonlyPartialJSONObject;
+    const meta = model.metadata.get(IPYDRAWIO_METADATA) as ReadonlyPartialJSONObject;
     return meta?.xml ? `${meta.xml}` : '';
   },
   exporter: async (widget, key, settings) => {

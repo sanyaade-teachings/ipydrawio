@@ -1,6 +1,6 @@
 """ jupyter widgets for drawio"""
 
-# Copyright 2021 ipydrawio contributors
+# Copyright 2022 ipydrawio contributors
 # Copyright 2020 jupyterlab-drawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -77,6 +77,7 @@ class Diagram(DiagramBase, W.Box):
     grid_color = T.Unicode("#66666666").tag(sync=True)
     grid_size = T.Float(10, min=0.01).tag(sync=True)
     selected_cells = W.trait_types.TypedTuple(T.Unicode()).tag(sync=True)
+    cell_ids = W.trait_types.TypedTuple(T.Unicode()).tag(sync=True)
     # these are important, but advanced
     url_params = T.Dict(help="drawio URL params").tag(sync=True)
     config = T.Dict(help="drawio JSON Configuration").tag(sync=True)

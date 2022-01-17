@@ -1,7 +1,7 @@
 # `@deathbeds/ipydrawio-weback`
 
-> JupyterLab 3 Webpack-friendly [drawio](https://www.diagrams.net) assets for
-> embedding in lab extensions
+> JupyterLab 3 Webpack-friendly [drawio](https://www.diagrams.net) assets for embedding
+> in lab extensions
 
 If you'd just like to _use_ this extension, please run:
 
@@ -11,18 +11,17 @@ conda install -c conda-forge ipydrawio  # or...
 pip install ipydrawio
 ```
 
-See the [project repo](https://github.com/deathbeds/ipydrawio) for more
-information.
+See the [project repo](https://github.com/deathbeds/ipydrawio) for more information.
 
 ## Open Source
 
 This work is licensed under the [Apache-2.0] License.
 
-The vendored [@jgraph/drawio](https://github.com/jgraph/drawio) is also licensed
-under the [Apache-2.0] license.
+The vendored [@jgraph/drawio](https://github.com/jgraph/drawio) is also licensed under
+the [Apache-2.0] license.
 
 ```
-Copyright 2021 ipydrawio contributors
+Copyright 2022 ipydrawio contributors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

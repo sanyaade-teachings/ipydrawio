@@ -1,6 +1,6 @@
 # a heavy demo environment for interactive testing
 
-# Copyright 2021 ipydrawio contributors
+# Copyright 2022 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ dependencies:
   - sphinx-jsonschema
   - sphinxext-rediraffe
   - pip:
-      - jupyterlite ==0.1.0a18
+      - jupyterlite ==0.1.0a19
 
   ### ipydrawio-docs-deps ###
 
@@ -89,6 +89,7 @@ dependencies:
   - flake8
   - isort >=5
   - pyflakes
+  - pyyaml
   - robotframework-lint
   # unit testing
   - pytest
@@ -96,6 +97,7 @@ dependencies:
   - pytest-cov
   - pytest-html
   - pytest-tornasync
+  - pytest-xdist
   # acceptance testing
   - firefox =91
   - geckodriver >=0.28.0

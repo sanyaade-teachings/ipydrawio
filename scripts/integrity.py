@@ -1,6 +1,6 @@
 """ipydrawio repo integrity tests"""
 
-# Copyright 2021 ipydrawio contributors
+# Copyright 2022 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -95,6 +95,10 @@ def test_recipe_versions():
             "federated_extensions/0",
             f"""../{P.PY_WHEEL["ipydrawio"].relative_to(P.ROOT)}""",
         ],
+        [
+            "piplite_urls/0",
+            f"""../{P.PY_WHEEL["ipydrawio"].relative_to(P.ROOT)}""",
+        ],
     ],
 )
 def test_demo_paths(the_demo_config, pointer, value):
@@ -110,7 +114,7 @@ def test_headers(path):
     """are the license headers correct?"""
     text = path.read_text(encoding="utf-8")
     assert (
-        "Copyright 2021 ipydrawio contributors" in text
+        "Copyright 2022 ipydrawio contributors" in text
     ), f"{path.relative_to(P.ROOT)} needs copyright header"
     assert (
         'Licensed under the Apache License, Version 2.0 (the "License");' in text
