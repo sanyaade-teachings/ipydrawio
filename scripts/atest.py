@@ -65,11 +65,11 @@ def run_tests(attempt=0, extra_args=None):
         "--variable",
         f"PY:{P.PY_MAJOR}",
         "--variable",
-        f"DEMO:{P.DEMO}",
+        f"ROOT:{P.ROOT}",
         "--randomize",
         "all",
         "--xunit",
-        ".".join(["xunit", "xml"]),
+        "xunit.xml",
         ".",
     ]
 
