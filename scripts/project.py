@@ -596,6 +596,8 @@ CONDA_BUILD_ARGS = [
     "--override-channels",
     "-c",
     "conda-forge",
+    "-c",
+    "nodefaults",
 ]
 CONDA_PKGS = {
     pkg: CONDA_BLD / f"noarch/{pkg}-{ver}-py_0.tar.bz2"

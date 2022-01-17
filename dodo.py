@@ -589,6 +589,7 @@ def task_conda_build():
         name="build",
         file_dep=[
             P.RECIPE,
+            P.CONDARC,
             *[P.DIST / p.name for p in P.PY_SDIST.values()],
         ],
         actions=[
