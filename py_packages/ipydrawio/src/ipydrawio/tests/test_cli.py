@@ -49,6 +49,7 @@ def test_clean_fail_not_supported(script_runner, tmp_path):
 def test_cli_clean(
     script_runner, tmp_path, an_empty_dio_file, pretty, indent, tabs, mx_attrs
 ):
+    is_mxgraph = "mxgraph" in an_empty_dio_file.name
     dest = tmp_path / an_empty_dio_file.name
     shutil.copy2(an_empty_dio_file, dest)
 
@@ -76,13 +77,16 @@ def test_cli_clean(
 
     cleaned = dest.read_text(encoding="utf-8").strip()
 
-    assert cleaned != before
+    if not is_mxgraph or pretty:
+        assert cleaned != before
 
-    for attr in "host", "agent", "etag", "modified":
-        if mx_attrs is None or attr in mx_attrs:
-            assert f"{attr}=" not in cleaned, f"should _not_ have contained {attr}"
-        else:
-            assert f"{attr}=" in cleaned, f"should have contained {attr}"
+    if not is_mxgraph:
+        # mxgraph doesn't have these fields
+        for attr in "host", "agent", "etag", "modified":
+            if mx_attrs is None or attr in mx_attrs:
+                assert f"{attr}=" not in cleaned, f"should _not_ have contained {attr}"
+            else:
+                assert f"{attr}=" in cleaned, f"should have contained {attr}"
 
     if dest.suffix != ".ipynb":
         if pretty:
