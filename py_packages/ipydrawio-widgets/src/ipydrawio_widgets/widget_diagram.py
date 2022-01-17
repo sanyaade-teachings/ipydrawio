@@ -25,7 +25,6 @@ from .schema import get_schema
 module_name = __js__["name"]
 module_version = "^{version}".format(**__js__)
 
-
 class DiagramBase(W.Widget):
     """Module metadata for SVG"""
 
@@ -35,6 +34,7 @@ class DiagramBase(W.Widget):
     _view_module_version = T.Unicode(module_version).tag(sync=True)
 
 
+@W.register
 class XML(DiagramBase, W.Widget):
     """A Drawio XML-native Document"""
 
@@ -43,6 +43,7 @@ class XML(DiagramBase, W.Widget):
     _view_name = T.Unicode("XMLView").tag(sync=True)
 
 
+@W.register
 class Diagram(DiagramBase, W.Box):
     """A Drawio Diagram"""
 
