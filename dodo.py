@@ -760,6 +760,7 @@ def task_demo():
                     P.DEMO_CONFIG,
                     P.FED_EXT_MARKER,
                     [P.PY_WHEEL[P.IPD.name]],
+                    [P.PY_WHEEL[P.IPDW.name]],
                 ],
             )
         ],

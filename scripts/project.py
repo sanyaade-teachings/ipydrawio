@@ -879,7 +879,7 @@ def _lite(lite_actions, extra_args=[]):
             return False
 
 
-def _sync_lite_config(from_env, to_json, marker, extras):
+def _sync_lite_config(from_env, to_json, marker, extra_federated, extra_pyolite):
     """use conda list to derive tarball names"""
     raw_lock = subprocess.check_output(["conda", "list", "--explicit"])
     ext_packages = [
@@ -888,9 +888,13 @@ def _sync_lite_config(from_env, to_json, marker, extras):
         if p.strip()
     ]
 
-    tarball_urls = sorted(
-        ["../" + str(extra.relative_to(ROOT).as_posix()) for extra in extras]
+    federated_extensions = sorted(
+        ["../" + str(extra.relative_to(ROOT).as_posix()) for extra in extra_federated]
     )
+    piplite_urls = [
+        "../" + str(extra.relative_to(ROOT).as_posix()) for extra in extra_pyolite
+    ]
+
     for raw_url in sorted(raw_lock.decode("utf-8").splitlines()):
         try:
             label, subdir, pkg = re.findall(RE_CONDA_FORGE_URL, raw_url)[0]
@@ -903,14 +907,19 @@ def _sync_lite_config(from_env, to_json, marker, extras):
 
         for ext in ext_packages:
             if pkg.startswith(ext):
-                tarball_urls += ["/".join([CONDA_FORGE_RELEASE, subdir, pkg, pkg])]
+                federated_extensions += [
+                    "/".join([CONDA_FORGE_RELEASE, subdir, pkg, pkg])
+                ]
 
     config = json.loads(to_json.read_text(**ENC))
-    config["LiteBuildConfig"]["federated_extensions"] = tarball_urls
-    config["LiteBuildConfig"]["piplite_urls"] = [
-        "../" + str(PY_WHEEL["ipydrawio-widgets"].relative_to(ROOT).as_posix())
-    ]
+
+    config["LiteBuildConfig"].update(
+        federated_extensions=federated_extensions,
+        piplite_urls=piplite_urls,
+    )
+
     to_json.write_text(json.dumps(config, **JSON_FMT), **ENC)
+
     subprocess.call([*PRETTIER, "--write", to_json])
 
 
