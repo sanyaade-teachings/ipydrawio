@@ -25,6 +25,7 @@ from .schema import get_schema
 module_name = __js__["name"]
 module_version = "^{version}".format(**__js__)
 
+
 class DiagramBase(W.Widget):
     """Module metadata for SVG"""
 
