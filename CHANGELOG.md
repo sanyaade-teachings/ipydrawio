@@ -11,6 +11,8 @@
 
 #### @deathbeds/ipydrawio 1.2.0
 
+- adds support for data URI-encoded shape libraries (incompatible with `stealth`) [#80]
+
 #### @deathbeds/ipydrawio-notebook 1.2.0
 
 #### @deathbeds/ipydrawio-webpack 16.2.400
@@ -25,6 +27,7 @@
 
 #### @deathbeds/ipydrawio-pdf 1.2.0
 
+[#80]: https://github.com/deathbeds/ipydrawio/issues/80
 [#85]: https://github.com/deathbeds/ipydrawio/issues/85
 [#88]: https://github.com/deathbeds/ipydrawio/issues/88
 
