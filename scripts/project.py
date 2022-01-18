@@ -390,6 +390,7 @@ DEMO_CONTENTS_API = DEMO_BUILD / "api/contents/all.json"
 DEMO_ARCHIVE = (
     DEMO_BUILD / f"""ipydrawio-lite-{JS_PKG_DATA["ipydrawio"]["version"]}.tgz"""
 )
+BUILD_WHEELS = BUILD / "wheels"
 DEMO_WHEELS = DEMO / "pypi"
 NOARCH_WHL = "py3-none-any.whl"
 IGNORED_WHEELS = ["widgetsnbextension", "nbformat", "ipykernel", "pyolite"]
@@ -937,17 +938,29 @@ def fetch_pyodide_packages():
 
 
 def fetch_wheels():
+    BUILD_WHEELS.mkdir(exist_ok=True, parents=True)
     DEMO_WHEELS.mkdir(exist_ok=True, parents=True)
+    pyodide_pkgs = json.loads(PYODIDE_PACKAGES.read_text(encoding="utf-8"))
+    pyodide_norm_names = [k.lower().replace("-", "_") for k in pyodide_pkgs["packages"]]
     subprocess.check_call(
         ["pip", "download", "-r", str(DEMO_REQS), "--prefer-binary"],
-        cwd=str(DEMO_WHEELS),
+        cwd=str(BUILD_WHEELS),
     )
-    for pkg in sorted(DEMO_WHEELS.glob("*")):
+    for pkg in sorted(BUILD_WHEELS.glob("*")):
+        norm_name = pkg.name.split("-")[0].lower()
         if not pkg.name.endswith(NOARCH_WHL):
-            pkg.unlink
             continue
-        if any(re.findall(f"{p}-\\d", pkg.name) for p in IGNORED_WHEELS):
-            pkg.unlink()
+        if norm_name in pyodide_norm_names or norm_name in IGNORED_WHEELS:
+            continue
+        dest = DEMO_WHEELS / pkg.name
+
+        if dest.exists():
+            if pkg.stat().st_mtime > dest.stat().st_mtime():
+                dest.unlink()
+            else:
+                continue
+
+        shutil.copy2(pkg, dest)
 
 
 def template_one(src, dest):
