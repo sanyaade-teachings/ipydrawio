@@ -1747,8 +1747,6 @@ import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/PostConfig.js'
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/PreConfig.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/app.min.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/clear.js';
-import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/croppie/croppie.min.css';
-import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/croppie/croppie.min.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/cryptojs/aes.min.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/deflate/base64.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/deflate/pako.min.js';
@@ -2494,6 +2492,7 @@ import '!!file-loader?name=[path][name].[ext]&context=.!../dio/styles/dark.css';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/styles/default-old.xml';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/styles/default.xml';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/styles/down.gif';
+import '!!file-loader?name=[path][name].[ext]&context=.!../dio/styles/fonts/ArchitectsDaughter-Regular.ttf';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/styles/grapheditor.css';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/styles/sprites.png';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/styles/thumb_horz.png';
@@ -2804,6 +2803,8 @@ import '!!file-loader?name=[path][name].[ext]&context=.!../dio/templates/wirefra
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/templates/wireframes/home_page_hero_video_1.png';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/templates/wireframes/home_page_hero_video_1.xml';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/vsdxImporter.html';
+import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-12cca165.js';
+import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-12cca165.js.map';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-9fe249eb.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-9fe249eb.js.map';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-bed83ea8.js';

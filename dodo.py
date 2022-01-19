@@ -178,38 +178,43 @@ def task_setup():
                 P.OK_PYSETUP[pkg],
             )
         else:
-            extra_deps = []
-            if pkg != "ipydrawio":
-                extra_deps += [P.OK_PYSETUP["ipydrawio"]]
+            extra_deps = P.PY_SETUP_DEPS[pkg_setup.parent]()
+
+            actions = [
+                CmdAction(
+                    [
+                        *P.PIP,
+                        "install",
+                        "-e",
+                        ".",
+                        "--no-deps",
+                        "-vv",
+                    ],
+                    shell=False,
+                    cwd=pkg_setup.parent,
+                ),
+            ]
+
+            if P.PY_HAS_EXT.get(pkg_setup.parent):
+                actions += [
+                    CmdAction(
+                        [
+                            *P.LAB_EXT,
+                            "develop",
+                            "--debug",
+                            "--overwrite",
+                            ".",
+                        ],
+                        shell=False,
+                        cwd=pkg_setup.parent,
+                    ),
+                ]
+
             yield P._ok(
                 dict(
                     name=f"py:{pkg}",
                     file_dep=[pkg_setup, P.PY_SETUP_CFG[pkg], *ext_deps, *extra_deps],
-                    actions=[
-                        CmdAction(
-                            [
-                                *P.PIP,
-                                "install",
-                                "-e",
-                                ".",
-                                "--no-deps",
-                                "-vv",
-                            ],
-                            shell=False,
-                            cwd=pkg_setup.parent,
-                        ),
-                        CmdAction(
-                            [
-                                *P.LAB_EXT,
-                                "develop",
-                                "--debug",
-                                "--overwrite",
-                                ".",
-                            ],
-                            shell=False,
-                            cwd=pkg_setup.parent,
-                        ),
-                    ],
+                    actions=actions,
                 ),
                 P.OK_PYSETUP[pkg],
             )
@@ -420,13 +425,13 @@ def task_build():
             name="js:pre",
             file_dep=[
                 P.YARN_INTEGRITY,
-                P.IPDW_IGNORE,
+                P.IPDWP_IGNORE,
                 P.OK_SUBMODULES,
                 *sum(P.JS_PY_SCRIPTS.values(), []),
                 *sum(P.JS_SCHEMAS.values(), []),
             ],
             actions=[[*P.LERNA, "run", "build:pre", "--stream"]],
-            targets=[P.IPDW_APP],
+            targets=[P.IPDWP_APP],
         ),
         P.OK_JS_BUILD_PRE,
     )
@@ -497,6 +502,7 @@ def task_build():
             for ext, mod in P.JS_LABEXT_PY_HOST.items()
             if mod == py_setup.parent.name
         ]
+
         file_dep = sorted(
             set(
                 [
@@ -514,6 +520,15 @@ def task_build():
 
         if py_setup.parent == P.IPDE:
             file_dep += [P.IPDE_DIE2_YARN_LOCK]
+        elif py_setup.parent == P.IPDW:
+            for src, dest in P.IPDW_DEPS.items():
+                file_dep += [dest]
+                yield dict(
+                    name=f"copy:{py_pkg}:{src.name}",
+                    file_dep=[src],
+                    targets=[dest],
+                    actions=[(P._copy_one, [src, dest])],
+                )
 
         yield dict(
             name=f"sdist:{py_pkg}",
@@ -574,6 +589,7 @@ def task_conda_build():
         name="build",
         file_dep=[
             P.RECIPE,
+            P.CONDARC,
             *[P.DIST / p.name for p in P.PY_SDIST.values()],
         ],
         actions=[
@@ -735,7 +751,7 @@ def task_demo():
     yield dict(
         name="extensions",
         doc="update jupyter-lite.json from the conda env",
-        file_dep=[P.ENV_BINDER, P.PY_WHEEL[P.IPD.name]],
+        file_dep=[P.ENV_BINDER, *P.PY_WHEEL.values()],
         targets=[P.DEMO_CONFIG],
         actions=[
             (
@@ -745,6 +761,7 @@ def task_demo():
                     P.DEMO_CONFIG,
                     P.FED_EXT_MARKER,
                     [P.PY_WHEEL[P.IPD.name]],
+                    [P.PY_WHEEL[P.IPDW.name]],
                 ],
             )
         ],
@@ -914,9 +931,10 @@ def task_test():
             dict(
                 name="integrity",
                 file_dep=[
-                    *[*P.OK_SERVEREXT.values()],
-                    *[*P.PY_SDIST.values()],
-                    *[*P.PY_WHEEL.values()],
+                    *P.OK_SERVEREXT.values(),
+                    *P.PY_SDIST.values(),
+                    *P.PY_WHEEL.values(),
+                    *P.IPDW_DEPS.values(),
                     *P.ALL_SETUP_CFG,
                     P.DEMO_CONFIG,
                     P.ENV_BINDER,

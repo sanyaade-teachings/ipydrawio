@@ -111,9 +111,7 @@ def clean_drawio_notebook_node(
             changed = True
 
     for cell in nb_node["cells"]:
-        if not hasattr(cell, "outputs"):
-            continue
-        for output in cell["outputs"]:
+        for output in cell.get("outputs", []):
             in_xml = output.get("data", {}).get(MIMETYPE)
             if not in_xml:
                 continue
@@ -137,7 +135,13 @@ def clean_drawio_xml(
 
     root = ET.fromstring(in_xml)
 
+    indent_chars = indent * ("\t" if tabs else " ")
+
     if root.tag == MX_GRAPH_TAG:
+        if pretty:
+            ET.indent(root, space=indent_chars)
+            out_xml = ET.tostring(root, pretty_print=True, encoding=str)
+            return out_xml
         return None
     elif root.tag == MX_FILE_TAG:
         mx = root
@@ -152,7 +156,7 @@ def clean_drawio_xml(
             del mx.attrib[key]
 
     if pretty:
-        ET.indent(mx, space=indent * ("\t" if tabs else " "))
+        ET.indent(mx, space=indent_chars)
         out_xml = ET.tostring(mx, pretty_print=True, encoding=str)
         out_xml = restore_entity_placeholders(out_xml)
     else:
@@ -161,7 +165,7 @@ def clean_drawio_xml(
     if root.tag == SVG_NS_TAG:
         root.attrib["content"] = out_xml
         if pretty:
-            ET.indent(root, space=indent * ("\t" if tabs else " "))
+            ET.indent(root, space=indent_chars)
             out_xml = ET.tostring(root, pretty_print=True, encoding=str)
 
     if in_xml == out_xml:

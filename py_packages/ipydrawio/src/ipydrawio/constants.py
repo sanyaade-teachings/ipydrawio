@@ -14,30 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#: An empty drawio document
-A_SHORT_DRAWIO = """<mxfile version="14.6.10">
-<diagram id="x" name="Page-1">
-  <mxGraphModel dx="1450" dy="467" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
-  <root>
-    <mxCell id="0"/>
-    <mxCell id="1" parent="0"/>
-  </root>
-  </mxGraphModel>
-</diagram>
-</mxfile>
-"""
-
-#: Sensible defaults for drawio page configuration
-DEFAULT_PAGE_FORMAT = {"x": 0, "y": 0, "width": 850, "height": 1100}
-
-#: Sensible defaults for drawio config
-DEFAULT_DRAWIO_CONFIG = {
-    "compressXml": False,
-    "showStartScreen": False,
-    "override": True,
-}
-
-
 #: The XML namespace of an SVG
 SVG_NS_TAG = "{http://www.w3.org/2000/svg}svg"
 

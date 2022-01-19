@@ -6,30 +6,6 @@
 [jupyterlab]: https://github.com/jupyterlab/jupyterlab
 [widgets]: https://github.com/jupyter-widgets/ipywidgets
 
-## Try it Now
-
-```{warning}
-<details>
-  <summary>The demo has some <strong>pointy edges</strong>...</summary>
-  <ul>
-    <li>
-      <em>Diagram Documents</em> and <em>Rich Display</em> work properly, <em>Widgets</em> are <em>close</em>, but can't be properly installed, yet
-    </li>
-    <li>
-      <code>jupyterlite</code> is <em>alpha</em> software, and evolving quickly
-    </li>
-    <li>
-      <strong>Don't</strong> use the demo site for important work
-    </li>
-  </ul>
-</details>
-```
-
-Click the _Try IPyDrawio Now_ button to launch a new browser tab running IPyDrawio. It
-contains all of the example _Diagrams_ from this documentation site.
-
-[demo]: ./demo/index
-
 ---
 
 ## Get Started
@@ -45,6 +21,28 @@ conda install -c conda-forge ipydrawio
 ```
 
 Start JupyterLab and [start making diagrams](./diagrams/index.md)!
+
+---
+
+## Try it Now
+
+```{warning}
+The in-browser demo has some <strong>pointy edges</strong>...
+<ul>
+  <li>
+    <code>jupyterlite</code> is <em>alpha</em> software, and evolving quickly
+  </li>
+  <li>
+    <strong>Don't</strong> use the demo site for important work
+  </li>
+</ul>
+```
+
+Click the _Try IPyDrawio Now_ button to launch a new browser tab running IPyDrawio in
+JupyterLite. It contains all of the example _Diagrams_ from this documentation site, and
+some notebooks that show what's posssible.
+
+[demo]: ./demo/index
 
 ---
 

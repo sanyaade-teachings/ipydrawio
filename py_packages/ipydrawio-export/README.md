@@ -1,7 +1,7 @@
 # IPyDrawio Export
 
-[![binder-badge][]][binder] [![install from pypi][pypi-badge]][pypi]
-[![install from conda-forge][conda-badge]][conda]
+[![docs][docs-badge]][docs] [![binder-badge][]][binder]
+[![install from pypi][pypi-badge]][pypi] [![install from conda-forge][conda-badge]][conda]
 [![build][workflow-badge]][workflow] [![coverage][cov-badge]][cov]
 
 > PDF export of [drawio](https://www.diagrams.net) diagrams for JupyterLab.
@@ -130,3 +130,5 @@ limitations under the License.
 [cov-badge]:
   https://codecov.io/gh/deathbeds/ipydrawio/branch/master/graph/badge.svg?token=9B74VKHQDK
 [cov]: https://codecov.io/gh/deathbeds/ipydrawio
+[docs-badge]: https://readthedocs.org/projects/ipydrawio/badge/?version=latest
+[docs]: https://ipydrawio.rtfd.io

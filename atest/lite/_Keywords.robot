@@ -17,7 +17,6 @@ Documentation     A work-in-progress set of keywords for JupyterLite
 Library           OperatingSystem
 Library           Process
 Library           ../ports.py
-Variables         ../demo.py
 
 *** Variable ***
 ${NEXT LITE LOG}    ${0}
@@ -74,7 +73,7 @@ Clean Up Lite Test
 Start Lite Suite
     [Documentation]    Ensure lite assets are available
     Set Screenshot Directory    ${OUTPUT DIR}${/}lite
-    Start JupyterLite Server    ${DEMO}
+    Start JupyterLite Server    ${ROOT}${/}demo
 
 Clean Up Lite Suite
     [Documentation]    Clean up after lite

@@ -2,7 +2,7 @@
 black
 doit
 flake8
-ipywidgets >=7.6
+ipywidgets >=7.6,<8
 isort >=5
 jsonpointer
 jupyterlab ==3.*
