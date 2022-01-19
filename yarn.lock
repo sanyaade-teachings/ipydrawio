@@ -106,14 +106,14 @@
     "@jupyterlab/application" "^3.1.0"
 
 "@deathbeds/ipydrawio-webpack@file:packages/ipydrawio-webpack":
-  version "16.3.0"
+  version "16.4.0"
   dependencies:
     "@jupyterlab/application" "^3.1.0"
 
 "@deathbeds/ipydrawio@file:packages/ipydrawio":
   version "1.2.0"
   dependencies:
-    "@deathbeds/ipydrawio-webpack" "^16.3.0"
+    "@deathbeds/ipydrawio-webpack" "^16.4.0"
     "@jupyterlab/application" "^3.1.0"
     "@jupyterlab/launcher" "^3.1.0"
     "@jupyterlab/mainmenu" "^3.1.0"
