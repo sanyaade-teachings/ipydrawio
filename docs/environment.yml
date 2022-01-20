@@ -28,7 +28,7 @@ dependencies:
   - pkginfo
   - pydata-sphinx-theme
   - pytest-check-links
-  - sphinx !=4.4.0=0
+  - sphinx !=4.4.0=*_0
   - sphinx-jsonschema
   - sphinxext-rediraffe
   - pip:
