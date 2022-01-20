@@ -293,13 +293,13 @@ JS_SCHEMAS = {
 }
 
 # special things for ipydrawio-webpack
-IPDW = JS_PKG_JSON["ipydrawio-webpack"].parent
-IPDW_APP = IPDW / "dio/js/app.min.js"
-IPDW_PY = (IPDW / "scripts").rglob("*.py")
-DRAWIO = IPDW / "drawio"
-IPDW_LIB = IPDW / "lib"
-IPDW_IGNORE = IPDW / ".npmignore"
-ALL_IPDW_JS = IPDW_LIB.glob("*.js")
+IPDWP = JS_PKG_JSON["ipydrawio-webpack"].parent
+IPDWP_APP = IPDWP / "dio/js/app.min.js"
+IPDWP_PY = (IPDWP / "scripts").rglob("*.py")
+DRAWIO = IPDWP / "drawio"
+IPDWP_LIB = IPDWP / "lib"
+IPDWP_IGNORE = IPDWP / ".npmignore"
+ALL_IPDWP_JS = IPDWP_LIB.glob("*.js")
 
 IPJT = JS_PKG_JSON["ipydrawio-jupyter-templates"].parent
 IPJT_TMPL = IPJT / "tmpl"
@@ -317,21 +317,44 @@ PY_SETUP_CFG = {k: v.parent / "setup.cfg" for k, v in PY_SETUP.items()}
 PY_VERSION = {
     "ipydrawio": JS_PKG_DATA["ipydrawio"]["version"],
     "ipydrawio-export": JS_PKG_DATA["ipydrawio-pdf"]["version"],
+    "ipydrawio-widgets": JS_PKG_DATA["ipydrawio"]["version"],
 }
 
 IPD = PY_SETUP["ipydrawio"].parent
 IPDE = PY_SETUP["ipydrawio-export"].parent
+IPDW = PY_SETUP["ipydrawio-widgets"].parent
+
 IPDE_VENDOR = IPDE / "src/ipydrawio_export/vendor"
 IPDE_DIE2 = IPDE_VENDOR / "draw-image-export2"
 IPDE_DIE2_PACKAGE_JSON = IPDE_DIE2 / "package.json"
 IPDE_DIE2_YARN_LOCK = IPDE_DIE2 / "yarn.lock"
 
+IPDW_SRC = IPDW / "src/ipydrawio_widgets"
+IPDW_DEPS = {
+    JS_PKG_JSON["ipydrawio"]: IPDW_SRC / "js/package.json",
+    JS_PKG_JSON["ipydrawio"].parent / "schema/plugin.json": IPDW_SRC / "js/plugin.json",
+}
+
 IPD_VERSION = PY_VERSION["ipydrawio"]
+IPDW_VERSION = PY_VERSION["ipydrawio-widgets"]
 IPDE_VERSION = PY_VERSION["ipydrawio-export"]
+
+PY_HAS_EXT = {
+    IPD: True,
+    IPDE: True,
+    IPDW: False,
+}
+
+PY_SETUP_DEPS = {
+    IPD: lambda: [OK_PYSETUP["ipydrawio-widgets"]],
+    IPDE: lambda: [OK_PYSETUP["ipydrawio"]],
+    IPDW: lambda: [*IPDW_DEPS.values()],
+}
 
 PY_SDIST = {
     IPDE.name: IPDE / "dist" / f"{IPDE.name}-{IPDE_VERSION}.tar.gz",
     IPD.name: IPD / "dist" / f"{IPD.name}-{IPD_VERSION}.tar.gz",
+    IPDW.name: IPDW / "dist" / f"{IPDW.name}-{IPDW_VERSION}.tar.gz",
 }
 PY_WHEEL = {
     IPDE.name: IPDE
@@ -340,6 +363,9 @@ PY_WHEEL = {
     IPD.name: IPD
     / "dist"
     / f"""{IPD.name.replace("-", "_")}-{IPD_VERSION}-py3-none-any.whl""",
+    IPDW.name: IPDW
+    / "dist"
+    / f"""{IPDW.name.replace("-", "_")}-{IPDW_VERSION}-py3-none-any.whl""",
 }
 PY_TEST_DEP = {}
 
@@ -364,6 +390,7 @@ DEMO_CONTENTS_API = DEMO_BUILD / "api/contents/all.json"
 DEMO_ARCHIVE = (
     DEMO_BUILD / f"""ipydrawio-lite-{JS_PKG_DATA["ipydrawio"]["version"]}.tgz"""
 )
+BUILD_WHEELS = BUILD / "wheels"
 DEMO_WHEELS = DEMO / "pypi"
 NOARCH_WHL = "py3-none-any.whl"
 IGNORED_WHEELS = ["widgetsnbextension", "nbformat", "ipykernel", "pyolite"]
@@ -423,7 +450,7 @@ limitations under the License.
 ALL_PY = [
     *ATEST.rglob("*.py"),
     *BINDER.glob("*.py"),
-    *IPDW_PY,
+    *IPDWP_PY,
     *PY_SETUP.values(),
     *SCRIPTS.glob("*.py"),
     *sum(JS_PY_SCRIPTS.values(), []),
@@ -510,10 +537,10 @@ JS_PKG_PACK = {
     for k, v in JS_TSBUILDINFO.items()
     if not k.startswith("_")
 ]
-JS_PKG_PACK[IPDW.name][0] += [
-    IPDW_IGNORE,
-    IPDW_APP,
-    *ALL_IPDW_JS,
+JS_PKG_PACK[IPDWP.name][0] += [
+    IPDWP_IGNORE,
+    IPDWP_APP,
+    *ALL_IPDWP_JS,
 ]
 
 # provisioning stuff
@@ -570,6 +597,8 @@ CONDA_BUILD_ARGS = [
     "--override-channels",
     "-c",
     "conda-forge",
+    "-c",
+    "nodefaults",
 ]
 CONDA_PKGS = {
     pkg: CONDA_BLD / f"noarch/{pkg}-{ver}-py_0.tar.bz2"
@@ -853,7 +882,7 @@ def _lite(lite_actions, extra_args=[]):
             return False
 
 
-def _sync_lite_config(from_env, to_json, marker, extras):
+def _sync_lite_config(from_env, to_json, marker, extra_federated, extra_pyolite):
     """use conda list to derive tarball names"""
     raw_lock = subprocess.check_output(["conda", "list", "--explicit"])
     ext_packages = [
@@ -862,9 +891,13 @@ def _sync_lite_config(from_env, to_json, marker, extras):
         if p.strip()
     ]
 
-    tarball_urls = sorted(
-        ["../" + str(extra.relative_to(ROOT).as_posix()) for extra in extras]
+    federated_extensions = sorted(
+        ["../" + str(extra.relative_to(ROOT).as_posix()) for extra in extra_federated]
     )
+    piplite_urls = [
+        "../" + str(extra.relative_to(ROOT).as_posix()) for extra in extra_pyolite
+    ]
+
     for raw_url in sorted(raw_lock.decode("utf-8").splitlines()):
         try:
             label, subdir, pkg = re.findall(RE_CONDA_FORGE_URL, raw_url)[0]
@@ -877,12 +910,19 @@ def _sync_lite_config(from_env, to_json, marker, extras):
 
         for ext in ext_packages:
             if pkg.startswith(ext):
-                tarball_urls += ["/".join([CONDA_FORGE_RELEASE, subdir, pkg, pkg])]
+                federated_extensions += [
+                    "/".join([CONDA_FORGE_RELEASE, subdir, pkg, pkg])
+                ]
 
     config = json.loads(to_json.read_text(**ENC))
-    config["LiteBuildConfig"]["federated_extensions"] = tarball_urls
-    config["LiteBuildConfig"]["piplite_urls"] = [tarball_urls[0]]
+
+    config["LiteBuildConfig"].update(
+        federated_extensions=federated_extensions,
+        piplite_urls=piplite_urls,
+    )
+
     to_json.write_text(json.dumps(config, **JSON_FMT), **ENC)
+
     subprocess.call([*PRETTIER, "--write", to_json])
 
 
@@ -898,17 +938,29 @@ def fetch_pyodide_packages():
 
 
 def fetch_wheels():
+    BUILD_WHEELS.mkdir(exist_ok=True, parents=True)
     DEMO_WHEELS.mkdir(exist_ok=True, parents=True)
+    pyodide_pkgs = json.loads(PYODIDE_PACKAGES.read_text(encoding="utf-8"))
+    pyodide_norm_names = [k.lower().replace("-", "_") for k in pyodide_pkgs["packages"]]
     subprocess.check_call(
         ["pip", "download", "-r", str(DEMO_REQS), "--prefer-binary"],
-        cwd=str(DEMO_WHEELS),
+        cwd=str(BUILD_WHEELS),
     )
-    for pkg in sorted(DEMO_WHEELS.glob("*")):
+    for pkg in sorted(BUILD_WHEELS.glob("*")):
+        norm_name = pkg.name.split("-")[0].lower()
         if not pkg.name.endswith(NOARCH_WHL):
-            pkg.unlink
             continue
-        if any(re.findall(f"{p}-\\d", pkg.name) for p in IGNORED_WHEELS):
-            pkg.unlink()
+        if norm_name in pyodide_norm_names or norm_name in IGNORED_WHEELS:
+            continue
+        dest = DEMO_WHEELS / pkg.name
+
+        if dest.exists():
+            if pkg.stat().st_mtime > dest.stat().st_mtime():
+                dest.unlink()
+            else:
+                continue
+
+        shutil.copy2(pkg, dest)
 
 
 def template_one(src, dest):

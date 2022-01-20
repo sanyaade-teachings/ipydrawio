@@ -69,7 +69,7 @@ def run_tests(attempt=0, extra_args=None):
         "--randomize",
         "all",
         "--xunit",
-        ".".join(["xunit", "xml"]),
+        "xunit.xml",
         ".",
     ]
 

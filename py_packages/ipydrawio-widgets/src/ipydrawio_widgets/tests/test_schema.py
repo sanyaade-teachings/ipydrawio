@@ -15,8 +15,7 @@
 # limitations under the License.
 
 import pytest
-
-from ipydrawio.schema import get_validator
+from ipydrawio_widgets.schema import get_validator
 
 validator = get_validator()
 

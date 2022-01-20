@@ -28,11 +28,11 @@ dependencies:
   - pkginfo
   - pydata-sphinx-theme
   - pytest-check-links
-  - sphinx
+  - sphinx !=4.4.0=*_0
   - sphinx-jsonschema
   - sphinxext-rediraffe
   - pip:
-      - jupyterlite ==0.1.0a19
+      - jupyterlite ==0.1.0a20
 
   ### ipydrawio-docs-deps ###
 

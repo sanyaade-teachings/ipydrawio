@@ -15,8 +15,7 @@
 # limitations under the License.
 
 import ipywidgets as W
-
-from ipydrawio import Diagram
+from ipydrawio_widgets import Diagram
 
 
 def test_widget():

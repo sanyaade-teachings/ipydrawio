@@ -27,5 +27,6 @@ packages/ipydrawio-webpack/dio/
 py_packages/**/src/*/ext/
 py_packages/ipydrawio-export/ipydrawio-export-*
 py_packages/ipydrawio/ipydrawio-*
+py_packages/ipydrawio-widgets/src/ipydrawio_widgets/js/**/*
 untitled*
 Untitled*

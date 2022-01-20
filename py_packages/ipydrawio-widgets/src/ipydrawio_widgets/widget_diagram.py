@@ -20,6 +20,7 @@ import traitlets as T
 
 from ._version import __js__
 from .constants import A_SHORT_DRAWIO, DEFAULT_DRAWIO_CONFIG, DEFAULT_PAGE_FORMAT
+from .schema import get_schema
 
 module_name = __js__["name"]
 module_version = "^{version}".format(**__js__)
@@ -34,18 +35,16 @@ class DiagramBase(W.Widget):
     _view_module_version = T.Unicode(module_version).tag(sync=True)
 
 
+@W.register
 class XML(DiagramBase, W.Widget):
     """A Drawio XML-native Document"""
 
-    value = T.Unicode().tag(sync=True)
+    value = T.Unicode(A_SHORT_DRAWIO).tag(sync=True)
     _model_name = T.Unicode("XMLModel").tag(sync=True)
     _view_name = T.Unicode("XMLView").tag(sync=True)
 
-    @T.default("value")
-    def _default_value(self):
-        return A_SHORT_DRAWIO
 
-
+@W.register
 class Diagram(DiagramBase, W.Box):
     """A Drawio Diagram"""
 
@@ -88,8 +87,6 @@ class Diagram(DiagramBase, W.Box):
 
     @T.default("url_params")
     def _default_url_params(self):
-        from .schema import get_schema
-
         return get_schema()["properties"]["drawioUrlParams"]["default"]
 
     @T.default("config")
