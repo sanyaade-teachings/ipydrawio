@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+### ipydrawio-widgets 1.2.1
+
+### ipydrawio 1.2.1
+
+#### @deathbeds/ipydrawio 1.2.1
+
+#### @deathbeds/ipydrawio-notebook 1.2.1
+
+#### @deathbeds/ipydrawio-webpack 16.4.501
+
+#### @deathbeds/ipydrawio-jupyter-templates 1.2.1
+
+### ipydrawio-export 1.2.1
+
+#### @deathbeds/ipydrawio-pdf 1.2.1
+
+## Releases
+
 ### ipydrawio-widgets 1.2.0
 
 - new kernel-only package for headless kernel installs [#63]
@@ -37,8 +55,6 @@
 [#88]: https://github.com/deathbeds/ipydrawio/issues/88
 
 ---
-
-## Releases
 
 ### ipydrawio 1.1.3
 
