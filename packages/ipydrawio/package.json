@@ -8,7 +8,7 @@
     "@jupyterlab/application": "^3.1.0",
     "@jupyterlab/launcher": "^3.1.0",
     "@jupyterlab/mainmenu": "^3.1.0",
-    "@deathbeds/ipydrawio-webpack": "^16.4.500"
+    "@deathbeds/ipydrawio-webpack": "^16.4.501"
   },
   "description": "A JupyterLab extension for embedding interactive drawio / mxgraph diagrams.",
   "devDependencies": {
@@ -75,5 +75,5 @@
     "build:pre": "python scripts/schema.py"
   },
   "types": "lib/index.d.ts",
-  "version": "1.2.0"
+  "version": "1.2.1"
 }
