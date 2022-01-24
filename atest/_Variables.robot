@@ -97,3 +97,6 @@ ${XP DIO PAGE SIZE}    //div[contains(@class, "geFormatSection")][contains(., "P
 ${MIME STDERR}    application/vnd.jupyter.stderr
 # retro
 ${CSS RETRO TREE DIO BTN}    css:button[title='${CREATE A BLANK}']
+# docs
+${TUTORIALS}      ${ROOT}${/}docs${/}tutorials
+${CLIB TUTORIAL}    ${TUTORIALS}${/}working-with-custom-libraries${/}index.ipynb

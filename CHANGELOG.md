@@ -14,13 +14,14 @@
 
 #### @deathbeds/ipydrawio 1.2.0
 
+- adds support for data URI-encoded shape libraries (incompatible with `stealth`) [#80]
 - fixes selection in widget diagrams with more than 10 shapes [#85]
 
 #### @deathbeds/ipydrawio-notebook 1.2.0
 
-#### @deathbeds/ipydrawio-webpack 16.4.0
+#### @deathbeds/ipydrawio-webpack 16.4.500
 
-- updates to drawio v16.4.0
+- updates to drawio v16.4.5
 
 #### @deathbeds/ipydrawio-jupyter-templates 1.2.0
 
@@ -31,6 +32,7 @@
 #### @deathbeds/ipydrawio-pdf 1.2.0
 
 [#63]: https://github.com/deathbeds/ipydrawio/issues/63
+[#80]: https://github.com/deathbeds/ipydrawio/issues/80
 [#85]: https://github.com/deathbeds/ipydrawio/issues/85
 [#88]: https://github.com/deathbeds/ipydrawio/issues/88
 

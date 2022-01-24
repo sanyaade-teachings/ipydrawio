@@ -3,6 +3,7 @@
 ```{toctree}
 :maxdepth: 2
 designing-jupyter-extensions/index
+working-with-custom-libraries/index
 ```
 
 <!--
