@@ -26,10 +26,11 @@ Force Tags          component:tutorials
 
 
 *** Variables ***
-${XP MY LIBRARY TITLE}      xpath://a[starts-with(@title, 'my+library')]
-${XP MY LIBRARY SHAPES}     ${XP MY LIBRARY TITLE}/following-sibling::div[1]//a[contains(@class, 'geItem')]
-${XP SHAPE TOOLTIP}         xpath://*[contains(@class, 'geSidebarTooltip')]
-@{SHAPE TITLES}             Exit    Machine    Queue    Source
+${XP MY LIBRARY TITLE}          xpath://a[starts-with(@title, 'my+library')]
+${XP MY LIBRARY SHAPES}         ${XP MY LIBRARY TITLE}/following-sibling::div[1]//a[contains(@class, 'geItem')]
+${XP SHAPE TOOLTIP}             xpath://*[contains(@class, 'geSidebarTooltip')]
+@{SHAPE TITLES}                 Exit    Machine    Queue    Source
+${CUSTOM LIBRARY TUTORIAL}      clib.ipynb
 
 
 *** Test Cases ***
@@ -37,7 +38,7 @@ Custom Library URL Hack
     [Documentation]    Does using a custom library work?
     [Tags]    component:widget
     Copy File    ${CLIB TUTORIAL}    ${HOME}${/}clib.ipynb
-    Wait Until Keyword Succeeds    5x    5s    Open clib.ipynb in ${MENU NOTEBOOK}
+    Wait Until Keyword Succeeds    5x    5s    Open the Custom Library Tutorial
     Lab Command    Restart Kernel and Run All Cells
     Accept Default Dialog Option
     Click Element    css:.jp-Cell:last-child
@@ -57,3 +58,7 @@ Custom Library URL Hack
 Tear Down Custom Library Tutorial
     Unselect Frame
     Remove File    ${HOME}${/}clib.ipynb
+
+Open the Custom Library Tutorial
+    Run Keyword and Ignore Error    Accept Default Dialog Option
+    Open ${CUSTOM LIBRARY TUTORIAL} in ${MENU NOTEBOOK}

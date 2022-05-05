@@ -277,6 +277,11 @@ jobs:
           use-only-tar-bz2: true
           use-mamba: true
 
+      - name: tweak install (conda)
+        if: matrix.python-version == '3.7'
+        run: |
+          mamba install -y -c conda-forge "importlib-metadata=4.2"
+
       - name: download (dist)
         uses: actions/download-artifact@v2
         with:
