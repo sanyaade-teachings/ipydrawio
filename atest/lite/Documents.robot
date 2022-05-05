@@ -1,10 +1,11 @@
+*** Comments ***
 # Copyright 2022 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#                 http://www.apache.org/licenses/LICENSE-2.0
+#    http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,13 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 *** Settings ***
-Documentation     Test some diagrams in lite
-Resource          ../_Keywords.robot
-Resource          ./_Keywords.robot
-Library           OperatingSystem
-Force Tags        component:document
-Suite Setup       Set Screenshot Directory    ${OUTPUT DIR}${/}lite${/}documents
+Documentation       Test some diagrams in lite
+
+Resource            ../_Keywords.robot
+Resource            ./_Keywords.robot
+Library             OperatingSystem
+
+Suite Setup         Set Screenshot Directory    ${OUTPUT DIR}${/}lite${/}documents
+
+Force Tags          component:document
+
 
 *** Test Cases ***
 Poster Dio Svg
@@ -57,10 +63,11 @@ What-Can-You-Draw Dio Svg
     [Documentation]    Does the what-can-you-draw.dio.svg example document work?
     Example Document Should Load    what-can-you-draw.dio.svg
 
+
 *** Keywords ***
 Example Document Should Load
-    [Arguments]    ${file}
     [Documentation]    Does one example document work?
+    [Arguments]    ${file}
     Try to Close All Tabs
     Ensure File Browser is Open
     Double Click Element    css:[title*\="${file}"]
