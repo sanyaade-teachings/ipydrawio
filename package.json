@@ -13,7 +13,8 @@
     "prettier": "^2.1.1",
     "prettier-plugin-sort-json": "^0.0.2",
     "typedoc": "^0.20.36",
-    "typedoc-plugin-markdown": "~3.9.0"
+    "typedoc-plugin-markdown": "~3.9.0",
+    "yarn-deduplicate": "^3.1.0"
   },
   "resolutions": {
     "ansi-regex": "5.0.1",
@@ -28,7 +29,8 @@
   "scripts": {
     "bootstrap": "jlpm --prefer-offline && lerna bootstrap",
     "eslint": "cd packages && eslint --cache --fix --ext .js,.ts,.tsx .",
-    "eslint:check": "cd packages && eslint --cache --ext .js,.ts,.tsx ."
+    "eslint:check": "cd packages && eslint --cache --ext .js,.ts,.tsx .",
+    "deduplicate": "yarn-deduplicate -s fewer --fail"
   },
   "workspaces": [
     "packages/*"
