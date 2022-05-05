@@ -47,6 +47,7 @@ dependencies:
   - pyflakes
   - pyyaml
   - robotframework-lint
+  - robotframework-tidy
   # unit testing
   - pytest
   - pytest-console-scripts
