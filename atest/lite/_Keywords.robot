@@ -1,10 +1,11 @@
+*** Comments ***
 # Copyright 2022 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#                 http://www.apache.org/licenses/LICENSE-2.0
+#    http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,23 +13,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-*** Settings ***
-Documentation     A work-in-progress set of keywords for JupyterLite
-Library           OperatingSystem
-Library           Process
-Library           ../ports.py
 
-*** Variable ***
+*** Settings ***
+Documentation       A work-in-progress set of keywords for JupyterLite
+
+Library             OperatingSystem
+Library             Process
+Library             ../ports.py
+
+
+*** Variables ***
 ${NEXT LITE LOG}    ${0}
+
 
 *** Keywords ***
 Start JupyterLite Process
-    [Arguments]    ${cwd}    ${task}    @{args}
     [Documentation]    Start a `jupyter lite` process
+    [Arguments]    ${cwd}    ${task}    @{args}
     ${proc} =    Start Process    jupyter    lite    ${task}    @{args}    cwd=${cwd}
     ...    stdout=${OUTPUT DIR}${/}lite-${NEXT LITE LOG}-${task}.log    stderr=STDOUT
     Set Global Variable    ${NEXT LITE LOG}    ${NEXT LITE LOG + 1}
-    [Return]    ${proc}
+    RETURN    ${proc}
 
 Start JupyterLite Server
     [Documentation]    Start _the_ `jupyter lite` server
@@ -49,7 +54,7 @@ Start JupyterLite Server
     ...    service_log_path=${OUTPUT DIR}${/}geckodriver-lite.log
     ...    service_args=${service args}
     Wait For URL Status    ${url}    ${200}
-    [Return]    ${proc}
+    RETURN    ${proc}
 
 Open JupyterLite
     Set Environment Variable    MOZ_HEADLESS    1

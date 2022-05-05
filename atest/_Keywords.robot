@@ -1,10 +1,11 @@
+*** Comments ***
 # Copyright 2022 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#                 http://www.apache.org/licenses/LICENSE-2.0
+#    http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,13 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 *** Settings ***
-Resource          _Variables.robot
-Library           SeleniumLibrary
-Library           OperatingSystem
-Library           Process
-Library           String
-Library           ./ports.py
+Resource    _Variables.robot
+Library     SeleniumLibrary
+Library     OperatingSystem
+Library     Process
+Library     String
+Library     ./ports.py
+
 
 *** Keywords ***
 Setup Server and Browser
@@ -31,7 +34,7 @@ Setup Server and Browser
 
 Get Server Root
     ${root} =    Normalize Path    ${OUTPUT DIR}${/}..${/}..${/}..
-    [Return]    ${root}
+    RETURN    ${root}
 
 Setup Home
     ${accel} =    Evaluate    "COMMAND" if "${OS}" == "Darwin" else "CTRL"
@@ -42,7 +45,7 @@ Setup Home
     Set Global Variable    ${HOME}    ${home}
     Create Directory    ${home}
     Set Screenshot Directory    ${OUTPUT DIR}${/}screenshots
-    [Return]    ${home}
+    RETURN    ${home}
 
 Setup Real Server
     [Arguments]    ${port}    ${home}    ${root}
@@ -61,19 +64,19 @@ Setup Real Server
     Set Global Variable    ${LAB VERSION}    ${config["appVersion"]}
 
 Create Lab Launch Command
-    [Arguments]    ${root}
     [Documentation]    Create a JupyterLab CLI shell string, escaping for traitlets
+    [Arguments]    ${root}
     ${WORKSPACES DIR} =    Set Variable    ${OUTPUT DIR}${/}workspaces
     ${app args} =    Set Variable
     ...    --no-browser --debug --ServerApp.base_url\='${BASE}' --port\=${PORT} --ServerApp.token\='${TOKEN}'
     ${path args} =    Set Variable
     ...    --LabApp.user_settings_dir\='${SETTINGS DIR.replace('\\', '\\\\')}' --LabApp.workspaces_dir\='${WORKSPACES DIR.replace('\\', '\\\\')}'
     ${cmd} =    Set Variable    jupyter-lab ${app args} ${path args}
-    [Return]    ${cmd}
+    RETURN    ${cmd}
 
 Create Notebok Server Config
-    [Arguments]    ${home}
     [Documentation]    Copies in notebook server config file to disables npm/build checks
+    [Arguments]    ${home}
     Copy File    ${FIXTURES}${/}${NBSERVER CONF}    ${home}${/}${NBSERVER CONF}
 
 Setup Suite For Screenshots
@@ -108,9 +111,11 @@ Tear Down Real Server
 
 Wait For Splash
     [Arguments]    ${lab url}=${EMPTY}
-    Run Keyword If    """${lab url}"""
-    ...    Go To    ${lab url}
-    ...    ELSE    Go To    ${URL}lab?reset&token=${TOKEN}
+    IF    """${lab url}"""
+        Go To    ${lab url}
+    ELSE
+        Go To    ${URL}lab?reset&token=${TOKEN}
+    END
     Set Window Size    1920    1080
     Wait Until Page Contains Element    ${SPLASH}    timeout=30s
     Wait Until Page Does Not Contain Element    ${SPLASH}    timeout=10s
@@ -132,7 +137,7 @@ Get Firefox Binary
     ${firefox} =    Set Variable If    "${from env}"
     ...    %{FIREFOX_BINARY}
     ...    ${from which}
-    [Return]    ${firefox}
+    RETURN    ${firefox}
 
 Close JupyterLab
     Close All Browsers
@@ -147,7 +152,7 @@ Try to Close All Tabs
 
 Maybe Reset Application State
     ${pabot} =    Get Variable Value    ${PABOTEXECUTIONPOOLID}    ${EMPTY}
-    Run Keyword If    not(len("${pabot}"))    Reset Application State
+    IF    not(len("${pabot}"))    Reset Application State
 
 Reset Application State
     Try to Close All Tabs
@@ -159,15 +164,15 @@ Reset Application State
 Accept Default Dialog Option
     [Documentation]    Accept a dialog, if it exists
     ${el} =    Get WebElements    ${CSS DIALOG OK}
-    Run Keyword If    ${el.__len__()}    Click Element    ${CSS DIALOG OK}
+    IF    ${el.__len__()}    Click Element    ${CSS DIALOG OK}
 
 Ensure All Kernels Are Shut Down
     Enter Command Name    Shut Down All Kernels
     ${els} =    Get WebElements    ${CMD PALETTE ITEM ACTIVE}
-    Run Keyword If    ${els.__len__()}    Click Element    ${CMD PALETTE ITEM ACTIVE}
+    IF    ${els.__len__()}    Click Element    ${CMD PALETTE ITEM ACTIVE}
     ${accept} =    Set Variable    css:.jp-mod-accept.jp-mod-warn
-    Run Keyword If    ${els.__len__()}    Wait Until Page Contains Element    ${accept}
-    Run Keyword If    ${els.__len__()}    Click Element    ${accept}
+    IF    ${els.__len__()}    Wait Until Page Contains Element    ${accept}
+    IF    ${els.__len__()}    Click Element    ${accept}
 
 Open Command Palette
     Ensure Command Palette is Open
@@ -188,28 +193,28 @@ Lab Command
 Which
     [Arguments]    ${cmd}
     ${path} =    Evaluate    __import__("shutil").which("${cmd}")
-    [Return]    ${path}
+    RETURN    ${path}
 
 Click JupyterLab Menu
-    [Arguments]    ${label}
     [Documentation]    Click a top-level JupyterLab menu bar item with by ``label``,
     ...    e.g. File, Help, etc.
+    [Arguments]    ${label}
     ${xpath} =    Set Variable    ${JLAB XP TOP}${JLAB XP MENU LABEL}\[text() = '${label}']
     Wait Until Page Contains Element    ${xpath}
     Mouse Over    ${xpath}
     Click Element    ${xpath}
 
 Click JupyterLab Menu Item
-    [Arguments]    ${label}
     [Documentation]    Click a currently-visible JupyterLab menu item by ``label``.
+    [Arguments]    ${label}
     ${item} =    Set Variable    ${JLAB XP MENU ITEM LABEL}\[text() = '${label}']
     Wait Until Page Contains Element    ${item}
     Mouse Over    ${item}
     Click Element    ${item}
 
 Open With JupyterLab Menu
-    [Arguments]    ${menu}    @{submenus}
     [Documentation]    Click into a ``menu``, then a series of ``submenus``
+    [Arguments]    ${menu}    @{submenus}
     Click JupyterLab Menu    ${menu}
     FOR    ${submenu}    IN    @{submenus}
         Click JupyterLab Menu Item    ${submenu}
@@ -219,19 +224,20 @@ Ensure File Browser is Open
     ${sel} =    Set Variable
     ...    css:.lm-TabBar-tab[data-id="filebrowser"]:not(.lm-mod-current)
     ${els} =    Get WebElements    ${sel}
-    Run Keyword If    ${els.__len__()}    Click Element    ${sel}
+    IF    ${els.__len__()}    Click Element    ${sel}
 
 Ensure Command Palette is Open
     ${sel} =    Set Variable
     ...    css:.lm-TabBar-tab[data-id="command-palette"]:not(.lm-mod-current)
     ${els} =    Get WebElements    ${sel}
-    Run Keyword If    ${els.__len__()}    Click Element    ${sel}
+    IF    ${els.__len__()}    Click Element    ${sel}
 
 Ensure Sidebar Is Closed
     [Arguments]    ${side}=left
     ${els} =    Get WebElements    css:#jp-${side}-stack
-    Run Keyword If    ${els.__len__()}
-    ...    Click Element    css:.jp-mod-${side} .lm-TabBar-tab.lm-mod-current
+    IF    ${els.__len__()}
+        Click Element    css:.jp-mod-${side} .lm-TabBar-tab.lm-mod-current
+    END
 
 Open Context Menu for File
     [Arguments]    ${file}
@@ -336,4 +342,4 @@ Wait for a Diagram to be Ready
     Select Frame    ${CSS DIO IFRAME}
     Double Click Element    ${CSS DIO BG}
     Capture Page Screenshot    00-launched.png
-    [Return]    ${doc id}
+    RETURN    ${doc id}

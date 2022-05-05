@@ -1,10 +1,11 @@
+*** Comments ***
 # Copyright 2022 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#                 http://www.apache.org/licenses/LICENSE-2.0
+#    http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,12 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 *** Settings ***
-Documentation     Does the Jupyter Widget work?
-Resource          ../_Keywords.robot
-Resource          ../_Notebook.robot
-Force Tags        component:widget
-Library           OperatingSystem
+Documentation       Does the Jupyter Widget work?
+
+Resource            ../_Keywords.robot
+Resource            ../_Notebook.robot
+Library             OperatingSystem
+
+Force Tags          component:widget
+
 
 *** Test Cases ***
 Diagram Widget
@@ -45,6 +50,7 @@ Many Shapes
     Select All From List    css:select[multiple]
     Capture Page Screenshot    01-eleven.png
 
+
 *** Keywords ***
 Create Diagram Widget
     [Arguments]    ${label}    ${add multiple}=${FALSE}
@@ -52,9 +58,7 @@ Create Diagram Widget
     Launch Untitled Notebook
     Add and Run JupyterLab Code Cell    import ipywidgets as W, traitlets as T; from ipydrawio_widgets import Diagram
     Add and Run JupyterLab Code Cell    diagram = Diagram(layout\=dict(min_height\="60vh"));
-    IF    ${add multiple}
-        Create Linked SelectMultiple
-    END
+    IF    ${add multiple}    Create Linked SelectMultiple
     Add and Run JupyterLab Code Cell    diagram
     Wait Until Page Contains Element    ${CSS DIO READY} iframe
 
@@ -127,9 +131,9 @@ Change Paper Size
 
 Maybe Open Format Pane
     ${els} =    Get WebElements    xpath:${XP DIO FORMAT PANE VISIBLE}
-    Run Keyword If    not ${els.__len__()}    Click Element    xpath:${XP DIO FORMAT TOGGLE}
+    IF    not ${els.__len__()}    Click Element    xpath:${XP DIO FORMAT TOGGLE}
     Wait Until Page Contains Element    xpath:${XP DIO FORMAT PANE VISIBLE}
 
 Measure Paper
     ${size} =    Get Element Size    css:.geBackgroundPage
-    [Return]    ${size}
+    RETURN    ${size}
