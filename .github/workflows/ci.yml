@@ -203,7 +203,7 @@ jobs:
         with:
           path: ~/conda_pkgs_dir
           key: |
-            ${{ env.CACHE_EPOCH }}-${{ runner.os }}-conda-build-${{ hashFiles('.github/environment-conda-build.yml', '.github/environment-conda-build-win.yml') }}
+            ${{ env.CACHE_EPOCH }}-${{ runner.os }}-conda-build-${{ hashFiles('.github/environment-*.yml') }}
           restore-keys: |
             ${{ env.CACHE_EPOCH }}-${{ runner.os }}-conda-build-
 
@@ -264,7 +264,7 @@ jobs:
         with:
           path: ~/conda_pkgs_dir
           key: |
-            ${{ env.CACHE_EPOCH }}-${{ runner.os }}-conda-${{ matrix.python-version }}-${{ hashFiles('.github/environment.yml') }}
+            ${{ env.CACHE_EPOCH }}-${{ runner.os }}-conda-${{ matrix.python-version }}-${{ hashFiles('.github/environment*.yml') }}
           restore-keys: |
             ${{ env.CACHE_EPOCH }}-${{ runner.os }}-conda-${{ matrix.python-version }}-
 
@@ -279,8 +279,9 @@ jobs:
 
       - name: tweak install (conda)
         if: matrix.python-version == '3.7'
+        shell: bash -l {0}
         run: |
-          mamba install -y -c conda-forge "importlib-metadata=4.2"
+          mamba env update -n test --file .github/environment-py37.yml
 
       - name: download (dist)
         uses: actions/download-artifact@v2
