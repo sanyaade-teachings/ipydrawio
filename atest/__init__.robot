@@ -16,3 +16,5 @@
 
 *** Settings ***
 Documentation       IPyDrawio
+
+Test Timeout        5 minutes
