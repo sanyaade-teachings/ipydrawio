@@ -37,8 +37,8 @@ ${CUSTOM LIBRARY TUTORIAL}      clib.ipynb
 Custom Library URL Hack
     [Documentation]    Does using a custom library work?
     [Tags]    component:widget
-    Copy File    ${CLIB TUTORIAL}    ${HOME}${/}clib.ipynb
-    Wait Until Keyword Succeeds    5x    5s    Open the Custom Library Tutorial
+    Copy File    ${CLIB TUTORIAL}    ${HOME}${/}${CUSTOM LIBRARY TUTORIAL}
+    Wait Until Keyword Succeeds    5x    5s    Open ${CUSTOM LIBRARY TUTORIAL} in ${MENU NOTEBOOK}
     Lab Command    Restart Kernel and Run All Cells
     Accept Default Dialog Option
     Click Element    css:.jp-Cell:last-child
@@ -57,8 +57,4 @@ Custom Library URL Hack
 *** Keywords ***
 Tear Down Custom Library Tutorial
     Unselect Frame
-    Remove File    ${HOME}${/}clib.ipynb
-
-Open the Custom Library Tutorial
-    Run Keyword and Ignore Error    Accept Default Dialog Option
-    Open ${CUSTOM LIBRARY TUTORIAL} in ${MENU NOTEBOOK}
+    Remove File    ${HOME}${/}${CUSTOM LIBRARY TUTORIAL}

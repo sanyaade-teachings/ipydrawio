@@ -186,6 +186,7 @@ Enter Command Name
 
 Lab Command
     [Arguments]    ${cmd}
+    Accept Default Dialog Option
     Enter Command Name    ${cmd}
     Wait Until Page Contains Element    ${CMD PALETTE ITEM ACTIVE}
     Click Element    ${CMD PALETTE ITEM ACTIVE}

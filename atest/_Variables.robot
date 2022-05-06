@@ -32,7 +32,7 @@ ${JLAB CSS VERSION}                     css:.jp-About-version
 ${CSS DIALOG OK}                        css:.jp-Dialog .jp-mod-accept
 ${MENU OPEN WITH}                       xpath://div[contains(@class, 'lm-Menu-itemLabel')][contains(text(), "Open With")]
 # N is missing on purpose
-${MENU NOTEBOOK}                        xpath://div[contains(@class, 'lm-Menu-itemLabel')][contains(., "otebook")]
+${MENU NOTEBOOK}                        xpath://li[@data-command="filebrowser:open"]//div[contains(@class, 'lm-Menu-itemLabel')][contains(., "otebook")]
 ${DIALOG WINDOW}                        css:.jp-Dialog
 ${DIALOG INPUT}                         css:.jp-Input-Dialog input
 ${DIALOG ACCEPT}                        css:button.jp-Dialog-button.jp-mod-accept
