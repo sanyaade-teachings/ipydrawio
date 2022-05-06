@@ -21,4 +21,5 @@ channels:
   - nodefaults
 
 dependencies:
-  ### ipydrawio-dev-deps ###
+  # for flake8, sigh
+  - importlib-metadata <4.3
