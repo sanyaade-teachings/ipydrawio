@@ -1,10 +1,11 @@
+*** Comments ***
 # Copyright 2022 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#                 http://www.apache.org/licenses/LICENSE-2.0
+#    http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,22 +13,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 *** Settings ***
-Documentation     Are export formats sane?
-Resource          ../_Keywords.robot
-Library           OperatingSystem
-Library           ../pdf.py
-Force Tags        component:document
+Documentation       Are export formats sane?
+
+Resource            ../_Keywords.robot
+Library             OperatingSystem
+Library             ../pdf.py
+
+Force Tags          component:document
+
 
 *** Variables ***
 &{EXT EDIT WITH} =
-...               dio.ipynb=Diagram Notebook (Diagram Notebook),Notebook,Editor,JSON
-...               dio.png=Diagram Image (Editable PNG),Image,Editor,Diagram Image (PNG)
-...               dio.svg=Diagram (Editable SVG),Image (Text),Editor,Image,Diagram (SVG)
-...               ipynb=Notebook,Editor,Diagram Notebook (Notebook),JSON
-...               pdf=PDF,Editor
-...               png=Image,Editor,Diagram Image (PNG)
-...               svg=Image (Text),Editor,Image,Diagram (SVG)
+...                     dio.ipynb=Diagram Notebook (Diagram Notebook),Notebook,Editor,JSON
+...                     dio.png=Diagram Image (Editable PNG),Image,Editor,Diagram Image (PNG)
+...                     dio.svg=Diagram (Editable SVG),Image (Text),Editor,Image,Diagram (SVG)
+...                     ipynb=Notebook,Editor,Diagram Notebook (Notebook),JSON
+...                     pdf=PDF,Editor
+...                     png=Image,Editor,Diagram Image (PNG)
+...                     svg=Image (Text),Editor,Image,Diagram (SVG)
+
 
 *** Test Cases ***
 SVG
@@ -57,11 +63,19 @@ Notebook
 PDF
     [Documentation]    does read-only PDF work?
     Wait Until Keyword Succeeds    5x    30s    IPyDrawio Export Server Should be Provisioned
-    Wait Until Keyword Succeeds    5x    10s    Validate Export Format    PDF    pdf    timeout=30s    extra_text=Exporting Diagram
+    Wait Until Keyword Succeeds
+    ...    5x
+    ...    10s
+    ...    Validate Export Format
+    ...    PDF
+    ...    pdf
+    ...    timeout=30s
+    ...    extra_text=Exporting Diagram
 # TODO: restore someday
 # PDF (Editable)
 #    [Documentation]    does editable PDF work?
 #    Validate Export Format    PDF    pdf    timeout=60s
+
 
 *** Keywords ***
 Validate Export Format
@@ -84,7 +98,7 @@ Validate Export Format
 Prepare a Diagram for Export
     Launch Untitled Diagram
     ${doc id} =    Wait for a Diagram to be Ready
-    [Return]    ${doc id}
+    RETURN    ${doc id}
 
 Add a Shape to a Diagram
     ${a shape} =    Set Variable    ${CSS DIO SHAPE POPUP SHAPE}:nth-child(2)
@@ -97,13 +111,17 @@ Export a Diagram
     [Arguments]    ${format}    ${ext}    ${timeout}    ${extra_text}    ${rename}
     Lab Command    Export Diagram as ${format}
     Ensure File Browser is Open
-    Run Keyword If    "${extra_text}"    Wait Until Page Contains    ${extra_text}    timeout=${timeout}
-    Run Keyword If    "${extra_text}"    Wait Until Page Does Not Contain    ${extra_text}    timeout=${timeout}
+    IF    "${extra_text}"
+        Wait Until Page Contains    ${extra_text}    timeout=${timeout}
+    END
+    IF    "${extra_text}"
+        Wait Until Page Does Not Contain    ${extra_text}    timeout=${timeout}
+    END
     ${file item} =    Wait Until Keyword Succeeds    5x    1s    Get File Item    ${ext}
     Wait Until Page Contains Element    ${file item}    timeout=${timeout}
     ${filename} =    Get File Item    ${ext}    name
-    Run Keyword If    ${rename.__len__()}    Rename Jupyter File    ${filename}    ${rename}
-    [Return]    ${file item}
+    IF    ${rename.__len__()}    Rename Jupyter File    ${filename}    ${rename}
+    RETURN    ${file item}
 
 Get File Item
     [Arguments]    ${frag}    ${field}=${EMPTY}
@@ -112,7 +130,7 @@ Get File Item
     ${res} =    Set Variable If    "${field}"
     ...    ${title.strip().splitlines()[0].split(":", 1)[1].strip()}
     ...    ${sel}
-    [Return]    ${res}
+    RETURN    ${res}
 
 Verify a Diagram
     [Arguments]    ${format}    ${ext}    ${editable}    ${doc id}
@@ -120,12 +138,14 @@ Verify a Diagram
     ${file item} =    Get File Item    ${ext}
     Click Element    ${file item}
     ${filename} =    Get File Item    ${ext}    Name
-    Run Keyword If    '''${ext}''' in &{EXT EDIT WITH}
-    ...    Verify Edit With Menu    ${ext}    ${filename}
+    IF    '''${ext}''' in &{EXT EDIT WITH}
+        Verify Edit With Menu    ${ext}    ${filename}
+    END
     Double Click Element    ${file item}
     Ensure Sidebar Is Closed
-    Run Keyword If    ${editable}
-    ...    Validate Editable Format    ${format}    ${ext}    ${doc id}
+    IF    ${editable}
+        Validate Editable Format    ${format}    ${ext}    ${doc id}
+    END
     Capture Page Screenshot    99-exported.png
 
 Verify Edit With Menu

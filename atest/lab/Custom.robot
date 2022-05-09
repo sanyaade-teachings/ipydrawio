@@ -1,10 +1,11 @@
+*** Comments ***
 # Copyright 2022 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#                 http://www.apache.org/licenses/LICENSE-2.0
+#    http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,12 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 *** Settings ***
-Documentation     Does custom create work?
-Resource          ../_Keywords.robot
-Library           OperatingSystem
-Force Tags        component:document    component:custom
-Suite Setup       Set Screenshot Directory    ${OUTPUT DIR}${/}screenshots${/}custom
+Documentation       Does custom create work?
+
+Resource            ../_Keywords.robot
+Library             OperatingSystem
+
+Suite Setup         Set Screenshot Directory    ${OUTPUT DIR}${/}screenshots${/}custom
+
+Force Tags          component:document    component:custom
+
 
 *** Test Cases ***
 Defaults
@@ -43,6 +49,7 @@ Sketch Business Model SVG
 Atlas JupyterLab Diagram Notebook
     [Documentation]    Atlas JupyterLab Diagram Notebook?
     Validate Custom Create    ajn    dio.ipynb    atlas    JupyterLab Mockups.dio
+
 
 *** Keywords ***
 Validate Custom Create

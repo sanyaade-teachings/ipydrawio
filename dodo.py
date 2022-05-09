@@ -391,7 +391,7 @@ def task_lint():
         dict(
             name="robot:tidy",
             file_dep=P.ALL_ROBOT,
-            actions=[[*P.PYM, "robot.tidy", "--inplace", *P.ALL_ROBOT]],
+            actions=[["robotidy", *P.ALL_ROBOT]],
         ),
         P.OK_ROBOTIDY,
     )
@@ -1006,7 +1006,7 @@ def task_test():
                 targets=[dest],
                 actions=[
                     (P.template_one, [tmpl, dest]),
-                    [*P.PYM, "robot.tidy", "--inplace", dest],
+                    ["robotidy", dest],
                 ],
             )
 

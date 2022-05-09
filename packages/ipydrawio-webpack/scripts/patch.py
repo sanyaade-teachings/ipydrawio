@@ -32,8 +32,8 @@ PATCHES = {
         },
         {
             "name": "patch cors check for data URI",
-            "before": "this.editor.isCorsEnabledForUrl(n)||(n=",
-            "after": "(n.match(/^data:/) || this.editor.isCorsEnabledForUrl(n))||(n=",
+            "before": "this.editor.isCorsEnabledForUrl(n)||(k=",
+            "after": "(n.match(/^data:/) || this.editor.isCorsEnabledForUrl(n))||(k=",
         },
     ]
 }

@@ -7,7 +7,7 @@
     "@jupyterlab/application": "^3.1.0"
   },
   "devDependencies": {
-    "@jupyterlab/builder": "^3.1.0",
+    "@jupyterlab/builder": "^3.4.0",
     "typescript": "~4.2.3"
   },
   "description": "A webpack-ready repackaging of drawio",
@@ -43,5 +43,5 @@
     "build:pre": "python scripts/patch.py && python scripts/static.py"
   },
   "types": "lib/index.d.ts",
-  "version": "16.4.501"
+  "version": "18.0.100"
 }

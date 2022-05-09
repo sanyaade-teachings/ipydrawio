@@ -36,12 +36,13 @@ dependencies:
   - rich
   - segno
   - shapely
-  - tabulate
   - sphinx-autobuild
+  - tabulate
   ### FEDERATED EXTENSIONS ###
   - bqplot
   - jupyterlab_widgets
   - jupyterlab-tour
+  - jupyterlab-webrtc-docprovider
   - wxyz_datagrid
   - wxyz_json_schema_form
   - wxyz_lab
@@ -59,7 +60,7 @@ dependencies:
   - sphinx-jsonschema
   - sphinxext-rediraffe
   - pip:
-      - jupyterlite ==0.1.0b0
+      - jupyterlite ==0.1.0b7
 
   ### ipydrawio-docs-deps ###
 
@@ -74,7 +75,7 @@ dependencies:
   - python # this gets patched in ci
   # run
   - ipywidgets >=7.6,<8
-  - jupyterlab >=3.2.4,<4.0.0a0
+  - jupyterlab >=3.4.0,<4.0.0a0
   - jupyterlab_widgets >=1
   - lxml
   - pillow
@@ -92,6 +93,7 @@ dependencies:
   - pyflakes
   - pyyaml
   - robotframework-lint
+  - robotframework-tidy
   # unit testing
   - pytest
   - pytest-console-scripts

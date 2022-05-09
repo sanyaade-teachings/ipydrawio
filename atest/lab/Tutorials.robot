@@ -1,10 +1,11 @@
+*** Comments ***
 # Copyright 2022 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#                 http://www.apache.org/licenses/LICENSE-2.0
+#    http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,25 +13,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 *** Settings ***
-Documentation     Do the tutorials work?
-Resource          ../_Keywords.robot
-Library           OperatingSystem
-Force Tags        component:tutorials
-Suite Setup       Set Screenshot Directory    ${OUTPUT DIR}${/}screenshots${/}tutorials
+Documentation       Do the tutorials work?
+
+Resource            ../_Keywords.robot
+Library             OperatingSystem
+
+Suite Setup         Set Screenshot Directory    ${OUTPUT DIR}${/}screenshots${/}tutorials
+
+Force Tags          component:tutorials
+
 
 *** Variables ***
-${XP MY LIBRARY TITLE}    xpath://a[starts-with(@title, 'my+library')]
-${XP MY LIBRARY SHAPES}    ${XP MY LIBRARY TITLE}/following-sibling::div[1]//a[contains(@class, 'geItem')]
-${XP SHAPE TOOLTIP}    xpath://*[contains(@class, 'geSidebarTooltip')]
-@{SHAPE TITLES}    Exit    Machine    Queue    Source
+${XP MY LIBRARY TITLE}          xpath://a[starts-with(@title, 'my+library')]
+${XP MY LIBRARY SHAPES}         ${XP MY LIBRARY TITLE}/following-sibling::div[1]//a[contains(@class, 'geItem')]
+${XP SHAPE TOOLTIP}             xpath://*[contains(@class, 'geSidebarTooltip')]
+@{SHAPE TITLES}                 Exit    Machine    Queue    Source
+${CUSTOM LIBRARY TUTORIAL}      clib.ipynb
+
 
 *** Test Cases ***
 Custom Library URL Hack
     [Documentation]    Does using a custom library work?
     [Tags]    component:widget
-    Copy File    ${CLIB TUTORIAL}    ${HOME}${/}clib.ipynb
-    Wait Until Keyword Succeeds    5x    5s    Open clib.ipynb in ${MENU NOTEBOOK}
+    Copy File    ${CLIB TUTORIAL}    ${HOME}${/}${CUSTOM LIBRARY TUTORIAL}
+    Wait Until Keyword Succeeds    5x    5s    Open ${CUSTOM LIBRARY TUTORIAL} in ${MENU NOTEBOOK}
     Lab Command    Restart Kernel and Run All Cells
     Accept Default Dialog Option
     Click Element    css:.jp-Cell:last-child
@@ -45,7 +53,8 @@ Custom Library URL Hack
     END
     [Teardown]    Tear Down Custom Library Tutorial
 
+
 *** Keywords ***
 Tear Down Custom Library Tutorial
     Unselect Frame
-    Remove File    ${HOME}${/}clib.ipynb
+    Remove File    ${HOME}${/}${CUSTOM LIBRARY TUTORIAL}

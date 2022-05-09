@@ -1,10 +1,11 @@
+*** Comments ***
 # Copyright 2022 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#                 http://www.apache.org/licenses/LICENSE-2.0
+#    http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,16 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 *** Settings ***
-Documentation     Test some notebooks in lite
-Resource          ../_Keywords.robot
-Resource          ./_Keywords.robot
-Library           OperatingSystem
-Force Tags        component:notebook
-Suite Setup       Set Screenshot Directory    ${OUTPUT DIR}${/}lite${/}notebooks
+Documentation       Test some notebooks in lite
+
+Resource            ../_Keywords.robot
+Resource            ./_Keywords.robot
+Library             OperatingSystem
+
+Suite Setup         Set Screenshot Directory    ${OUTPUT DIR}${/}lite${/}notebooks
+
+Force Tags          component:notebook
+
 
 *** Variables ***
-${PYOLITE BUSY}    Pyolite | Busy
+${PYOLITE BUSY}     Pyolite | Busy
+
 
 *** Test Cases ***
 Diagram Document
@@ -40,10 +47,11 @@ Roadmap
     [Documentation]    Does the ROADMAP example notebook work?
     Notebook Should Run Without Error    ROADMAP.ipynb
 
+
 *** Keywords ***
 Notebook Should Run Without Error
-    [Arguments]    ${file}
     [Documentation]    Does one example notebook work?
+    [Arguments]    ${file}
     Try to Close All Tabs
     ${stem} =    Set Variable    ${file.lower().replace(" ", "-").split(".")[0]}
     Ensure File Browser is Open
