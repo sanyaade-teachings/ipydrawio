@@ -377,7 +377,7 @@ SERVER_EXT = {
 
 # demo
 RE_CONDA_FORGE_URL = r"/conda-forge/(.*/)?(noarch|linux-64|win-64|osx-64)/([^/]+)$"
-CONDA_FORGE_RELEASE = "https://github.com/conda-forge/releases/releases/download"
+CONDA_FORGE_RELEASE = "https://conda.anaconda.org/conda-forge"
 FED_EXT_MARKER = "### FEDERATED EXTENSIONS ###"
 DEMO = ROOT / "demo"
 DEMO_FILES = DEMO / "files"
@@ -911,7 +911,7 @@ def _sync_lite_config(from_env, to_json, marker, extra_federated, extra_pyolite)
         for ext in ext_packages:
             if pkg.startswith(ext):
                 federated_extensions += [
-                    "/".join([CONDA_FORGE_RELEASE, subdir, pkg, pkg])
+                    "/".join(["..", "build", "federated-extensions", subdir, pkg])
                 ]
 
     config = json.loads(to_json.read_text(**ENC))
@@ -955,7 +955,7 @@ def fetch_wheels():
         dest = DEMO_WHEELS / pkg.name
 
         if dest.exists():
-            if pkg.stat().st_mtime > dest.stat().st_mtime():
+            if pkg.stat().st_mtime > dest.stat().st_mtime:
                 dest.unlink()
             else:
                 continue
