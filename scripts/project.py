@@ -910,9 +910,7 @@ def _sync_lite_config(from_env, to_json, marker, extra_federated, extra_pyolite)
 
         for ext in ext_packages:
             if pkg.startswith(ext):
-                federated_extensions += [
-                    "/".join(["..", "build", "federated-extensions", subdir, pkg])
-                ]
+                federated_extensions += ["/".join([CONDA_FORGE_RELEASE, subdir, pkg])]
 
     config = json.loads(to_json.read_text(**ENC))
 
@@ -955,7 +953,7 @@ def fetch_wheels():
         dest = DEMO_WHEELS / pkg.name
 
         if dest.exists():
-            if pkg.stat().st_mtime > dest.stat().st_mtime:
+            if pkg.stat().st_mtime > dest.stat().st_mtime():
                 dest.unlink()
             else:
                 continue

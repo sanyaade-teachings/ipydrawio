@@ -32,7 +32,6 @@ maybe before you push
 import shutil
 import subprocess
 import time
-import json
 from hashlib import sha256
 
 import doit
