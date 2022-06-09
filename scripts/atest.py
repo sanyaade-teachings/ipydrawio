@@ -106,11 +106,6 @@ def run_tests(attempt=0, extra_args=None):
         proc.kill()
         proc.wait()
 
-    """
-    <total>
-    <stat pass="39" fail="0" skip="0">All Tests</stat>
-    </total>
-    """
     out_xml = out_dir / "output.xml"
     fail_count = -1
 
@@ -120,7 +115,6 @@ def run_tests(attempt=0, extra_args=None):
         fail_count = int(stat[0].attrib["fail"])
     except Exception as err:
         print(err)
-        pass
 
     return fail_count
 
