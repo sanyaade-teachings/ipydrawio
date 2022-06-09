@@ -32,12 +32,20 @@ from pathlib import Path
 import lxml.etree as E
 from jupyterlab.commands import get_app_dir
 from PIL import Image
-from PyPDF2 import PdfFileMerger, PdfFileReader, PdfFileWriter
 from requests import Session
 from requests_cache import CachedSession
 from tornado.concurrent import run_on_executor
 from traitlets import Bool, Dict, Instance, Int, Unicode, default
 from traitlets.config import LoggingConfigurable
+
+try:
+    from PyPDF2 import PdfMerger, PdfReader, PdfWriter
+except ImportError:
+    from PyPDF2 import (
+        PdfFileMerger as PdfMerger,
+        PdfFileReader as PdfReader,
+        PdfFileWriter as PdfWriter,
+    )
 
 from .constants import (
     DRAWIO_APP,
@@ -208,8 +216,8 @@ class IPyDrawioExportManager(LoggingConfigurable):
                 output_pdf = tdp / "original.pdf"
                 output_pdf.write_bytes(b64decode(pdf_text))
                 final_pdf = tdp / "final.pdf"
-                final = PdfFileWriter()
-                final.appendPagesFromReader(PdfFileReader(str(output_pdf), "rb"))
+                final = PdfWriter()
+                final.appendPagesFromReader(PdfReader(str(output_pdf), "rb"))
                 xml = pdf_request["xml"]
                 if hasattr(xml, "encode"):
                     xml = xml.encode("utf-8")
@@ -263,7 +271,7 @@ class IPyDrawioExportManager(LoggingConfigurable):
         tree = E.fromstring("""<mxfile version="13.3.6"></mxfile>""")
         with tempfile.TemporaryDirectory() as td:
             tdp = Path(td)
-            merger = PdfFileMerger()
+            merger = PdfMerger()
             for i, pdf_request in enumerate(pdf_requests):
                 self.log.warning("adding page %s", i)
                 for diagram in self.extract_diagrams(pdf_request):
@@ -273,13 +281,13 @@ class IPyDrawioExportManager(LoggingConfigurable):
                     raise ValueError("PDF request is empty")
                 wrote = next_pdf.write_bytes(b64decode(pdf_request["pdf"]))
                 if wrote:
-                    merger.append(PdfFileReader(str(next_pdf)))
+                    merger.append(PdfReader(str(next_pdf)))
             output_pdf = tdp / "output.pdf"
             final_pdf = tdp / "final.pdf"
             merger.write(str(output_pdf))
             composite_xml = E.tostring(tree).decode("utf-8")
-            final = PdfFileWriter()
-            final.appendPagesFromReader(PdfFileReader(str(output_pdf), "rb"))
+            final = PdfWriter()
+            final.appendPagesFromReader(PdfReader(str(output_pdf), "rb"))
             if self.attach_xml:
                 final.addAttachment(self.attachment_name, composite_xml.encode("utf-8"))
             with final_pdf.open("wb") as fpt:
@@ -383,7 +391,7 @@ class IPyDrawioExportManager(LoggingConfigurable):
 
     def attachments(self, pdf_path):
         """iterate over the name, attachment pairs in the PDF"""
-        reader = PdfFileReader(str(pdf_path), "rb")
+        reader = PdfReader(str(pdf_path), "rb")
         attachments = []
         try:
             attachments = reader.trailer["/Root"]["/Names"]["/EmbeddedFiles"]["/Names"]

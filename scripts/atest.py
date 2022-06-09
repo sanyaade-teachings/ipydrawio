@@ -40,7 +40,7 @@ def run_tests(attempt=0, extra_args=None):
         prev_stem = P.get_atest_stem(attempt=attempt - 1, extra_args=extra_args)
         previous = P.ATEST_OUT / prev_stem / P.ATEST_OUT_XML
         if previous.exists():
-            extra_args += ["--runemptysuite", "--rerunfailed", str(previous)]
+            extra_args += ["--rerunfailed", str(previous)]
 
     runner = ["pabot", *PABOT_DEFAULTS]
 
@@ -114,7 +114,7 @@ def attempt_atest_with_retries(extra_args=None):
     retries = P.ATEST_RETRIES
     extra_args += P.ATEST_ARGS
 
-    while error_count != 0 and attempt <= retries:
+    while attempt <= retries:
         attempt += 1
         print("attempt {} of {}...".format(attempt, retries + 1), flush=True)
         start_time = time.time()
@@ -126,6 +126,9 @@ def attempt_atest_with_retries(extra_args=None):
             "seconds",
             flush=True,
         )
+        if error_count == 0 or error_count > 250:
+            error_count = 0
+            break
 
     return error_count
 
