@@ -1768,7 +1768,7 @@ import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/grapheditor/Sh
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/grapheditor/Sidebar.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/grapheditor/Toolbar.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/integrate.min.js';
-import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/jquery/jquery-3.3.1.min.js';
+import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/jquery/jquery-3.6.0.min.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/jscolor/jscolor.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/jszip/jszip.min.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/math-print.js';
@@ -2805,8 +2805,12 @@ import '!!file-loader?name=[path][name].[ext]&context=.!../dio/templates/wirefra
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/vsdxImporter.html';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-12cca165.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-12cca165.js.map';
+import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-50a29d49.js';
+import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-50a29d49.js.map';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-5490a1bd.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-5490a1bd.js.map';
+import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-7a2a8380.js';
+import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-7a2a8380.js.map';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-9fe249eb.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-9fe249eb.js.map';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-bed83ea8.js';
@@ -2817,3 +2821,5 @@ import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-dfbb910f.
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-dfbb910f.js.map';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-f163abaa.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-f163abaa.js.map';
+import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-fa8c4ce5.js';
+import '!!file-loader?name=[path][name].[ext]&context=.!../dio/workbox-fa8c4ce5.js.map';

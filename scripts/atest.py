@@ -18,6 +18,8 @@ import subprocess
 import sys
 import time
 
+import lxml.etree as ET
+
 from . import project as P
 
 PABOT_DEFAULTS = [
@@ -99,35 +101,47 @@ def run_tests(attempt=0, extra_args=None):
     proc = subprocess.Popen(str_args, cwd=P.ATEST)
 
     try:
-        return proc.wait()
+        proc.wait()
     except KeyboardInterrupt:
         proc.kill()
-        return proc.wait()
+        proc.wait()
+
+    out_xml = out_dir / "output.xml"
+    fail_count = -1
+
+    try:
+        root = ET.fromstring(out_xml.read_bytes())
+        stat = root.xpath("//total/stat")
+        fail_count = int(stat[0].attrib["fail"])
+    except Exception as err:
+        print(err)
+
+    return fail_count
 
 
 def attempt_atest_with_retries(extra_args=None):
     """retry the robot tests a number of times"""
     extra_args = list(extra_args or [])
     attempt = 0
-    error_count = -1
+    fail_count = -1
 
     retries = P.ATEST_RETRIES
     extra_args += P.ATEST_ARGS
 
-    while error_count != 0 and attempt <= retries:
+    while fail_count != 0 and attempt <= retries:
         attempt += 1
         print("attempt {} of {}...".format(attempt, retries + 1), flush=True)
         start_time = time.time()
-        error_count = run_tests(attempt=attempt, extra_args=extra_args)
+        fail_count = run_tests(attempt=attempt, extra_args=extra_args)
         print(
-            error_count,
-            "errors in",
+            fail_count,
+            "failed in",
             int(time.time() - start_time),
             "seconds",
             flush=True,
         )
 
-    return error_count
+    return fail_count
 
 
 if __name__ == "__main__":
