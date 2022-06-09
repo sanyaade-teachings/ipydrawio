@@ -40,7 +40,7 @@ def run_tests(attempt=0, extra_args=None):
         prev_stem = P.get_atest_stem(attempt=attempt - 1, extra_args=extra_args)
         previous = P.ATEST_OUT / prev_stem / P.ATEST_OUT_XML
         if previous.exists():
-            extra_args += ["--rerunfailed", str(previous)]
+            extra_args += ["--runemptysuite", "--rerunfailed", str(previous)]
 
     runner = ["pabot", *PABOT_DEFAULTS]
 
