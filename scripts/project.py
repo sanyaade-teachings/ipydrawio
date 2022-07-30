@@ -394,7 +394,8 @@ BUILD_WHEELS = BUILD / "wheels"
 DEMO_WHEELS = DEMO / "pypi"
 NOARCH_WHL = "py3-none-any.whl"
 IGNORED_WHEELS = ["widgetsnbextension", "nbformat", "ipykernel", "pyolite"]
-PYODIDE_URL = "https://cdn.jsdelivr.net/pyodide/v0.18.1/full"
+# sync swith jupyterlite
+PYODIDE_URL = "https://cdn.jsdelivr.net/pyodide/v0.20.0/full"
 PYODIDE_PACKAGES = BUILD / "pyodide-packages.json"
 
 

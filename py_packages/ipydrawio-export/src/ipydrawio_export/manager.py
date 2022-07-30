@@ -40,7 +40,7 @@ from traitlets.config import LoggingConfigurable
 
 try:
     from PyPDF2 import PdfMerger, PdfReader, PdfWriter
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     from PyPDF2 import (
         PdfFileMerger as PdfMerger,
         PdfFileReader as PdfReader,
