@@ -32,8 +32,8 @@ PATCHES = {
         },
         {
             "name": "patch cors check for data URI",
-            "before": "this.editor.isCorsEnabledForUrl(v)||(n=",
-            "after": "(v.match(/^data:/) || this.editor.isCorsEnabledForUrl(v))||(n=",
+            "before": "this.editor.isCorsEnabledForUrl(x)||(m=",
+            "after": "(x.match(/^data:/) || this.editor.isCorsEnabledForUrl(x))||(m=",
         },
     ]
 }
@@ -60,7 +60,7 @@ def patch():
                 print("   ...patching")
                 txt = txt.replace(patch["before"], patch["after"])
             else:
-                print("   ...nothing to do")
+                raise ValueError(f"{path} didn't contain {patch}")
 
         dest_path.write_text(txt, encoding="utf-8")
     return 0
