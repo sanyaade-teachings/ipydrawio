@@ -81,7 +81,7 @@ ${JLAB CSS ACTIVE INPUT}                ${JLAB CSS ACTIVE CELL} .CodeMirror
 ${JLAB CSS ACTIVE OUTPUT CHILDREN}      ${JLAB CSS ACTIVE CELL} .jp-OutputArea-child
 ${JLAB CSS OUTPUT}                      .jp-OutputArea-output
 ${JLAB CSS ACTIVE CELL MARKDOWN}        ${JLAB CSS ACTIVE CELL} .jp-MarkdownOutput:not(.jp-mod-hidden)
-${JLAB CSS ACTIVE SIDEBAR}              .jp-SideBar .p-TabBar-tab.p-mod-current
+${JLAB CSS ACTIVE SIDEBAR}              .jp-SideBar .p-TabBar-tab.lm-mod-current
 ${JLAB CSS BUSY KERNEL}                 .jp-Toolbar-kernelStatus.jp-FilledCircleIcon
 ${JLAB CSS CMD INPUT}                   .p-CommandPalette-input
 ${JLAB CSS CMD ITEM}                    .p-CommandPalette-item
