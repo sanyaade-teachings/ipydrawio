@@ -39,5 +39,5 @@ Open Retro Path
 Create a Diagram from Retro Tree
     Wait Until Page Contains Element    ${CSS RETRO TREE DIO BTN}
     Click Element    ${CSS RETRO TREE DIO BTN}
-    Switch Window    NEW
+    Wait Until Keyword Succeeds    5x    5s    Switch Window    NEW
     Wait Until Keyword Succeeds    5x    5s    Wait for a Diagram to be Ready

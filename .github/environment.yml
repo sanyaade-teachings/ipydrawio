@@ -37,6 +37,7 @@ dependencies:
   - requests_cache
   - retrolab
   # building
+  - flit >=3.7.1
   - pip
   - twine >=3.7.1
   - wheel
