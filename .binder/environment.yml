@@ -86,6 +86,7 @@ dependencies:
   - pip
   - twine >=3.7.1
   - wheel
+  - flit >=3.7.1
   # linting
   - black
   - flake8

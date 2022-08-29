@@ -16,7 +16,8 @@
     "output_archive": "../build/demo/ipydrawio-lite-1.2.1.tgz",
     "output_dir": "../build/demo",
     "piplite_urls": [
-      "../py_packages/ipydrawio-widgets/dist/ipydrawio_widgets-1.2.1-py3-none-any.whl"
+      "../py_packages/ipydrawio-widgets/dist/ipydrawio_widgets-1.2.1-py3-none-any.whl",
+      "../demo/mocks/widgetsnbextension/dist/widgetsnbextension-4.0.2-py3-none-any.whl"
     ]
   }
 }

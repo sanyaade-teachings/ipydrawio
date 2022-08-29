@@ -731,6 +731,19 @@ def task_demo():
     demo_tasks = []
     final_dest = []
 
+    js_wheels = []
+
+    for py_pkg, wheel in P.PYOLITE_PACKAGES.items():
+        name = py_pkg.name
+        js_wheels += [wheel]
+        yield dict(
+            name=f"js:py:{name}",
+            doc=f"build the {name} python package for the browser with flit",
+            file_dep=[*py_pkg.rglob("*.py"), py_pkg / "pyproject.toml"],
+            actions=[(P.build_one_flit, [py_pkg])],
+            targets=[wheel],
+        )
+
     yield dict(
         name="pyodide:packages",
         doc="fetch the pyodide packages.json",
@@ -751,7 +764,7 @@ def task_demo():
     yield dict(
         name="extensions",
         doc="update jupyter-lite.json from the conda env",
-        file_dep=[P.ENV_BINDER, *P.PY_WHEEL.values()],
+        file_dep=[P.ENV_BINDER, *P.PY_WHEEL.values(), *js_wheels],
         targets=[P.DEMO_CONFIG],
         actions=[
             (
@@ -761,7 +774,7 @@ def task_demo():
                     P.DEMO_CONFIG,
                     P.FED_EXT_MARKER,
                     [P.PY_WHEEL[P.IPD.name]],
-                    [P.PY_WHEEL[P.IPDW.name]],
+                    [P.PY_WHEEL[P.IPDW.name], *js_wheels],
                 ],
             )
         ],

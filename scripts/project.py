@@ -397,7 +397,18 @@ IGNORED_WHEELS = ["widgetsnbextension", "nbformat", "ipykernel", "pyolite"]
 # sync swith jupyterlite
 PYODIDE_URL = "https://cdn.jsdelivr.net/pyodide/v0.21.1/full"
 PYODIDE_PACKAGES = BUILD / "pyodide-packages.json"
-
+DEMO_PATCHES = DEMO / "mocks"
+PYOLITE_PACKAGES = {
+    pyproj.parent: pyproj.parent
+    / "dist/{}-{}-py3-none-any.whl".format(
+        pyproj.parent.name,
+        re.findall(
+            r'''__version__ = "(.*)"''',
+            next((pyproj.parent).glob("*/__init__.py")).read_text(encoding="utf-8"),
+        )[0],
+    )
+    for pyproj in DEMO_PATCHES.glob("*/pyproject.toml")
+}
 
 # docs
 SPHINX_ARGS = json.loads(os.environ.get("SPHINX_ARGS", "[]"))
@@ -971,6 +982,35 @@ def template_one(src, dest):
     if dest.exists():
         dest.unlink()
     dest.write_text(template.render(P=globals()))
+
+
+def build_one_flit(py_pkg):
+    """attempt to build one package with flit: on RTD, allow doing a build in /tmp"""
+    import tempfile
+
+    print(f"[{py_pkg.name}] trying in-tree build...", flush=True)
+    args = ["flit", "--debug", "build", "--setup-py"]
+
+    try:
+        subprocess.check_call(args, cwd=str(py_pkg))
+    except subprocess.CalledProcessError:
+        if not RTD:
+            print(f"[{py_pkg.name}] ... in-tree build failed, not on ReadTheDocs")
+            return False
+        print(
+            f"[{py_pkg.name}] ... in-tree build failed, trying build in tempdir...",
+            flush=True,
+        )
+        py_dist = py_pkg / "dist"
+        if py_dist.exists():
+            shutil.rmtree(py_dist)
+
+        with tempfile.TemporaryDirectory() as td:
+            tdp = Path(td)
+            py_tmp = tdp / py_pkg.name
+            shutil.copytree(py_pkg, py_tmp)
+            subprocess.call(args, cwd=str(py_tmp))
+            shutil.copytree(py_tmp / "dist", py_dist)
 
 
 # Late environment hacks
