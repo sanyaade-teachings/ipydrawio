@@ -79,7 +79,7 @@ Duplicate Shape
     Click Element At Coordinates    ${CSS DIO BG}    100    100
     FOR    ${i}    IN RANGE    ${duplicates}
         Sleep    0.1s
-        ${els} =    Get WebElements    css:rect[width\="120"]
+        ${els} =    Get WebElements    css:rect[width\="120"][pointer-events="all"]:not([visibility="hidden"])
         Click Element    ${els[-1]}
         Press Keys    css:body    ${ACCEL}+D
     END
