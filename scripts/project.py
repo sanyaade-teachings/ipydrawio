@@ -428,6 +428,7 @@ DOCS_RST = _clean(DOCS.rglob("*.rst"))
 DOCS_IPYNB = _clean(DOCS.rglob("*.ipynb"))
 DOCS_SRC = _clean(DOCS_MD, DOCS_RST, DOCS_IPYNB)
 DOCS_STATIC = DOCS / "_static"
+ALL_DOCS_STATIC = [p for p in DOCS_STATIC.rglob("*") if not p.is_dir()]
 DOCS_FAVICON_SVG = DOCS_STATIC / "icon.svg"
 DOCS_FAVICON_ICO = DOCS_STATIC / "favicon.ico"
 DOCS_TS = DOCS / "api/ts"

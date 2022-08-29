@@ -870,6 +870,7 @@ def task_docs():
         P.DOCS_FAVICON_ICO,
         P.OK_PIP_CHECK,
         *P.DOCS_SRC,
+        *P.ALL_DOCS_STATIC,
     ]
     sphinx_task_deps = []
 
