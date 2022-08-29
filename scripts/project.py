@@ -395,7 +395,7 @@ DEMO_WHEELS = DEMO / "pypi"
 NOARCH_WHL = "py3-none-any.whl"
 IGNORED_WHEELS = ["widgetsnbextension", "nbformat", "ipykernel", "pyolite"]
 # sync swith jupyterlite
-PYODIDE_URL = "https://cdn.jsdelivr.net/pyodide/v0.20.0/full"
+PYODIDE_URL = "https://cdn.jsdelivr.net/pyodide/v0.21.1/full"
 PYODIDE_PACKAGES = BUILD / "pyodide-packages.json"
 
 
@@ -928,7 +928,7 @@ def _sync_lite_config(from_env, to_json, marker, extra_federated, extra_pyolite)
 def fetch_pyodide_packages():
     import urllib.request
 
-    url = f"{PYODIDE_URL}/packages.json"
+    url = f"{PYODIDE_URL}/repodata.json"
     print("fetching pyodide packages from", url)
     with urllib.request.urlopen(url) as response:
         packages = json.loads(response.read().decode("utf-8"))
