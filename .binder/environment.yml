@@ -54,7 +54,7 @@ dependencies:
   - jupyter-server-mathjax
   - myst-nb
   - pkginfo
-  - pydata-sphinx-theme
+  - pydata-sphinx-theme >=0.10.1,<0.11.0
   - pytest-check-links
   - sphinx !=4.4.0=*_0
   - sphinx-jsonschema
