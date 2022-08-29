@@ -15,20 +15,31 @@
 **/
 
 :root {
-  --ipd-card-background: rgb(var(--pst-color-preformatted-background));
+  --ipd-card-background: var(--pst-color-preformatted-background);
   --ipd-card-border: solid 1px rgba(0, 0, 0, 0.125);
   --ipd-card-shadow-1: 0.125em 0.125em 0.125em 0.125em rgba(0, 0, 0, 0.05);
   --ipd-card-shadow-2: 0.25em 0.25em 0.25em 0.125em rgba(0, 0, 0, 0.1);
   --ipd-card-text-base: 0.8em;
   --ipd-card-padding: var(--ipd-card-text-base);
   --ipd-card-text-header: calc(var(--ipd-card-text-base) * 1.25);
-  --pst-color-active-navigation: 123, 138, 255;
-  --pst-color-inline-code: 0, 22, 192;
-  --pst-color-preformatted-background: 240, 248, 255;
+  --pst-color-primary: rgb(123, 138, 255);
+  --pst-color-inline-code: rgb(0, 22, 192);
+  --pst-color-preformatted-background: rgb(240, 248, 255);
   --pst-color-headerlink: var(--pst-color-active-navigation);
-  --ipd-brand-color0: rgb(var(--pst-color-active-navigation));
+  --ipd-brand-color0: var(--pst-color-active-navigation);
 }
 
+/* dark */
+html[data-theme='dark'] {
+  --pst-color-preformatted-background: rgb(9, 40, 66);
+}
+
+html[data-theme='dark'] .myst.download img {
+  background-color: #fff;
+  filter: unset;
+}
+
+/* basics */
 code {
   background-color: var(--ipd-card-background);
   padding: 0.125em 0.5em;
@@ -145,7 +156,7 @@ footer .container > .footer-item:hover,
 .toctree-wrapper.compound > ul > .toctree-l1 > a {
   text-transform: uppercase;
   font-weight: bold;
-  color: #000;
+  color: var(--pst-color-primary);
   font-size: var(--ipd-card-text-header);
   padding-bottom: var(--ipd-card-padding);
 }
@@ -159,7 +170,7 @@ footer .container > .footer-item:hover,
 
 /* cleanup */
 div.cell div.cell_input {
-  border-left: solid 4px rgb(var(--pst-color-active-navigation));
+  border-left: solid 4px var(--pst-color-active-navigation);
   max-width: unset;
   text-align: left;
   padding: calc(0.25 * var(--ipd-card-padding)) 0;
@@ -170,7 +181,6 @@ div.cell div.cell_input {
 }
 
 .demo-sidebar .btn-primary {
-  background-color: var(--ipd-brand-color0);
   font-size: 150%;
   opacity: 0.5;
   transition: all 0.2s;
