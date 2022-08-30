@@ -174,7 +174,7 @@ ENV_GH_CB_WIN = GH / "environment-conda-build-win.yml"
 PY = ["python"]
 PYM = [*PY, "-m"]
 PIP = [*PYM, "pip"]
-PIP_CHECK_IGNORE = "^(No broken|pylint) "
+PIP_CHECK_IGNORE = "^(No broken|pylint|sphinx-rtd-theme) "
 
 NPM = (
     shutil.which("npm")
