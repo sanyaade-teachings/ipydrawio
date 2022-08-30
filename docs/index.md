@@ -15,9 +15,9 @@ Install `ipydrawio` (and optionally `ipydrawio-export`) with `pip`, `mamba`, or 
 ```bash
 pip install ipydrawio[all]
 # or
-mamba install -c conda-forge ipydrawio
+mamba install -c conda-forge ipydrawio  # ipydrawio-export
 # or
-conda install -c conda-forge ipydrawio
+conda install -c conda-forge ipydrawio  # ipydrawio-export
 ```
 
 Start JupyterLab and [start making diagrams](./diagrams/index.md)!
@@ -30,7 +30,7 @@ Start JupyterLab and [start making diagrams](./diagrams/index.md)!
 The in-browser demo has some <strong>pointy edges</strong>...
 <ul>
   <li>
-    <code>jupyterlite</code> is <em>alpha</em> software, and evolving quickly
+    <code>jupyterlite</code> is <em>beta</em> software, and evolving quickly
   </li>
   <li>
     <strong>Don't</strong> use the demo site for important work

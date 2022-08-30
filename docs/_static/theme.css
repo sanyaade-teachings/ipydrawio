@@ -32,11 +32,16 @@
 /* dark */
 html[data-theme='dark'] {
   --pst-color-preformatted-background: rgb(9, 40, 66);
+  --pst-color-border: rgb(17, 78, 128);
 }
 
 html[data-theme='dark'] .myst.download img {
   background-color: #fff;
   filter: unset;
+}
+
+html[data-theme='dark'] .rst-versions .rst-current-version {
+  color: var(--pst-color-primary);
 }
 
 /* basics */
