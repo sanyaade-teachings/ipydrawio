@@ -15,20 +15,40 @@
 **/
 
 :root {
-  --ipd-card-background: rgb(var(--pst-color-preformatted-background));
+  --ipd-brand-color0: var(--pst-color-active-navigation);
+  --ipd-card-background: var(--pst-color-preformatted-background);
   --ipd-card-border: solid 1px rgba(0, 0, 0, 0.125);
+  --ipd-card-padding: var(--ipd-card-text-base);
   --ipd-card-shadow-1: 0.125em 0.125em 0.125em 0.125em rgba(0, 0, 0, 0.05);
   --ipd-card-shadow-2: 0.25em 0.25em 0.25em 0.125em rgba(0, 0, 0, 0.1);
   --ipd-card-text-base: 0.8em;
-  --ipd-card-padding: var(--ipd-card-text-base);
   --ipd-card-text-header: calc(var(--ipd-card-text-base) * 1.25);
-  --pst-color-active-navigation: 123, 138, 255;
-  --pst-color-inline-code: 0, 22, 192;
-  --pst-color-preformatted-background: 240, 248, 255;
   --pst-color-headerlink: var(--pst-color-active-navigation);
-  --ipd-brand-color0: rgb(var(--pst-color-active-navigation));
+  --pst-color-inline-code: rgb(0, 22, 192);
+  --pst-color-preformatted-background: rgb(240, 248, 255);
+  --pst-color-primary: rgb(123, 138, 255);
+  --pst-sidebar-secondary: 25em;
 }
 
+/* dark */
+html[data-theme='dark'] {
+  --pst-color-preformatted-background: rgb(9, 40, 66);
+  --pst-color-border: rgb(17, 78, 128);
+}
+
+html[data-theme='dark'] img {
+  filter: unset;
+}
+
+html[data-theme='dark'] .myst.download img {
+  background-color: #fff;
+}
+
+html[data-theme='dark'] .rst-versions .rst-current-version {
+  color: var(--pst-color-primary);
+}
+
+/* basics */
 code {
   background-color: var(--ipd-card-background);
   padding: 0.125em 0.5em;
@@ -37,6 +57,7 @@ code {
 a.headerlink {
   padding: 0 calc(0.5 * var(--ipd-card-padding));
   margin-left: calc(0.25 * var(--ipd-card-padding));
+  color: var(--pst-color-inline-code);
 }
 a.headerlink:hover {
   border-radius: calc(0.25 * var(--ipd-card-padding));
@@ -49,32 +70,49 @@ a:active {
   text-decoration: dashed underline 1px;
 }
 
-.navbar-light .navbar-nav .nav-link {
+/* layout */
+
+.bd-page-width {
+  max-width: unset !important;
+}
+
+.bd-content {
+  flex-grow: 1;
+  max-width: 100%;
+}
+
+.bd-main .bd-content .bd-article-container {
+  max-width: unset;
+  flex: 1;
+}
+
+.bd-header .navbar-nav .nav-link {
   font-weight: 600;
 }
 
-.navbar-light .navbar-nav > .active > .nav-link {
-  font-weight: 600;
-  text-decoration: dashed underline 1px;
+.bd-header .navbar-nav .nav-item {
+  border-bottom: solid 0.2em transparent;
+  padding: 0.5em;
 }
 
-@media (min-width: 1200px) {
-  .container,
-  .container-xl {
-    max-width: 100%;
-  }
+.bd-header .navbar-nav .nav-item.current {
+  border-bottom: solid 0.2em var(--pst-color-primary);
+}
+
+.bd-sidebar {
+  max-width: var(--pst-sidebar-secondary);
+}
+
+.bd-main .bd-content .bd-article-container section p,
+.bd-main .bd-content .bd-article-container section .admonition,
+.bd-main .bd-content .bd-article-container section blockquote {
+  max-width: 60em;
+  margin-left: 0;
 }
 
 #navbar-start {
   font-family: var(--pst-font-family-heading);
   font-size: 1.6em;
-}
-
-@media (min-width: 960px) {
-  #navbar-center {
-    display: flex;
-    align-items: baseline;
-  }
 }
 
 footer .container,
@@ -85,6 +123,7 @@ footer .container,
   margin-left: 0;
   padding-left: 0;
   justify-content: space-between;
+  max-width: unset;
 }
 
 .bd-sidebar {
@@ -134,7 +173,6 @@ footer .container > .footer-item:hover,
 }
 
 #bd-toc-nav {
-  padding: var(--ipd-card-padding) 0;
   text-align: left;
 }
 
@@ -145,7 +183,7 @@ footer .container > .footer-item:hover,
 .toctree-wrapper.compound > ul > .toctree-l1 > a {
   text-transform: uppercase;
   font-weight: bold;
-  color: #000;
+  color: var(--pst-color-primary);
   font-size: var(--ipd-card-text-header);
   padding-bottom: var(--ipd-card-padding);
 }
@@ -159,18 +197,18 @@ footer .container > .footer-item:hover,
 
 /* cleanup */
 div.cell div.cell_input {
-  border-left: solid 4px rgb(var(--pst-color-active-navigation));
+  border-left: solid 4px var(--pst-color-active-navigation);
   max-width: unset;
   text-align: left;
   padding: calc(0.25 * var(--ipd-card-padding)) 0;
 }
 
+/* demo */
 .demo-sidebar {
   text-align: center;
 }
 
 .demo-sidebar .btn-primary {
-  background-color: var(--ipd-brand-color0);
   font-size: 150%;
   opacity: 0.5;
   transition: all 0.2s;

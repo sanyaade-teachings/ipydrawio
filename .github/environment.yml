@@ -28,8 +28,8 @@ dependencies:
   - nodejs >=12,!=13.*,<15
   - python # this gets patched in ci
   # run
-  - ipywidgets >=7.6,<8
-  - jupyterlab >=3.4.4,<4.0.0a0
+  - ipywidgets >=7.6,<9
+  - jupyterlab >=3.4.5,<4.0.0a0
   - jupyterlab_widgets >=1
   - lxml
   - pillow
@@ -37,6 +37,7 @@ dependencies:
   - requests_cache
   - retrolab
   # building
+  - flit >=3.7.1
   - pip
   - twine >=3.7.1
   - wheel
@@ -56,7 +57,7 @@ dependencies:
   - pytest-tornasync
   - pytest-xdist
   # acceptance testing
-  - firefox =91
+  - firefox =102
   - geckodriver >=0.28.0
   - robotframework >=4
   - robotframework-pabot

@@ -186,7 +186,7 @@ export class DiagramView extends BoxView {
    */
   render() {
     super.render();
-    this.pWidget.addClass('jp-IPyDiagram');
+    (this.luminoWidget || this.pWidget).addClass('jp-IPyDiagram');
     this._displayInterval = setInterval(this.waitForDisplayed, 50);
   }
 
@@ -194,12 +194,12 @@ export class DiagramView extends BoxView {
    * A low-tech way to wait until we are quite sure the diagram is displayed.
    */
   protected waitForDisplayed = () => {
-    if (!this.pWidget.isVisible) {
+    if (!(this.luminoWidget || this.pWidget).isVisible) {
       return;
     }
     clearInterval(this._displayInterval);
     this.initDiagram();
-    this.pWidget.addWidget(this.diagram);
+    (this.luminoWidget || this.pWidget).addWidget(this.diagram);
     this.diagram.onContentChanged();
     this.diagram.onAfterShow();
     this.model.on('change:source', this.onModelSourceChange, this);

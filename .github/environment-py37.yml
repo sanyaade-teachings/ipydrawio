@@ -1,4 +1,4 @@
-# extra packages for python 3.7
+# extra/pinned packages for python 3.7
 
 # Copyright 2022 ipydrawio contributors
 #
@@ -23,3 +23,5 @@ channels:
 dependencies:
   # for flake8, sigh
   - importlib-metadata <4.3
+  # for legacy ipywidgets
+  - ipywidgets <8

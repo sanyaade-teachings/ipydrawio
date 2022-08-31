@@ -1,2 +1,2 @@
 # a set of packages we capture offline for the demo site
-ipywidgets >=7.6,<8
+ipywidgets >=7.6,<9

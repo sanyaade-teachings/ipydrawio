@@ -27,34 +27,41 @@ ${CMD PALETTE ITEM ACTIVE}              css:#command-palette .lm-CommandPalette-
 ${JLAB XP TOP}                          //div[@id='jp-top-panel']
 ${JLAB XP MENU ITEM LABEL}              //div[contains(@class, 'lm-Menu-itemLabel')]
 ${JLAB XP MENU LABEL}                   //div[contains(@class, 'lm-MenuBar-itemLabel')]
-${JLAB XP DOCK TAB}                     xpath://div[contains(@class, 'lm-DockPanel-tabBar')]//li[contains(@class, 'lm-TabBar-tab')]
+${JLAB XP DOCK TAB}
+...                                     xpath://div[contains(@class, 'lm-DockPanel-tabBar')]//li[contains(@class, 'lm-TabBar-tab')]
 ${JLAB CSS VERSION}                     css:.jp-About-version
 ${CSS DIALOG OK}                        css:.jp-Dialog .jp-mod-accept
-${MENU OPEN WITH}                       xpath://div[contains(@class, 'lm-Menu-itemLabel')][contains(text(), "Open With")]
+${MENU OPEN WITH}
+...                                     xpath://div[contains(@class, 'lm-Menu-itemLabel')][contains(text(), "Open With")]
 # N is missing on purpose
-${MENU NOTEBOOK}                        xpath://li[@data-command="filebrowser:open"]//div[contains(@class, 'lm-Menu-itemLabel')][contains(., "otebook")]
+${MENU NOTEBOOK}
+...                                     xpath://li[@data-command="filebrowser:open"]//div[contains(@class, 'lm-Menu-itemLabel')][contains(., "otebook")]
 ${DIALOG WINDOW}                        css:.jp-Dialog
 ${DIALOG INPUT}                         css:.jp-Input-Dialog input
 ${DIALOG ACCEPT}                        css:button.jp-Dialog-button.jp-mod-accept
 # TODO: get ours
 # ${STATUSBAR}    css:div.lsp-statusbar-item
 ${MENU EDITOR}                          xpath://div[contains(@class, 'lm-Menu-itemLabel')][contains(., "Editor")]
-${MENU SETTINGS}                        xpath://div[contains(@class, 'lm-MenuBar-itemLabel')][contains(text(), "Settings")]
+${MENU SETTINGS}
+...                                     xpath://div[contains(@class, 'lm-MenuBar-itemLabel')][contains(text(), "Settings")]
 ${MENU RENAME}                          xpath://div[contains(@class, 'lm-Menu-itemLabel')][contains(., "ename")]
 # settings
 ${DIO PLUGIN ID}                        @deathbeds/ipydrawio:plugin
 ${DIO PLUGIN SETTINGS FILE}             @deathbeds${/}ipydrawio${/}plugin.jupyterlab-settings
 ${CSS USER SETTINGS}                    .jp-SettingsRawEditor-user
-${JLAB XP CLOSE SETTINGS}               ${JLAB XP DOCK TAB}\[contains(., 'Settings')]/*[contains(@class, 'm-TabBar-tabCloseIcon')]
+${JLAB XP CLOSE SETTINGS}
+...                                     ${JLAB XP DOCK TAB}\[contains(., 'Settings')]/*[contains(@class, 'm-TabBar-tabCloseIcon')]
 # launcher
 ${XP LAUNCH TAB}                        ${JLAB XP DOCK TAB}//*[contains(text(), 'Launcher')]
 ${CSS LAUNCHER}                         css:.jp-Launcher-body
 ${CREATE A BLANK}                       Create a blank .dio file
 ${CSS LAUNCH DIO}                       css:.jp-LauncherCard[title='${CREATE A BLANK}'] svg
-${CSS LAUNCH CUSTOM}                    css:.jp-LauncherCard[title='Create a diagram with customized formats, templates, and UI'] svg
+${CSS LAUNCH CUSTOM}
+...                                     css:.jp-LauncherCard[title='Create a diagram with customized formats, templates, and UI'] svg
 # ipykernel 5 is "Python 3". ipykernel 6 is "Python 3 (ipykernel)"... but only works on python 3.7+
 # TODO: consider capturing this information as a tag
-${CSS LAUNCH IPYNB}                     css:.jp-LauncherCard[data-category='Notebook'][title^='Python 3'] .jp-LauncherCard-icon
+${CSS LAUNCH IPYNB}
+...                                     css:.jp-LauncherCard[data-category='Notebook'][title^='Python 3'] .jp-LauncherCard-icon
 ${CSS DIO READY}                        css:.jp-Diagram-ready
 ${CSS DIO IFRAME}                       ${CSS DIO READY} iframe
 # drawio
@@ -74,7 +81,7 @@ ${JLAB CSS ACTIVE INPUT}                ${JLAB CSS ACTIVE CELL} .CodeMirror
 ${JLAB CSS ACTIVE OUTPUT CHILDREN}      ${JLAB CSS ACTIVE CELL} .jp-OutputArea-child
 ${JLAB CSS OUTPUT}                      .jp-OutputArea-output
 ${JLAB CSS ACTIVE CELL MARKDOWN}        ${JLAB CSS ACTIVE CELL} .jp-MarkdownOutput:not(.jp-mod-hidden)
-${JLAB CSS ACTIVE SIDEBAR}              .jp-SideBar .p-TabBar-tab.p-mod-current
+${JLAB CSS ACTIVE SIDEBAR}              .jp-SideBar .p-TabBar-tab.lm-mod-current
 ${JLAB CSS BUSY KERNEL}                 .jp-Toolbar-kernelStatus.jp-FilledCircleIcon
 ${JLAB CSS CMD INPUT}                   .p-CommandPalette-input
 ${JLAB CSS CMD ITEM}                    .p-CommandPalette-item

@@ -174,7 +174,7 @@ ENV_GH_CB_WIN = GH / "environment-conda-build-win.yml"
 PY = ["python"]
 PYM = [*PY, "-m"]
 PIP = [*PYM, "pip"]
-PIP_CHECK_IGNORE = "^(No broken|pylint) "
+PIP_CHECK_IGNORE = "^(No broken|pylint|sphinx-rtd-theme) "
 
 NPM = (
     shutil.which("npm")
@@ -395,9 +395,20 @@ DEMO_WHEELS = DEMO / "pypi"
 NOARCH_WHL = "py3-none-any.whl"
 IGNORED_WHEELS = ["widgetsnbextension", "nbformat", "ipykernel", "pyolite"]
 # sync swith jupyterlite
-PYODIDE_URL = "https://cdn.jsdelivr.net/pyodide/v0.20.0/full"
+PYODIDE_URL = "https://cdn.jsdelivr.net/pyodide/v0.21.1/full"
 PYODIDE_PACKAGES = BUILD / "pyodide-packages.json"
-
+DEMO_PATCHES = DEMO / "mocks"
+PYOLITE_PACKAGES = {
+    pyproj.parent: pyproj.parent
+    / "dist/{}-{}-py3-none-any.whl".format(
+        pyproj.parent.name,
+        re.findall(
+            r'''__version__ = "(.*)"''',
+            next((pyproj.parent).glob("*/__init__.py")).read_text(encoding="utf-8"),
+        )[0],
+    )
+    for pyproj in DEMO_PATCHES.glob("*/pyproject.toml")
+}
 
 # docs
 SPHINX_ARGS = json.loads(os.environ.get("SPHINX_ARGS", "[]"))
@@ -417,6 +428,7 @@ DOCS_RST = _clean(DOCS.rglob("*.rst"))
 DOCS_IPYNB = _clean(DOCS.rglob("*.ipynb"))
 DOCS_SRC = _clean(DOCS_MD, DOCS_RST, DOCS_IPYNB)
 DOCS_STATIC = DOCS / "_static"
+ALL_DOCS_STATIC = [p for p in DOCS_STATIC.rglob("*") if not p.is_dir()]
 DOCS_FAVICON_SVG = DOCS_STATIC / "icon.svg"
 DOCS_FAVICON_ICO = DOCS_STATIC / "favicon.ico"
 DOCS_TS = DOCS / "api/ts"
@@ -485,7 +497,8 @@ ALL_MD = [*ROOT.glob("*.md"), *PACKAGES.glob("*/*.md"), *DOCS_MD]
 ALL_SETUP_CFG = [SETUP_CFG, *PY_SETUP_CFG.values()]
 ALL_JS = [PACKAGES / ".eslintrc.js"]
 ALL_TS = sum(JS_TSSRC.values(), [])
-ALL_CSS = [*sum(JS_STYLE.values(), []), *DOCS.rglob("*.css")]
+ALL_SRC_CSS = [*sum(JS_STYLE.values(), [])]
+ALL_CSS = [*ALL_SRC_CSS, *DOCS.rglob("*.css")]
 ALL_ROBOT = [*ATEST.rglob("*.robot")]
 ALL_PRETTIER = [*ALL_YML, *ALL_JSON, *ALL_MD, *ALL_TS, *ALL_CSS, *ALL_JS]
 ALL_HEADERS = _clean(
@@ -928,7 +941,7 @@ def _sync_lite_config(from_env, to_json, marker, extra_federated, extra_pyolite)
 def fetch_pyodide_packages():
     import urllib.request
 
-    url = f"{PYODIDE_URL}/packages.json"
+    url = f"{PYODIDE_URL}/repodata.json"
     print("fetching pyodide packages from", url)
     with urllib.request.urlopen(url) as response:
         packages = json.loads(response.read().decode("utf-8"))
@@ -971,6 +984,35 @@ def template_one(src, dest):
     if dest.exists():
         dest.unlink()
     dest.write_text(template.render(P=globals()))
+
+
+def build_one_flit(py_pkg):
+    """attempt to build one package with flit: on RTD, allow doing a build in /tmp"""
+    import tempfile
+
+    print(f"[{py_pkg.name}] trying in-tree build...", flush=True)
+    args = ["flit", "--debug", "build", "--setup-py"]
+
+    try:
+        subprocess.check_call(args, cwd=str(py_pkg))
+    except subprocess.CalledProcessError:
+        if not RTD:
+            print(f"[{py_pkg.name}] ... in-tree build failed, not on ReadTheDocs")
+            return False
+        print(
+            f"[{py_pkg.name}] ... in-tree build failed, trying build in tempdir...",
+            flush=True,
+        )
+        py_dist = py_pkg / "dist"
+        if py_dist.exists():
+            shutil.rmtree(py_dist)
+
+        with tempfile.TemporaryDirectory() as td:
+            tdp = Path(td)
+            py_tmp = tdp / py_pkg.name
+            shutil.copytree(py_pkg, py_tmp)
+            subprocess.call(args, cwd=str(py_tmp))
+            shutil.copytree(py_tmp / "dist", py_dist)
 
 
 # Late environment hacks

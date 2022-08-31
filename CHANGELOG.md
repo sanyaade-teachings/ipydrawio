@@ -4,9 +4,13 @@
 
 ### ipydrawio-widgets 1.2.1
 
+- add support for `ipywidgets` 8 [#98]
+
 ### ipydrawio 1.2.1
 
 #### @deathbeds/ipydrawio 1.2.1
+
+- add support `@jupyter-widgets/jupyterlab-manager` 5 [#98]
 
 #### @deathbeds/ipydrawio-notebook 1.2.1
 
@@ -19,6 +23,8 @@
 ### ipydrawio-export 1.2.1
 
 #### @deathbeds/ipydrawio-pdf 1.2.1
+
+[#98]: https://github.com/deathbeds/ipydrawio/issues/98
 
 ## Releases
 
