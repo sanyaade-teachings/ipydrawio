@@ -439,7 +439,7 @@ def task_build():
     yield P._ok(
         dict(
             name="js",
-            file_dep=[P.YARN_INTEGRITY, P.OK_JS_BUILD_PRE, *P.ALL_TS, *P.ALL_CSS],
+            file_dep=[P.YARN_INTEGRITY, P.OK_JS_BUILD_PRE, *P.ALL_TS, *P.ALL_SRC_CSS],
             actions=[[*P.LERNA, "run", "build", "--stream"]],
             targets=sorted(P.JS_TSBUILDINFO.values()),
         ),
