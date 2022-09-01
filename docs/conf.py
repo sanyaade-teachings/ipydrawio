@@ -34,8 +34,7 @@ APP_DATA = json.loads(APP_PKG.read_text(encoding="utf-8"))
 RTD = json.loads(os.environ.get("READTHEDOCS", "False").lower())
 RTD_TASKS = [
     "build",
-    # TODO: fix once sphinx-rtd-theme supports modern docutils
-    # "setup:pip:check",
+    "setup:pip:check",
     "docs:typedoc:mystify",
     "demo:stage*",
     "demo",
