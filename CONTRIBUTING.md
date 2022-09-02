@@ -91,6 +91,7 @@ doit dist
   twine upload ipydrawio*
   npm login
   npm publish deathbeds-ipydrawio-$VERSION.tgz
+  npm publish deathbeds-ipydrawio-jupyter-templates-$VERSION.tgz
   npm publish deathbeds-ipydrawio-notebook-$VERSION.tgz
   npm publish deathbeds-ipydrawio-pdf-$VERSION.tgz
   npm publish deathbeds-ipydrawio-webpack-$OTHER_VERSION.tgz

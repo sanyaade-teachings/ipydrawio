@@ -1,6 +1,6 @@
 {
   "name": "@deathbeds/ipydrawio-notebook",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "bugs": {
     "url": "https://github.com/deathbeds/ipydrawio/issues"
   },
@@ -8,7 +8,7 @@
   "dependencies": {
     "@jupyterlab/application": "^3.1.0",
     "@jupyterlab/notebook": "^3.1.0",
-    "@deathbeds/ipydrawio": "^1.2.1"
+    "@deathbeds/ipydrawio": "^1.2.2"
   },
   "devDependencies": {
     "@jupyterlab/builder": "^3.4.0",
