@@ -2,7 +2,21 @@
 
 ## Unreleased
 
-> TBD
+### ipydrawio-widgets 1.2.2
+
+### ipydrawio 1.2.2
+
+#### @deathbeds/ipydrawio 1.2.2
+
+#### @deathbeds/ipydrawio-notebook 1.2.2
+
+#### @deathbeds/ipydrawio-webpack 20.2.801
+
+#### @deathbeds/ipydrawio-jupyter-templates 1.2.2
+
+### ipydrawio-export 1.2.2
+
+#### @deathbeds/ipydrawio-pdf 1.2.2
 
 ## Releases
 
