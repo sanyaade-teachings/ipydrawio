@@ -88,6 +88,102 @@ class IPyDrawioExportManager(LoggingConfigurable):
     def initialize(self):
         atexit.register(self.stop_server)
 
+    @run_on_executor
+    def _pdf(self, pdf_request):
+        """TODO: enable more customization... I guess over HTTP headers?
+        X-JPYDIO-embed: 1
+        """
+        data = dict(pdf_request)
+        data.update(**self.core_params)
+        status_code = None
+        pdf_text = None
+        res = None
+
+        retries = 3
+
+        while retries:
+            status_code = None
+
+            if self._server.returncode is not None:  # pragma: no cover
+                self.start_server()
+                time.sleep(self.init_wait_sec)
+            try:
+                self.log.warning(f"[ipydrawio-export] exporting ({retries} retries)...")
+                res = self._session.post(self.url, timeout=None, data=data)
+                pdf_text = res.text
+                status_code = res.status_code
+            except Exception as err:  # pragma: no cover
+                self.log.warning(f"[ipydrawio-export] Pre-HTTP Error: {err}")
+                time.sleep((3 - retries) * self.init_wait_sec)
+
+            if status_code is not None:
+                if status_code <= 400:
+                    break
+                elif res:  # pragma: no cover
+                    self.log.warning(
+                        f"[ipydrawio-export] HTTP {res.status_code}: {res.text}"
+                    )
+                else:  # pragma: no cover
+                    self.log.warning("[ipydrawio-export] retrying...")
+
+            retries -= 1  # pragma: no cover
+
+        if res:
+            self.log.debug(f"[ipydrawio-export] {len(res.text)} bytes")
+
+        if pdf_text and self.attach_xml and self.attachments:
+            self.log.info(
+                f"[ipydrawio-export] attaching drawio XML as {self.attachment_name}"
+            )
+            with tempfile.TemporaryDirectory() as td:
+                tdp = Path(td)
+                output_pdf = tdp / "original.pdf"
+                output_pdf.write_bytes(b64decode(pdf_text))
+                final_pdf = tdp / "final.pdf"
+                final = PdfWriter()
+                final.appendPagesFromReader(PdfReader(str(output_pdf), "rb"))
+                xml = pdf_request["xml"]
+                if hasattr(xml, "encode"):
+                    xml = xml.encode("utf-8")
+                final.addAttachment(self.attachment_name, xml)
+                with final_pdf.open("wb") as fpt:
+                    final.write(fpt)
+
+                pdf_text = b64encode(final_pdf.read_bytes())
+                self.log.debug(
+                    f"[ipydrawio-export] {len(pdf_text)} bytes (with attachment)"
+                )
+
+        return pdf_text
+
+    @run_on_executor
+    def _merge(self, pdf_requests):
+        tree = E.fromstring("""<mxfile version="13.3.6"></mxfile>""")
+        with tempfile.TemporaryDirectory() as td:
+            tdp = Path(td)
+            merger = PdfMerger()
+            for i, pdf_request in enumerate(pdf_requests):
+                self.log.warning("adding page %s", i)
+                for diagram in self.extract_diagrams(pdf_request):
+                    tree.append(diagram)
+                next_pdf = tdp / f"doc-{i}.pdf"
+                if pdf_request.get("pdf") is None:  # pragma: no cover
+                    raise ValueError("PDF request is empty")
+                wrote = next_pdf.write_bytes(b64decode(pdf_request["pdf"]))
+                if wrote:
+                    merger.append(PdfReader(str(next_pdf)))
+            output_pdf = tdp / "output.pdf"
+            final_pdf = tdp / "final.pdf"
+            merger.write(str(output_pdf))
+            composite_xml = E.tostring(tree).decode("utf-8")
+            final = PdfWriter()
+            final.appendPagesFromReader(PdfReader(str(output_pdf), "rb"))
+            if self.attach_xml:
+                final.addAttachment(self.attachment_name, composite_xml.encode("utf-8"))
+            with final_pdf.open("wb") as fpt:
+                final.write(fpt)
+            return b64encode(final_pdf.read_bytes()).decode("utf-8")
+
     async def pdf(self, pdf_requests):
         if not self._server:  # pragma: no cover
             await self.start_server()
@@ -164,74 +260,6 @@ class IPyDrawioExportManager(LoggingConfigurable):
     def _default_attach_xml(self):
         return True
 
-    @run_on_executor
-    def _pdf(self, pdf_request):
-        """TODO: enable more customization... I guess over HTTP headers?
-        X-JPYDIO-embed: 1
-        """
-        data = dict(pdf_request)
-        data.update(**self.core_params)
-        status_code = None
-        pdf_text = None
-        res = None
-
-        retries = 3
-
-        while retries:
-            status_code = None
-
-            if self._server.returncode is not None:  # pragma: no cover
-                self.start_server()
-                time.sleep(self.init_wait_sec)
-            try:
-                self.log.warning(f"[ipydrawio-export] exporting ({retries} retries)...")
-                res = self._session.post(self.url, timeout=None, data=data)
-                pdf_text = res.text
-                status_code = res.status_code
-            except Exception as err:  # pragma: no cover
-                self.log.warning(f"[ipydrawio-export] Pre-HTTP Error: {err}")
-                time.sleep((3 - retries) * self.init_wait_sec)
-
-            if status_code is not None:
-                if status_code <= 400:
-                    break
-                elif res:  # pragma: no cover
-                    self.log.warning(
-                        f"[ipydrawio-export] HTTP {res.status_code}: {res.text}"
-                    )
-                else:  # pragma: no cover
-                    self.log.warning("[ipydrawio-export] retrying...")
-
-            retries -= 1  # pragma: no cover
-
-        if res:
-            self.log.debug(f"[ipydrawio-export] {len(res.text)} bytes")
-
-        if pdf_text and self.attach_xml and self.attachments:
-            self.log.info(
-                f"[ipydrawio-export] attaching drawio XML as {self.attachment_name}"
-            )
-            with tempfile.TemporaryDirectory() as td:
-                tdp = Path(td)
-                output_pdf = tdp / "original.pdf"
-                output_pdf.write_bytes(b64decode(pdf_text))
-                final_pdf = tdp / "final.pdf"
-                final = PdfWriter()
-                final.appendPagesFromReader(PdfReader(str(output_pdf), "rb"))
-                xml = pdf_request["xml"]
-                if hasattr(xml, "encode"):
-                    xml = xml.encode("utf-8")
-                final.addAttachment(self.attachment_name, xml)
-                with final_pdf.open("wb") as fpt:
-                    final.write(fpt)
-
-                pdf_text = b64encode(final_pdf.read_bytes())
-                self.log.debug(
-                    f"[ipydrawio-export] {len(pdf_text)} bytes (with attachment)"
-                )
-
-        return pdf_text
-
     def extract_diagrams(self, pdf_request):
         node = None
 
@@ -266,33 +294,20 @@ class IPyDrawioExportManager(LoggingConfigurable):
             for diagram in diagrams:
                 yield diagram
 
-    @run_on_executor
-    def _merge(self, pdf_requests):
-        tree = E.fromstring("""<mxfile version="13.3.6"></mxfile>""")
-        with tempfile.TemporaryDirectory() as td:
-            tdp = Path(td)
-            merger = PdfMerger()
-            for i, pdf_request in enumerate(pdf_requests):
-                self.log.warning("adding page %s", i)
-                for diagram in self.extract_diagrams(pdf_request):
-                    tree.append(diagram)
-                next_pdf = tdp / f"doc-{i}.pdf"
-                if pdf_request.get("pdf") is None:  # pragma: no cover
-                    raise ValueError("PDF request is empty")
-                wrote = next_pdf.write_bytes(b64decode(pdf_request["pdf"]))
-                if wrote:
-                    merger.append(PdfReader(str(next_pdf)))
-            output_pdf = tdp / "output.pdf"
-            final_pdf = tdp / "final.pdf"
-            merger.write(str(output_pdf))
-            composite_xml = E.tostring(tree).decode("utf-8")
-            final = PdfWriter()
-            final.appendPagesFromReader(PdfReader(str(output_pdf), "rb"))
-            if self.attach_xml:
-                final.addAttachment(self.attachment_name, composite_xml.encode("utf-8"))
-            with final_pdf.open("wb") as fpt:
-                final.write(fpt)
-            return b64encode(final_pdf.read_bytes()).decode("utf-8")
+    def _start_process(self):
+        env = dict(os.environ)
+        env_updates = dict(
+            PORT=str(self.drawio_port),
+            DRAWIO_SERVER_URL=self.drawio_server_url,
+            NODE_ENV="production",
+        )
+        env.update(env_updates)
+
+        self.log.debug(f"[ipydrawio-export] extra env: {env_updates}")
+
+        args = [NODE, self.drawio_export_app / "export.js"]
+        self._server = subprocess.Popen([*map(str, args)], env=env)
+        return self._server
 
     async def start_server(self):
         self.stop_server()
@@ -313,21 +328,6 @@ class IPyDrawioExportManager(LoggingConfigurable):
         self.log.warning("[ipydrawio-export] server started")
 
         self.is_starting = False
-
-    def _start_process(self):
-        env = dict(os.environ)
-        env_updates = dict(
-            PORT=str(self.drawio_port),
-            DRAWIO_SERVER_URL=self.drawio_server_url,
-            NODE_ENV="production",
-        )
-        env.update(env_updates)
-
-        self.log.debug(f"[ipydrawio-export] extra env: {env_updates}")
-
-        args = [NODE, self.drawio_export_app / "export.js"]
-        self._server = subprocess.Popen([*map(str, args)], env=env)
-        return self._server
 
     @property
     def is_provisioned(self):

@@ -266,10 +266,12 @@ def task_lint():
     yield P._ok(
         dict(
             name="ssort",
-            file_dep=[*P.ALL_PY, ],
+            file_dep=[
+                *P.ALL_PY,
+            ],
             actions=[["ssort", *rel_py]],
         ),
-        P.OK_SSORT
+        P.OK_SSORT,
     )
     yield P._ok(
         dict(

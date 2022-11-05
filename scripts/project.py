@@ -345,6 +345,24 @@ PY_HAS_EXT = {
     IPDW: False,
 }
 
+SERVER_EXT = {
+    k: sorted(v.parent.glob("src/*/serverextension.py"))[0]
+    for k, v in PY_SETUP.items()
+    if sorted(v.parent.glob("src/*/serverextension.py"))
+}
+
+# package: [dependencies, targets]
+JS_PKG_PACK = {
+    k: [[v.parent / "package.json", *v.parent.glob("schema/*.json")], [v]]
+    for k, v in JS_TARBALL.items()
+}
+[
+    JS_PKG_PACK[k][0].append(v)
+    for k, v in JS_TSBUILDINFO.items()
+    if not k.startswith("_")
+]
+OK_PYSETUP = {k: BUILD / f"pysetup.{k}.ok" for k, v in PY_SETUP.items()}
+
 PY_SETUP_DEPS = {
     IPD: lambda: [OK_PYSETUP["ipydrawio-widgets"]],
     IPDE: lambda: [OK_PYSETUP["ipydrawio"]],
@@ -368,12 +386,6 @@ PY_WHEEL = {
     / f"""{IPDW.name.replace("-", "_")}-{IPDW_VERSION}-py3-none-any.whl""",
 }
 PY_TEST_DEP = {}
-
-SERVER_EXT = {
-    k: sorted(v.parent.glob("src/*/serverextension.py"))[0]
-    for k, v in PY_SETUP.items()
-    if sorted(v.parent.glob("src/*/serverextension.py"))
-}
 
 # demo
 RE_CONDA_FORGE_URL = r"/conda-forge/(.*/)?(noarch|linux-64|win-64|osx-64)/([^/]+)$"
@@ -541,17 +553,6 @@ RFLINT_OPTS = sum(
     ],
     [],
 )
-
-# package: [dependencies, targets]
-JS_PKG_PACK = {
-    k: [[v.parent / "package.json", *v.parent.glob("schema/*.json")], [v]]
-    for k, v in JS_TARBALL.items()
-}
-[
-    JS_PKG_PACK[k][0].append(v)
-    for k, v in JS_TSBUILDINFO.items()
-    if not k.startswith("_")
-]
 JS_PKG_PACK[IPDWP.name][0] += [
     IPDWP_IGNORE,
     IPDWP_APP,
@@ -576,7 +577,6 @@ OK_PRETTIER = BUILD / "prettier.ok"
 OK_ESLINT = BUILD / "eslint.ok"
 OK_JS_BUILD_PRE = BUILD / "js.build.pre.ok"
 OK_JS_BUILD = BUILD / "js.build.ok"
-OK_PYSETUP = {k: BUILD / f"pysetup.{k}.ok" for k, v in PY_SETUP.items()}
 OK_PYTEST = {k: BUILD / f"pytest.{k}.ok" for k, v in PY_SETUP.items()}
 OK_SERVEREXT = {k: BUILD / f"serverext.{k}.ok" for k, v in SERVER_EXT.items()}
 OK_PROVISION = BUILD / "provision.ok"

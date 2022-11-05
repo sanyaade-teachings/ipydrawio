@@ -46,81 +46,17 @@ except ImportError:  # pragma: no cover
 _log = logging.getLogger(__name__)
 
 
-def clean_drawio_file(
-    path: Path, pretty=True, indent=2, tabs=False, mx_attrs=MX_CLEAN_ATTRS, log=_log
-) -> bool:
-    """Strip headers and identifying information from drawio files."""
-    log.info(f"cleaning {path}...")
-
-    if path.suffix in XML_EXTENSIONS:
-        return clean_drawio_xml_file(path, pretty, indent, tabs, mx_attrs, log)
-    elif path.suffix in NOTEBOOK_EXTENSIONS:
-        return clean_drawio_notebook_file(path, pretty, indent, tabs, mx_attrs, log)
-    else:
-        raise NotImplementedError(f"Can't clean {path.suffix}")
+def inject_entity_placeholders(in_xml: str) -> str:
+    for name, entity in MX_PRESERVE_ENTITIES.items():
+        in_xml = in_xml.replace(entity, f"__IPYDRAWIO__{name}")
+    return in_xml
 
 
-def clean_drawio_xml_file(
-    path: Path, pretty=True, indent=2, tabs=False, mx_attrs=MX_CLEAN_ATTRS, log=_log
-) -> bool:
-    if not HAS_LXML:  # pragma: no cover
-        raise RuntimeError("install lxml to enable cleaning drawio XML")
+def restore_entity_placeholders(out_xml: str) -> str:
+    for name, entity in MX_PRESERVE_ENTITIES.items():
+        out_xml = out_xml.replace(f"__IPYDRAWIO__{name}", entity)
 
-    in_xml = path.read_text(encoding="utf-8")
-    out_xml = clean_drawio_xml(in_xml, pretty, indent, tabs, mx_attrs, log)
-    if out_xml is not None:
-        path.write_text(out_xml, encoding="utf-8")
-        return True
-    log.info(f"... no change to {path}")
-    return False
-
-
-def clean_drawio_notebook_file(
-    path: Path, pretty=True, indent=2, tabs=False, mx_attrs=MX_CLEAN_ATTRS, log=_log
-) -> bool:
-    """Strip headers and identifying information from drawio notebook file metadata/outputs."""
-    if not HAS_LXML and HAS_NBFORMAT:  # pragma: no cover
-        raise RuntimeError(
-            "install lxml and nbformat to enable cleaning drawio notebooks"
-        )
-
-    nb_node = nbformat.reads(
-        path.read_text(encoding="utf-8"), as_version=nbformat.NO_CONVERT
-    )
-
-    if clean_drawio_notebook_node(nb_node, pretty, indent, tabs, mx_attrs, log):
-        path.write_text(nbformat.writes(nb_node), encoding="utf-8")
-        return True
-
-    log.info(f"... no change to {path}")
-    return False
-
-
-def clean_drawio_notebook_node(
-    nb_node, pretty=True, indent=2, tabs=False, mx_attrs=MX_CLEAN_ATTRS, log=_log
-) -> bool:
-    """Strip headers and identifying information from drawio notebook node metadata/outputs."""
-    changed = False
-
-    meta = nb_node["metadata"].get(IPYNB_METADATA)
-    if meta:
-        in_xml = meta["xml"]
-        out_xml = clean_drawio_xml(in_xml, pretty, indent, tabs, mx_attrs, log)
-        if out_xml:
-            meta["xml"] = out_xml
-            changed = True
-
-    for cell in nb_node["cells"]:
-        for output in cell.get("outputs", []):
-            in_xml = output.get("data", {}).get(MIMETYPE)
-            if not in_xml:
-                continue
-            out_xml = clean_drawio_xml(in_xml, pretty, indent, tabs, mx_attrs, log)
-            if out_xml:
-                output["data"][MIMETYPE] = out_xml
-                changed = True
-
-    return changed
+    return out_xml
 
 
 def clean_drawio_xml(
@@ -173,14 +109,78 @@ def clean_drawio_xml(
     return out_xml
 
 
-def inject_entity_placeholders(in_xml: str) -> str:
-    for name, entity in MX_PRESERVE_ENTITIES.items():
-        in_xml = in_xml.replace(entity, f"__IPYDRAWIO__{name}")
-    return in_xml
+def clean_drawio_xml_file(
+    path: Path, pretty=True, indent=2, tabs=False, mx_attrs=MX_CLEAN_ATTRS, log=_log
+) -> bool:
+    if not HAS_LXML:  # pragma: no cover
+        raise RuntimeError("install lxml to enable cleaning drawio XML")
+
+    in_xml = path.read_text(encoding="utf-8")
+    out_xml = clean_drawio_xml(in_xml, pretty, indent, tabs, mx_attrs, log)
+    if out_xml is not None:
+        path.write_text(out_xml, encoding="utf-8")
+        return True
+    log.info(f"... no change to {path}")
+    return False
 
 
-def restore_entity_placeholders(out_xml: str) -> str:
-    for name, entity in MX_PRESERVE_ENTITIES.items():
-        out_xml = out_xml.replace(f"__IPYDRAWIO__{name}", entity)
+def clean_drawio_notebook_node(
+    nb_node, pretty=True, indent=2, tabs=False, mx_attrs=MX_CLEAN_ATTRS, log=_log
+) -> bool:
+    """Strip headers and identifying information from drawio notebook node metadata/outputs."""
+    changed = False
 
-    return out_xml
+    meta = nb_node["metadata"].get(IPYNB_METADATA)
+    if meta:
+        in_xml = meta["xml"]
+        out_xml = clean_drawio_xml(in_xml, pretty, indent, tabs, mx_attrs, log)
+        if out_xml:
+            meta["xml"] = out_xml
+            changed = True
+
+    for cell in nb_node["cells"]:
+        for output in cell.get("outputs", []):
+            in_xml = output.get("data", {}).get(MIMETYPE)
+            if not in_xml:
+                continue
+            out_xml = clean_drawio_xml(in_xml, pretty, indent, tabs, mx_attrs, log)
+            if out_xml:
+                output["data"][MIMETYPE] = out_xml
+                changed = True
+
+    return changed
+
+
+def clean_drawio_notebook_file(
+    path: Path, pretty=True, indent=2, tabs=False, mx_attrs=MX_CLEAN_ATTRS, log=_log
+) -> bool:
+    """Strip headers and identifying information from drawio notebook file metadata/outputs."""
+    if not HAS_LXML and HAS_NBFORMAT:  # pragma: no cover
+        raise RuntimeError(
+            "install lxml and nbformat to enable cleaning drawio notebooks"
+        )
+
+    nb_node = nbformat.reads(
+        path.read_text(encoding="utf-8"), as_version=nbformat.NO_CONVERT
+    )
+
+    if clean_drawio_notebook_node(nb_node, pretty, indent, tabs, mx_attrs, log):
+        path.write_text(nbformat.writes(nb_node), encoding="utf-8")
+        return True
+
+    log.info(f"... no change to {path}")
+    return False
+
+
+def clean_drawio_file(
+    path: Path, pretty=True, indent=2, tabs=False, mx_attrs=MX_CLEAN_ATTRS, log=_log
+) -> bool:
+    """Strip headers and identifying information from drawio files."""
+    log.info(f"cleaning {path}...")
+
+    if path.suffix in XML_EXTENSIONS:
+        return clean_drawio_xml_file(path, pretty, indent, tabs, mx_attrs, log)
+    elif path.suffix in NOTEBOOK_EXTENSIONS:
+        return clean_drawio_notebook_file(path, pretty, indent, tabs, mx_attrs, log)
+    else:
+        raise NotImplementedError(f"Can't clean {path.suffix}")
