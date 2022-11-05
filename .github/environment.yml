@@ -35,7 +35,6 @@ dependencies:
   - pillow
   - pypdf2
   - requests_cache
-  - retrolab
   # building
   - flit >=3.7.1
   - pip
