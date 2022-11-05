@@ -25,6 +25,7 @@ dependencies:
   # demo toys
   - graphviz2drawio
   - jupyter-lsp-python-lsp-server
+  - jupyterlab-deck
   - jupyterlab-link-share
   - jupyterlab-lsp
   - matplotlib-base
