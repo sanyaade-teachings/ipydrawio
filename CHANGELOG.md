@@ -6,6 +6,11 @@
 
 ### ipydrawio 1.2.2
 
+- as `retrolab` no longer supports installation next to `jupyterlab 3.5`, it is no
+  longer under test... but might still work.
+  - support for `notebook 7` will become available some time after a final release
+    - though `jupyterlab 4` will be likely be supported first
+
 #### @deathbeds/ipydrawio 1.2.2
 
 #### @deathbeds/ipydrawio-notebook 1.2.2
