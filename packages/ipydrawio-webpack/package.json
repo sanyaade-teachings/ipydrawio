@@ -1,24 +1,32 @@
 {
+  "name": "@deathbeds/ipydrawio-webpack",
+  "version": "20.2.801",
+  "description": "A webpack-ready repackaging of drawio",
+  "license": "Apache-2.0",
   "author": "IPyDrawio Contributors",
+  "homepage": "https://ipydrawio.rtfd.io",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/deathbeds/ipydrawio.git"
+  },
   "bugs": {
     "url": "https://github.com/deathbeds/ipydrawio/issues"
   },
+  "main": "lib/index.js",
+  "scripts": {
+    "build:pre": "python scripts/patch.py && python scripts/static.py"
+  },
+  "types": "lib/index.d.ts",
   "dependencies": {
     "@jupyterlab/application": "^3.1.0"
   },
   "devDependencies": {
-    "@jupyterlab/builder": "^3.4.0",
-    "typescript": "~4.2.3"
+    "@jupyterlab/builder": "^3.4.0"
   },
-  "description": "A webpack-ready repackaging of drawio",
-  "homepage": "https://ipydrawio.rtfd.io",
   "keywords": [
-    "webpack",
-    "drawio"
+    "drawio",
+    "webpack"
   ],
-  "license": "Apache-2.0",
-  "main": "lib/index.js",
-  "name": "@deathbeds/ipydrawio-webpack",
   "jupyterlab": {
     "extension": "lib/plugin.js",
     "outputDir": "../../py_packages/ipydrawio/src/ipydrawio/ext/ipdwp",
@@ -34,14 +42,5 @@
         ]
       }
     }
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/deathbeds/ipydrawio.git"
-  },
-  "scripts": {
-    "build:pre": "python scripts/patch.py && python scripts/static.py"
-  },
-  "types": "lib/index.d.ts",
-  "version": "20.2.801"
+  }
 }

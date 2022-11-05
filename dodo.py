@@ -319,8 +319,19 @@ def task_lint():
         for path in P.ALL_PRETTIER:
             name = f"prettier:{path.relative_to(P.ROOT)}"
             pretty_tasks += [f"lint:{name}"]
+            task_dep = []
+            if path.name == "package.json":
+                pretty_name = f"prettier:package.json:{path.parent.relative_to(P.ROOT)}"
+                task_dep += [f"lint:{pretty_name}"]
+                yield dict(
+                    name=pretty_name,
+                    file_dep=[path, P.YARN_INTEGRITY],
+                    actions=[["jlpm", "prettier-package-json", "--write", path]],
+                )
+
             yield dict(
                 name=name,
+                task_dep=task_dep,
                 file_dep=[P.YARN_INTEGRITY, path],
                 actions=[[*prettier_args, path]],
             )
@@ -335,20 +346,20 @@ def task_lint():
             P.OK_PRETTIER,
         )
 
-    # yield P._ok(
-    #     dict(
-    #         name="eslint",
-    #         file_dep=[
-    #             P.YARN_INTEGRITY,
-    #             *P.ALL_TS,
-    #             P.OK_PRETTIER,
-    #             P.ESLINTRC,
-    #             P.TSCONFIGBASE,
-    #         ],
-    #         actions=[["jlpm", "eslint"]],
-    #     ),
-    #     P.OK_ESLINT,
-    # )
+    yield P._ok(
+        dict(
+            name="eslint",
+            file_dep=[
+                P.YARN_INTEGRITY,
+                *P.ALL_TS,
+                P.OK_PRETTIER,
+                P.ESLINTRC,
+                P.TSCONFIGBASE,
+            ],
+            actions=[["jlpm", "eslint"]],
+        ),
+        P.OK_ESLINT,
+    )
 
     dio_tasks = []
 

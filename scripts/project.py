@@ -478,6 +478,7 @@ ALL_YML = _clean(
     BINDER.glob("*.yml"),
     DOCS.rglob("*.yml"),
 )
+ALL_PACKAGE_JSON = [PACKAGE, *JS_PKG_JSON.values()]
 ALL_JSON = [
     *ROOT.glob("*.json"),
     *PACKAGES.glob("*/*.json"),

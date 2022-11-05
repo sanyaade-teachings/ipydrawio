@@ -20,7 +20,57 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
+/**
+ * An array of font family names to be added before defaultFonts
+ */
+export type FontSet = (
+  | string
+  | {
+      fontFamily?: string;
+      fontUrl?: string;
+      [k: string]: unknown;
+    }
+)[];
 export type Color = string;
+/**
+ * Colour codes to be added before presetColors (no leading # for the colour codes)
+ */
+export type ColorSet = Color[];
+/**
+ * Colour codes for the lower palette in the colour dialog (no leading # for the colour codes).
+ */
+export type ColorSet1 = Color[];
+/**
+ * Defines an array of IDs to load custom libraries.
+ */
+export type LibraryIdList = string[];
+/**
+ * An array of font family names in the format panel font drop-down list. All fonts must be installed on the server and all clients or be added using the fontCss option.
+ */
+export type FontSet1 = (
+  | string
+  | {
+      fontFamily?: string;
+      fontUrl?: string;
+      [k: string]: unknown;
+    }
+)[];
+/**
+ * Defines an array of strings of library keys which will be available in the More Shapes dialog. If you define this as null, all libraries will be visible. If you leave the array empty, no libraries will be visible
+ */
+export type LibraryKeyList = string[];
+/**
+ * Defines an array of objects that list additional libraries and sections in the left panel and the More Shapes dialog
+ */
+export type LibraryDefList = LibrarySection[];
+/**
+ * Defines an array of plugin URLs that should be loaded with the diagram editor. Plugins are JavaScript files that can modify the editor UI and behaviour.
+ */
+export type PluginUrlList = string[];
+/**
+ * Colour codes for the upper palette in the colour dialog (no leading # for the colour codes).
+ */
+export type ColorSet2 = Color[];
 /**
  * [min|atlas|dark|sketch]: Uses the Minimal, Atlas, Dark or Sketch UI theme (default is Kennedy).
  */
@@ -61,43 +111,15 @@ export interface DrawioConfiguration {
   customColorSchemes?: {
     [k: string]: unknown;
   };
-  /**
-   * An array of font family names to be added before defaultFonts
-   */
-  customFonts?: (
-    | string
-    | {
-        fontFamily?: string;
-        fontUrl?: string;
-        [k: string]: unknown;
-      }
-  )[];
-  /**
-   * Colour codes to be added before presetColors (no leading # for the colour codes)
-   */
-  customPresetColors?: Color[];
+  customFonts?: FontSet;
+  customPresetColors?: ColorSet;
   /**
    * Set the server endpoint region. The default is to use your closest region, (either EU or US). If lockdown is set to true, dataGovernance is ignored.
    */
   dataGovernance?: string;
-  /**
-   * TBD: see https://www.diagrams.net/doc/faq/configure-diagram-editor
-   */
-  defaultColorSchemes?: {
-    fill?: Color;
-    font?: string;
-    gradient?: Color;
-    stroke?: Color;
-    [k: string]: unknown;
-  };
-  /**
-   * Colour codes for the lower palette in the colour dialog (no leading # for the colour codes).
-   */
-  defaultColors?: Color[];
-  /**
-   * Defines an array of IDs to load custom libraries.
-   */
-  defaultCustomLibraries?: string[];
+  defaultColorSchemes?: ColorScheme;
+  defaultColors?: ColorSet1;
+  defaultCustomLibraries?: LibraryIdList;
   /**
    * Defines the default length for new connectors
    */
@@ -108,17 +130,7 @@ export interface DrawioConfiguration {
   defaultEdgeStyle?: {
     [k: string]: unknown;
   };
-  /**
-   * An array of font family names in the format panel font drop-down list. All fonts must be installed on the server and all clients or be added using the fontCss option.
-   */
-  defaultFonts?: (
-    | string
-    | {
-        fontFamily?: string;
-        fontUrl?: string;
-        [k: string]: unknown;
-      }
-  )[];
+  defaultFonts?: FontSet1;
   /**
    * Defines a semicolon-separated list of library keys (unique names) in a string to be initially displayed in the left panel (e.g. general;uml;company-graphics). Possible keys include custom entry IDs from the libraries field, or keys for the libs URL parameter
    */
@@ -141,10 +153,7 @@ export interface DrawioConfiguration {
    * Specifies if the open and new library functions are enabled (true or false, the default true).
    */
   enableCustomLibraries?: boolean;
-  /**
-   * Defines an array of strings of library keys which will be available in the More Shapes dialog. If you define this as null, all libraries will be visible. If you leave the array empty, no libraries will be visible
-   */
-  enabledLibraries?: string[];
+  enabledLibraries?: LibraryKeyList;
   /**
    * Defines a string with CSS rules for web fonts to be used in diagrams. This should be one or more @font-face rule,
    */
@@ -159,10 +168,7 @@ export interface DrawioConfiguration {
    * Defines the number of minor grid steps (14.3.2 and later).
    */
   gridSteps?: number;
-  /**
-   * Defines an array of objects that list additional libraries and sections in the left panel and the More Shapes dialog
-   */
-  libraries?: LibrarySection[];
+  libraries?: LibraryDefList;
   /**
    * Disable data transmission, apart from directly between your browser and your selected data storage location. Default is false.
    */
@@ -179,14 +185,8 @@ export interface DrawioConfiguration {
    * Ignores the current settings on the client-side if this is set to true
    */
   override?: boolean;
-  /**
-   * Defines an array of plugin URLs that should be loaded with the diagram editor. Plugins are JavaScript files that can modify the editor UI and behaviour.
-   */
-  plugins?: string[];
-  /**
-   * Colour codes for the upper palette in the colour dialog (no leading # for the colour codes).
-   */
-  presetColors?: Color[];
+  plugins?: PluginUrlList;
+  presetColors?: ColorSet2;
   /**
    * Disables word wrap and complex formatting for labels by default to avoid foreignObjects in the SVG output (14.5.9 and later).
    */
@@ -212,6 +212,16 @@ export interface DrawioConfiguration {
    * Defines the zoom factor for mouse wheel and trackpad zoom. Default is 1.2. (14.7.0 and later).
    */
   zoomFactor?: number;
+  [k: string]: unknown;
+}
+/**
+ * TBD: see https://www.diagrams.net/doc/faq/configure-diagram-editor
+ */
+export interface ColorScheme {
+  fill?: Color;
+  font?: string;
+  gradient?: Color;
+  stroke?: Color;
   [k: string]: unknown;
 }
 export interface LibrarySection {

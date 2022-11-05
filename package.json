@@ -1,6 +1,19 @@
 {
-  "name": "-ipydrawio-root-",
   "private": true,
+  "name": "-ipydrawio-root-",
+  "scripts": {
+    "bootstrap": "jlpm --prefer-offline && lerna bootstrap",
+    "deduplicate": "yarn-deduplicate -s fewer --fail",
+    "eslint": "cd packages && eslint --cache --fix --ext .js,.ts,.tsx */src",
+    "eslint:check": "cd packages && eslint --cache --ext .js,.ts,.tsx */src"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "resolutions": {
+    "ansi-regex": "5.0.1",
+    "json-schema": ">=0.4.0"
+  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.8.1",
     "@typescript-eslint/parser": "^4.8.1",
@@ -9,30 +22,20 @@
     "eslint-plugin-jest": "^24.1.3",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.5",
+    "json-schema-to-typescript": "^11.0.2",
     "lerna": "^6.0.1",
     "prettier": "^2.1.1",
+    "prettier-package-json": "^2.7.0",
     "prettier-plugin-sort-json": "^0.0.2",
     "typedoc": "^0.20.36",
     "typedoc-plugin-markdown": "~3.9.0",
+    "typescript": "~4.8.4",
     "yarn-deduplicate": "^3.1.0"
-  },
-  "resolutions": {
-    "ansi-regex": "5.0.1",
-    "json-schema": ">=0.4.0"
   },
   "prettier": {
     "singleQuote": true,
     "proseWrap": "always",
     "jsonRecursiveSort": true,
     "printWidth": 88
-  },
-  "scripts": {
-    "bootstrap": "jlpm --prefer-offline && lerna bootstrap",
-    "eslint": "cd packages && eslint --cache --fix --ext .js,.ts,.tsx */src",
-    "eslint:check": "cd packages && eslint --cache --ext .js,.ts,.tsx */src",
-    "deduplicate": "yarn-deduplicate -s fewer --fail"
-  },
-  "workspaces": [
-    "packages/*"
-  ]
+  }
 }
