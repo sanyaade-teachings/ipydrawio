@@ -358,20 +358,20 @@ def task_lint():
             P.OK_PRETTIER,
         )
 
-    yield P._ok(
-        dict(
-            name="eslint",
-            file_dep=[
-                P.YARN_INTEGRITY,
-                *P.ALL_TS,
-                P.OK_PRETTIER,
-                P.ESLINTRC,
-                P.TSCONFIGBASE,
-            ],
-            actions=[["jlpm", "eslint"]],
-        ),
-        P.OK_ESLINT,
-    )
+    # yield P._ok(
+    #     dict(
+    #         name="eslint",
+    #         file_dep=[
+    #             P.YARN_INTEGRITY,
+    #             *P.ALL_TS,
+    #             P.OK_PRETTIER,
+    #             P.ESLINTRC,
+    #             P.TSCONFIGBASE,
+    #         ],
+    #         actions=[["jlpm", "eslint"]],
+    #     ),
+    #     P.OK_ESLINT,
+    # )
 
     dio_tasks = []
 
