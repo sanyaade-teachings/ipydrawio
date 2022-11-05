@@ -1,32 +1,46 @@
 {
+  "name": "@deathbeds/ipydrawio",
+  "version": "1.2.2",
+  "description": "A JupyterLab extension for embedding interactive drawio / mxgraph diagrams.",
+  "license": "Apache-2.0",
   "author": "IPyDrawio Contributors",
+  "homepage": "https://ipydrawio.rtfd.io",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/deathbeds/ipydrawio.git"
+  },
   "bugs": {
     "url": "https://github.com/deathbeds/ipydrawio/issues"
   },
-  "homepage": "https://ipydrawio.rtfd.io",
+  "main": "lib/index.js",
+  "files": [
+    "{lib,schema,style,src}/**/*.{ts,tsx,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,css}"
+  ],
+  "scripts": {
+    "build:pre": "python scripts/schema.py"
+  },
+  "types": "lib/index.d.ts",
   "dependencies": {
+    "@deathbeds/ipydrawio-webpack": "^20.5.0",
     "@jupyterlab/application": "^3.1.0",
     "@jupyterlab/launcher": "^3.1.0",
-    "@jupyterlab/mainmenu": "^3.1.0",
-    "@deathbeds/ipydrawio-webpack": "^20.2.801"
-  },
-  "description": "A JupyterLab extension for embedding interactive drawio / mxgraph diagrams.",
-  "devDependencies": {
-    "@jupyterlab/builder": "^3.4.0",
-    "typescript": "~4.2.3",
-    "@jupyter-widgets/base": "^4.0.0 || ^6.0.0",
-    "@jupyter-widgets/controls": "^3.0.0 || ^5.0.0",
-    "@jupyter-widgets/jupyterlab-manager": "^3.0.0 || ^5.0.0",
-    "json-schema-to-typescript": "^10.1.4"
+    "@jupyterlab/mainmenu": "^3.1.0"
   },
   "peerDependencies": {
     "@jupyter-widgets/base": "^4.0.0 || ^6.0.0",
     "@jupyter-widgets/controls": "^3.0.0 || ^5.0.0",
     "@jupyter-widgets/jupyterlab-manager": "^3.0.0 || ^5.0.0"
   },
-  "files": [
-    "{lib,schema,style,src}/**/*.{ts,tsx,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,css}",
-    "LICENSE.txt"
+  "devDependencies": {
+    "@jupyter-widgets/base": "^4.0.0 || ^6.0.0",
+    "@jupyter-widgets/controls": "^3.0.0 || ^5.0.0",
+    "@jupyter-widgets/jupyterlab-manager": "^3.0.0 || ^5.0.0",
+    "@jupyterlab/builder": "^3.4.0"
+  },
+  "keywords": [
+    "jupyter",
+    "jupyterlab",
+    "jupyterlab-extension"
   ],
   "jupyterlab": {
     "extension": "lib/plugin.js",
@@ -58,22 +72,5 @@
         ]
       }
     }
-  },
-  "keywords": [
-    "jupyter",
-    "jupyterlab",
-    "jupyterlab-extension"
-  ],
-  "license": "Apache-2.0",
-  "main": "lib/index.js",
-  "name": "@deathbeds/ipydrawio",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/deathbeds/ipydrawio.git"
-  },
-  "scripts": {
-    "build:pre": "python scripts/schema.py"
-  },
-  "types": "lib/index.d.ts",
-  "version": "1.2.2"
+  }
 }

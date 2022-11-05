@@ -77,7 +77,7 @@ Create Lab Launch Command
 Create Notebok Server Config
     [Documentation]    Copies in notebook server config file to disables npm/build checks
     [Arguments]    ${home}
-    Copy File    ${FIXTURES}${/}${NBSERVER CONF}    ${home}${/}${NBSERVER CONF}
+    Copy File    ${FIXTURES}${/}${NBSERVER CONF}    ${home}${/}.jupyter${/}${NBSERVER CONF}
 
 Setup Suite For Screenshots
     [Arguments]    ${folder}
@@ -175,7 +175,7 @@ Ensure All Kernels Are Shut Down
     IF    ${els.__len__()}    Click Element    ${accept}
 
 Open Command Palette
-    Ensure Command Palette is Open
+    Really Ensure Command Palette is Open
     Wait Until Element Is Visible    ${CMD PALETTE INPUT}
     Click Element    ${CMD PALETTE INPUT}
 
@@ -232,6 +232,10 @@ Ensure Command Palette is Open
     ...    css:.lm-TabBar-tab[data-id="command-palette"]:not(.lm-mod-current)
     ${els} =    Get WebElements    ${sel}
     IF    ${els.__len__()}    Click Element    ${sel}
+    Wait Until Page Does Not Contain Element    ${sel}    timeout=0.1s
+
+Really Ensure Command Palette Is Open
+    Wait Until Keyword Succeeds    5x    0.1s    Ensure Command Palette is Open
 
 Ensure Sidebar Is Closed
     [Arguments]    ${side}=left

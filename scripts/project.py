@@ -26,11 +26,19 @@ import re
 import shutil
 import subprocess
 import sys
-from collections import defaultdict
 from pathlib import Path
 
 print_ = pprint.pprint
 console = None
+
+HAS_SSORT = False
+
+try:
+    __import__("ssort")
+    HAS_SSORT = True
+except Exception:
+    print("no big deal, but `ssort` is not available...")
+    HAS_SSORT = False
 
 try:
     import rich.console
@@ -107,6 +115,7 @@ RTD = bool(json.loads(os.environ.get("READTHEDOCS", "0").lower()))
 
 # test arg pass-throughs
 ATEST_ARGS = json.loads(os.environ.get("ATEST_ARGS", "[]"))
+ATEST_ATTEMPT = json.loads(os.environ.get("ATEST_ATTEMPT", "0"))
 ATEST_RETRIES = int(os.environ.get("ATEST_RETRIES") or "0")
 PYTEST_ARGS = json.loads(os.environ.get("PYTEST_ARGS", "[]"))
 ATEST_PROCS = int(os.environ.get("ATEST_PROCS", "4"))
@@ -345,6 +354,24 @@ PY_HAS_EXT = {
     IPDW: False,
 }
 
+SERVER_EXT = {
+    k: sorted(v.parent.glob("src/*/serverextension.py"))[0]
+    for k, v in PY_SETUP.items()
+    if sorted(v.parent.glob("src/*/serverextension.py"))
+}
+
+# package: [dependencies, targets]
+JS_PKG_PACK = {
+    k: [[v.parent / "package.json", *v.parent.glob("schema/*.json")], [v]]
+    for k, v in JS_TARBALL.items()
+}
+[
+    JS_PKG_PACK[k][0].append(v)
+    for k, v in JS_TSBUILDINFO.items()
+    if not k.startswith("_")
+]
+OK_PYSETUP = {k: BUILD / f"pysetup.{k}.ok" for k, v in PY_SETUP.items()}
+
 PY_SETUP_DEPS = {
     IPD: lambda: [OK_PYSETUP["ipydrawio-widgets"]],
     IPDE: lambda: [OK_PYSETUP["ipydrawio"]],
@@ -368,12 +395,6 @@ PY_WHEEL = {
     / f"""{IPDW.name.replace("-", "_")}-{IPDW_VERSION}-py3-none-any.whl""",
 }
 PY_TEST_DEP = {}
-
-SERVER_EXT = {
-    k: sorted(v.parent.glob("src/*/serverextension.py"))[0]
-    for k, v in PY_SETUP.items()
-    if sorted(v.parent.glob("src/*/serverextension.py"))
-}
 
 # demo
 RE_CONDA_FORGE_URL = r"/conda-forge/(.*/)?(noarch|linux-64|win-64|osx-64)/([^/]+)$"
@@ -434,7 +455,7 @@ DOCS_FAVICON_ICO = DOCS_STATIC / "favicon.ico"
 DOCS_TS = DOCS / "api/ts"
 DOCS_TS_MYST_INDEX = DOCS_TS / "index.md"
 DOCS_TS_MODULES = [
-    ROOT / "docs/api/ts" / f"{p.parent.name}.md"
+    ROOT / "docs/api/ts/modules" / f"deathbeds_{p.parent.name.replace('-','_')}.md"
     for p in JS_PKG_JSON.values()
     if p.parent.name not in NO_TYPEDOC
 ]
@@ -478,6 +499,7 @@ ALL_YML = _clean(
     BINDER.glob("*.yml"),
     DOCS.rglob("*.yml"),
 )
+ALL_PACKAGE_JSON = [PACKAGE, *JS_PKG_JSON.values()]
 ALL_JSON = [
     *ROOT.glob("*.json"),
     *PACKAGES.glob("*/*.json"),
@@ -540,17 +562,6 @@ RFLINT_OPTS = sum(
     ],
     [],
 )
-
-# package: [dependencies, targets]
-JS_PKG_PACK = {
-    k: [[v.parent / "package.json", *v.parent.glob("schema/*.json")], [v]]
-    for k, v in JS_TARBALL.items()
-}
-[
-    JS_PKG_PACK[k][0].append(v)
-    for k, v in JS_TSBUILDINFO.items()
-    if not k.startswith("_")
-]
 JS_PKG_PACK[IPDWP.name][0] += [
     IPDWP_IGNORE,
     IPDWP_APP,
@@ -567,6 +578,7 @@ OK_SUBMODULES = BUILD / "submodules.ok"
 OK_BLACK = BUILD / "black.ok"
 OK_FLAKE8 = BUILD / "flake8.ok"
 OK_ISORT = BUILD / "isort.ok"
+OK_SSORT = BUILD / "ssort.ok"
 OK_LINT = BUILD / "lint.ok"
 OK_ROBOTIDY = BUILD / "robot.tidy.ok"
 OK_PYFLAKES = BUILD / "pyflakes.ok"
@@ -574,7 +586,6 @@ OK_PRETTIER = BUILD / "prettier.ok"
 OK_ESLINT = BUILD / "eslint.ok"
 OK_JS_BUILD_PRE = BUILD / "js.build.pre.ok"
 OK_JS_BUILD = BUILD / "js.build.ok"
-OK_PYSETUP = {k: BUILD / f"pysetup.{k}.ok" for k, v in PY_SETUP.items()}
 OK_PYTEST = {k: BUILD / f"pytest.{k}.ok" for k, v in PY_SETUP.items()}
 OK_SERVEREXT = {k: BUILD / f"serverext.{k}.ok" for k, v in SERVER_EXT.items()}
 OK_PROVISION = BUILD / "provision.ok"
@@ -697,11 +708,11 @@ def typedoc_conf():
         [
             str(
                 (
-                    p.parent / "src/index.ts"
+                    p.parent
                     if (p.parent / "src/index.ts").exists()
                     else p.parent / "lib/index.d.ts"
                 )
-                .relative_to(ROOT)
+                .relative_to(PACKAGES)
                 .as_posix()
             )
             for p in JS_PKG_JSON.values()
@@ -734,12 +745,8 @@ def typedoc_conf():
 
 def mystify():
     """unwrap monorepo docs into per-module docs"""
-    mods = defaultdict(lambda: defaultdict(list))
     if DOCS_TS.exists():
         shutil.rmtree(DOCS_TS)
-
-    def mod_md_name(mod):
-        return mod.replace("@jupyterlite/", "") + ".md"
 
     for doc in sorted(DOCS_RAW_TYPEDOC.rglob("*.md")):
         if doc.parent == DOCS_RAW_TYPEDOC:
@@ -748,16 +755,6 @@ def mystify():
             continue
         doc_text = doc.read_text(**ENC)
         doc_lines = doc_text.splitlines()
-        mod_chunks = doc_lines[0].split(" / ")
-        src = mod_chunks[1]
-        if src.startswith("["):
-            src = re.findall(r"\[(.*)/src\]", src)[0]
-        else:
-            src = src.replace("/src", "")
-        pkg = f"""@jupyterlite/{src.replace("/src", "")}"""
-        mods[pkg][doc.parent.name] += [
-            str(doc.relative_to(DOCS_RAW_TYPEDOC).as_posix())[:-3]
-        ]
 
         # rewrite doc and write back out
         out_doc = DOCS_TS / doc.relative_to(DOCS_RAW_TYPEDOC)
@@ -790,27 +787,27 @@ def mystify():
 
         out_doc.write_text(out_text, **ENC)
 
-    for mod, sections in mods.items():
-        out_doc = DOCS_TS / mod_md_name(mod)
-        mod_lines = [f"""# `{mod.replace("@jupyterlite/", "")}`\n"""]
-        for label, contents in sections.items():
-            mod_lines += [
-                f"## {label.title()}\n",
-                "```{toctree}",
-                ":maxdepth: 1",
-                *contents,
-                "```\n",
-                MD_FOOTER,
-            ]
-        out_doc.write_text("\n".join(mod_lines), **ENC)
-
     DOCS_TS_MYST_INDEX.write_text(
         "\n".join(
             [
                 "# `@deathbeds/ipydrawio`\n",
                 "```{toctree}",
                 ":maxdepth: 1",
-                *[mod_md_name(mod) for mod in sorted(mods)],
+                ":caption: Modules",
+                ":glob:",
+                "modules/*",
+                "```",
+                "```{toctree}",
+                ":maxdepth: 1",
+                ":caption: Interfaces",
+                ":glob:",
+                "interfaces/*",
+                "```",
+                "```{toctree}",
+                ":caption: Classes",
+                ":maxdepth: 1",
+                ":glob:",
+                "classes/*",
                 "```",
                 MD_FOOTER,
             ]

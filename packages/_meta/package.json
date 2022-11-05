@@ -1,19 +1,16 @@
 {
+  "private": true,
   "name": "@deathbeds/ipydrawio-meta",
   "version": "0.0.0",
-  "private": true,
-  "dependencies": {
-    "@deathbeds/ipydrawio-notebook": "file:../ipydrawio-notebook",
-    "@deathbeds/ipydrawio-pdf": "file:../ipydrawio-pdf",
-    "@deathbeds/ipydrawio-webpack": "file:../ipydrawio-webpack",
-    "@deathbeds/ipydrawio-jupyter-templates": "file:../ipydrawio-jupyter-templates",
-    "@deathbeds/ipydrawio": "file:../ipydrawio"
-  },
-  "devDependencies": {
-    "typescript": "~4.2.3"
-  },
   "scripts": {
     "build": "tsc --build src",
     "watch": "jlpm build --watch --preserveWatchOutput"
+  },
+  "dependencies": {
+    "@deathbeds/ipydrawio": "file:../ipydrawio",
+    "@deathbeds/ipydrawio-jupyter-templates": "file:../ipydrawio-jupyter-templates",
+    "@deathbeds/ipydrawio-notebook": "file:../ipydrawio-notebook",
+    "@deathbeds/ipydrawio-pdf": "file:../ipydrawio-pdf",
+    "@deathbeds/ipydrawio-webpack": "file:../ipydrawio-webpack"
   }
 }

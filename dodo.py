@@ -261,11 +261,24 @@ def task_lint():
     if P.TESTING_IN_CI:
         return
 
+    rel_py = [p.relative_to(P.ROOT) for p in P.ALL_PY]
+
+    if P.HAS_SSORT:
+        yield P._ok(
+            dict(
+                name="ssort",
+                file_dep=[
+                    *P.ALL_PY,
+                ],
+                actions=[["ssort", *rel_py]],
+            ),
+            P.OK_SSORT,
+        )
     yield P._ok(
         dict(
             name="isort",
-            file_dep=[*P.ALL_PY, P.SETUP_CFG],
-            actions=[["isort", *P.ALL_PY]],
+            file_dep=[*P.ALL_PY, P.SETUP_CFG, *([P.OK_SSORT] if P.HAS_SSORT else [])],
+            actions=[["isort", *rel_py]],
         ),
         P.OK_ISORT,
     )
@@ -273,7 +286,7 @@ def task_lint():
         dict(
             name="black",
             file_dep=[*P.ALL_PY, P.OK_ISORT],
-            actions=[["black", "--quiet", *P.ALL_PY]],
+            actions=[["black", "--quiet", *rel_py]],
         ),
         P.OK_BLACK,
     )
@@ -281,7 +294,7 @@ def task_lint():
         dict(
             name="flake8",
             file_dep=[*P.ALL_PY, P.OK_BLACK, P.SETUP_CFG],
-            actions=[["flake8", *P.ALL_PY]],
+            actions=[["flake8", *rel_py]],
         ),
         P.OK_FLAKE8,
     )
@@ -289,7 +302,7 @@ def task_lint():
         dict(
             name="pyflakes",
             file_dep=[*P.ALL_PY, P.OK_BLACK],
-            actions=[["pyflakes", *P.ALL_PY]],
+            actions=[["pyflakes", *rel_py]],
         ),
         P.OK_PYFLAKES,
     )
@@ -319,8 +332,19 @@ def task_lint():
         for path in P.ALL_PRETTIER:
             name = f"prettier:{path.relative_to(P.ROOT)}"
             pretty_tasks += [f"lint:{name}"]
+            task_dep = []
+            if path.name == "package.json":
+                pretty_name = f"prettier:package.json:{path.parent.relative_to(P.ROOT)}"
+                task_dep += [f"lint:{pretty_name}"]
+                yield dict(
+                    name=pretty_name,
+                    file_dep=[path, P.YARN_INTEGRITY],
+                    actions=[["jlpm", "prettier-package-json", "--write", path]],
+                )
+
             yield dict(
                 name=name,
+                task_dep=task_dep,
                 file_dep=[P.YARN_INTEGRITY, path],
                 actions=[[*prettier_args, path]],
             )
@@ -1027,7 +1051,11 @@ def task_test():
     yield P._ok(
         dict(
             name="robot",
-            uptodate=[config_changed(dict(ATEST_ARGS=P.ATEST_ARGS))],
+            uptodate=[
+                config_changed(
+                    dict(ATEST_ARGS=P.ATEST_ARGS, ATEST_ATTEMPT=P.ATEST_ATTEMPT)
+                )
+            ],
             file_dep=file_dep,
             actions=[["python", "-m", "scripts.atest"]],
         ),
