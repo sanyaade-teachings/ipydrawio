@@ -1050,7 +1050,11 @@ def task_test():
     yield P._ok(
         dict(
             name="robot",
-            uptodate=[config_changed(dict(ATEST_ARGS=P.ATEST_ARGS))],
+            uptodate=[
+                config_changed(
+                    dict(ATEST_ARGS=P.ATEST_ARGS, ATEST_ATTEMPT=P.ATEST_ATTEMPT)
+                )
+            ],
             file_dep=file_dep,
             actions=[["python", "-m", "scripts.atest"]],
         ),

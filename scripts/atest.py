@@ -122,7 +122,7 @@ def run_tests(attempt=0, extra_args=None):
 def attempt_atest_with_retries(extra_args=None):
     """retry the robot tests a number of times"""
     extra_args = list(extra_args or [])
-    attempt = 0
+    attempt = P.ATEST_ATTEMPT
     fail_count = -1
 
     retries = P.ATEST_RETRIES

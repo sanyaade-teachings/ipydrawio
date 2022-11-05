@@ -107,6 +107,7 @@ RTD = bool(json.loads(os.environ.get("READTHEDOCS", "0").lower()))
 
 # test arg pass-throughs
 ATEST_ARGS = json.loads(os.environ.get("ATEST_ARGS", "[]"))
+ATEST_ATTEMPT = json.loads(os.environ.get("ATEST_ATTEMPT", "0"))
 ATEST_RETRIES = int(os.environ.get("ATEST_RETRIES") or "0")
 PYTEST_ARGS = json.loads(os.environ.get("PYTEST_ARGS", "[]"))
 ATEST_PROCS = int(os.environ.get("ATEST_PROCS", "4"))

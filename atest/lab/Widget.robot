@@ -116,6 +116,7 @@ Diagram Should Contain
 Update The Diagram Widget Value
     [Arguments]    ${path}
     ${xml} =    Get File    ${path}
+    Click Element    css:.jp-Cell:last-child
     Add and Run JupyterLab Code Cell    diagram.source.value = '''${xml.strip()}'''
     Press Keys    None    ESC
     Press Keys    None    UP
