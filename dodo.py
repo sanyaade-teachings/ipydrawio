@@ -263,20 +263,21 @@ def task_lint():
 
     rel_py = [p.relative_to(P.ROOT) for p in P.ALL_PY]
 
-    yield P._ok(
-        dict(
-            name="ssort",
-            file_dep=[
-                *P.ALL_PY,
-            ],
-            actions=[["ssort", *rel_py]],
-        ),
-        P.OK_SSORT,
-    )
+    if P.HAS_SSORT:
+        yield P._ok(
+            dict(
+                name="ssort",
+                file_dep=[
+                    *P.ALL_PY,
+                ],
+                actions=[["ssort", *rel_py]],
+            ),
+            P.OK_SSORT,
+        )
     yield P._ok(
         dict(
             name="isort",
-            file_dep=[*P.ALL_PY, P.SETUP_CFG, P.OK_SSORT],
+            file_dep=[*P.ALL_PY, P.SETUP_CFG, *([P.OK_SSORT] if P.HAS_SSORT else [])],
             actions=[["isort", *rel_py]],
         ),
         P.OK_ISORT,

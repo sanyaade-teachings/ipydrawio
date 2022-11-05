@@ -32,6 +32,15 @@ from pathlib import Path
 print_ = pprint.pprint
 console = None
 
+HAS_SSORT = False
+
+try:
+    __import__("ssort")
+    HAS_SSORT = True
+except Exception:
+    print("no big deal, but `ssort` is not available...")
+    HAS_SSORT = False
+
 try:
     import rich.console
     import rich.markdown

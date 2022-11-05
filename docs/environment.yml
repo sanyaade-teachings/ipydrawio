@@ -32,6 +32,7 @@ dependencies:
   - sphinx >=5,<6
   - sphinx-jsonschema
   - sphinxext-rediraffe
+  - ssort
   - pip:
       - jupyterlite ==0.1.0b14
 
@@ -66,7 +67,6 @@ dependencies:
   - pyyaml
   - robotframework-lint
   - robotframework-tidy
-  - ssort
   # unit testing
   - pytest
   - pytest-console-scripts
