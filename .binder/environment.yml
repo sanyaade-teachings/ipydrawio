@@ -96,6 +96,7 @@ dependencies:
   - pyyaml
   - robotframework-lint
   - robotframework-tidy
+  - ssort
   # unit testing
   - pytest
   - pytest-console-scripts

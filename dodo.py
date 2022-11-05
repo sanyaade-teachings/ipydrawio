@@ -261,11 +261,21 @@ def task_lint():
     if P.TESTING_IN_CI:
         return
 
+    rel_py = [p.relative_to(P.ROOT) for p in P.ALL_PY]
+
+    yield P._ok(
+        dict(
+            name="ssort",
+            file_dep=[*P.ALL_PY, ],
+            actions=[["ssort", *rel_py]],
+        ),
+        P.OK_SSORT
+    )
     yield P._ok(
         dict(
             name="isort",
-            file_dep=[*P.ALL_PY, P.SETUP_CFG],
-            actions=[["isort", *P.ALL_PY]],
+            file_dep=[*P.ALL_PY, P.SETUP_CFG, P.OK_SSORT],
+            actions=[["isort", *rel_py]],
         ),
         P.OK_ISORT,
     )
@@ -273,7 +283,7 @@ def task_lint():
         dict(
             name="black",
             file_dep=[*P.ALL_PY, P.OK_ISORT],
-            actions=[["black", "--quiet", *P.ALL_PY]],
+            actions=[["black", "--quiet", *rel_py]],
         ),
         P.OK_BLACK,
     )
@@ -281,7 +291,7 @@ def task_lint():
         dict(
             name="flake8",
             file_dep=[*P.ALL_PY, P.OK_BLACK, P.SETUP_CFG],
-            actions=[["flake8", *P.ALL_PY]],
+            actions=[["flake8", *rel_py]],
         ),
         P.OK_FLAKE8,
     )
@@ -289,7 +299,7 @@ def task_lint():
         dict(
             name="pyflakes",
             file_dep=[*P.ALL_PY, P.OK_BLACK],
-            actions=[["pyflakes", *P.ALL_PY]],
+            actions=[["pyflakes", *rel_py]],
         ),
         P.OK_PYFLAKES,
     )
