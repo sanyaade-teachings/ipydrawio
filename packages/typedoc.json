@@ -1,9 +1,12 @@
 {
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPointStrategy": "packages",
+  "excludePrivate": true,
   "entryPoints": [
-    "packages/ipydrawio-jupyter-templates/src/index.ts",
-    "packages/ipydrawio-notebook/src/index.ts",
-    "packages/ipydrawio-pdf/src/index.ts",
-    "packages/ipydrawio/src/index.ts"
+    "ipydrawio",
+    "ipydrawio-jupyter-templates",
+    "ipydrawio-notebook",
+    "ipydrawio-pdf"
   ],
   "exclude": [
     "*.spec.ts",
@@ -12,7 +15,7 @@
     "**/lib/**"
   ],
   "name": "@deathbeds/ipydrawio",
-  "out": "./build/typedoc",
+  "out": "../build/typedoc",
   "readme": "none",
-  "tsconfig": "./packages/tsconfig.typedoc.json"
+  "tsconfig": "./tsconfig.typedoc.json"
 }

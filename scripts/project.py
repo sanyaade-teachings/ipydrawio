@@ -26,7 +26,6 @@ import re
 import shutil
 import subprocess
 import sys
-from collections import defaultdict
 from pathlib import Path
 
 print_ = pprint.pprint
@@ -456,7 +455,7 @@ DOCS_FAVICON_ICO = DOCS_STATIC / "favicon.ico"
 DOCS_TS = DOCS / "api/ts"
 DOCS_TS_MYST_INDEX = DOCS_TS / "index.md"
 DOCS_TS_MODULES = [
-    ROOT / "docs/api/ts" / f"{p.parent.name}.md"
+    ROOT / "docs/api/ts/modules" / f"deathbeds_{p.parent.name.replace('-','_')}.md"
     for p in JS_PKG_JSON.values()
     if p.parent.name not in NO_TYPEDOC
 ]
@@ -709,11 +708,11 @@ def typedoc_conf():
         [
             str(
                 (
-                    p.parent / "src/index.ts"
+                    p.parent
                     if (p.parent / "src/index.ts").exists()
                     else p.parent / "lib/index.d.ts"
                 )
-                .relative_to(ROOT)
+                .relative_to(PACKAGES)
                 .as_posix()
             )
             for p in JS_PKG_JSON.values()
@@ -746,12 +745,8 @@ def typedoc_conf():
 
 def mystify():
     """unwrap monorepo docs into per-module docs"""
-    mods = defaultdict(lambda: defaultdict(list))
     if DOCS_TS.exists():
         shutil.rmtree(DOCS_TS)
-
-    def mod_md_name(mod):
-        return mod.replace("@jupyterlite/", "") + ".md"
 
     for doc in sorted(DOCS_RAW_TYPEDOC.rglob("*.md")):
         if doc.parent == DOCS_RAW_TYPEDOC:
@@ -760,16 +755,6 @@ def mystify():
             continue
         doc_text = doc.read_text(**ENC)
         doc_lines = doc_text.splitlines()
-        mod_chunks = doc_lines[0].split(" / ")
-        src = mod_chunks[1]
-        if src.startswith("["):
-            src = re.findall(r"\[(.*)/src\]", src)[0]
-        else:
-            src = src.replace("/src", "")
-        pkg = f"""@jupyterlite/{src.replace("/src", "")}"""
-        mods[pkg][doc.parent.name] += [
-            str(doc.relative_to(DOCS_RAW_TYPEDOC).as_posix())[:-3]
-        ]
 
         # rewrite doc and write back out
         out_doc = DOCS_TS / doc.relative_to(DOCS_RAW_TYPEDOC)
@@ -802,27 +787,27 @@ def mystify():
 
         out_doc.write_text(out_text, **ENC)
 
-    for mod, sections in mods.items():
-        out_doc = DOCS_TS / mod_md_name(mod)
-        mod_lines = [f"""# `{mod.replace("@jupyterlite/", "")}`\n"""]
-        for label, contents in sections.items():
-            mod_lines += [
-                f"## {label.title()}\n",
-                "```{toctree}",
-                ":maxdepth: 1",
-                *contents,
-                "```\n",
-                MD_FOOTER,
-            ]
-        out_doc.write_text("\n".join(mod_lines), **ENC)
-
     DOCS_TS_MYST_INDEX.write_text(
         "\n".join(
             [
                 "# `@deathbeds/ipydrawio`\n",
                 "```{toctree}",
                 ":maxdepth: 1",
-                *[mod_md_name(mod) for mod in sorted(mods)],
+                ":caption: Modules",
+                ":glob:",
+                "modules/*",
+                "```",
+                "```{toctree}",
+                ":maxdepth: 1",
+                ":caption: Interfaces",
+                ":glob:",
+                "interfaces/*",
+                "```",
+                "```{toctree}",
+                ":caption: Classes",
+                ":maxdepth: 1",
+                ":glob:",
+                "classes/*",
                 "```",
                 MD_FOOTER,
             ]
