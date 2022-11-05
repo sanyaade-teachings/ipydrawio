@@ -33,6 +33,7 @@ doit()
 doit("list", "--all", "--status")
 
 shutil.copy2(".binder/overrides.json", SETTINGS / "overrides.json")
-shutil.copy2(".binder/jupyter_notebook_config.json", "jupyter_notebook_config.json")
+Path(".jupyter").mkdir(exist_ok=True)
+shutil.copy2(".binder/jupyter_config.json", ".jupyter/jupyter_config.json")
 
 sys.exit(doit())

@@ -77,7 +77,7 @@ Create Lab Launch Command
 Create Notebok Server Config
     [Documentation]    Copies in notebook server config file to disables npm/build checks
     [Arguments]    ${home}
-    Copy File    ${FIXTURES}${/}${NBSERVER CONF}    ${home}${/}${NBSERVER CONF}
+    Copy File    ${FIXTURES}${/}${NBSERVER CONF}    ${home}${/}.jupyter${/}${NBSERVER CONF}
 
 Setup Suite For Screenshots
     [Arguments]    ${folder}
