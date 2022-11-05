@@ -29,7 +29,7 @@
   ],
   "jupyterlab": {
     "extension": "lib/plugin.js",
-    "outputDir": "../../py_packages/ipydrawio/src/ipydrawio/ext/ipdwp",
+    "outputDir": "../../py_packages/ipydrawio/src/ipydrawio/_/ipydrawio-webpack",
     "webpackConfig": "./webpack.config.js",
     "discovery": {
       "server": {
