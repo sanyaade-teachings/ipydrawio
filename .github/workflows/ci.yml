@@ -244,12 +244,6 @@ jobs:
             CI_ARTIFACT: 'sdist'
           - python-version: '3.11'
             CI_ARTIFACT: 'wheel'
-          - os: macos
-            CONDA_SHELL: bash -l {0}
-          - os: ubuntu
-            CONDA_SHELL: bash -l {0}
-          - os: windows
-            CONDA_SHELL: cmd /C CALL {0}
     env:
       TESTING_IN_CI: '1'
     steps:
@@ -288,13 +282,25 @@ jobs:
           name: ipydrawio-${{ github.run_number }}-dist
           path: ./dist
 
-      - name: test (unit)
-        shell: ${{ matrix.CONDA_SHELL }}
+      - name: unit test (unix)
+        if: matrix.os != 'windows'
+        shell: bash -l {0}
         run: doit test:pytest:* || doit test:pytest:*
 
-      - name: test (acceptance)
-        shell: ${{ matrix.CONDA_SHELL }}
-        run: doit test
+      - name: acceptance test (unix)
+        if: matrix.os != 'windows'
+        shell: bash -l {0}
+        run: doit test || doit test
+
+      - name: unit test (windows)
+        if: matrix.os == 'windows'
+        shell: cmd /C CALL {0}
+        run: doit test:pytest:* || doit test:pytest:*
+
+      - name: acceptance test (windows)
+        if: matrix.os == 'windows'
+        shell: cmd /C CALL {0}
+        run: doit test || doit test
 
       - name: upload coverage
         shell: bash -l {0}
