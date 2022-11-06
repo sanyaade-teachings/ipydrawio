@@ -116,7 +116,7 @@ jobs:
       - name: upload (pip freeze)
         uses: actions/upload-artifact@v3
         with:
-          name: ipydrawio ${{ github.run_number }} build pip freeze
+          name: ipydrawio-${{ github.run_number }}-build-pip-freeze
           path: ./build/pip/
 
       - name: list
@@ -132,7 +132,7 @@ jobs:
       - name: upload (dist)
         uses: actions/upload-artifact@v3
         with:
-          name: ipydrawio ${{ github.run_number }} dist
+          name: ipydrawio-${{ github.run_number }}-dist
           path: ./dist
 
   conda-build:
@@ -169,7 +169,7 @@ jobs:
       - name: download (dist)
         uses: actions/download-artifact@v3
         with:
-          name: ipydrawio ${{ github.run_number }} dist
+          name: ipydrawio-${{ github.run_number }}-dist
           path: ./dist
 
       - name: build (conda)
@@ -180,7 +180,7 @@ jobs:
       - name: upload (conda)
         uses: actions/upload-artifact@v3
         with:
-          name: ipydrawio ${{ github.run_number }} conda
+          name: ipydrawio-${{ github.run_number }}-conda
           path: ./build/conda-bld
 
   conda-test:
@@ -226,7 +226,7 @@ jobs:
       - name: download (conda)
         uses: actions/download-artifact@v3
         with:
-          name: ipydrawio ${{ github.run_number }} conda
+          name: ipydrawio-${{ github.run_number }}-conda
           path: ./build/conda-bld
 
       - name: build (conda)
@@ -243,11 +243,11 @@ jobs:
       fail-fast: false
       matrix:
         os: ['ubuntu', 'macos', 'windows']
-        python-version: ['3.7', '3.10']
+        python-version: ['3.7', '3.11']
         include:
           - python-version: '3.7'
             CI_ARTIFACT: 'sdist'
-          - python-version: '3.10'
+          - python-version: '3.11'
             CI_ARTIFACT: 'wheel'
     env:
       TESTING_IN_CI: '1'
@@ -286,7 +286,7 @@ jobs:
       - name: download (dist)
         uses: actions/download-artifact@v3
         with:
-          name: ipydrawio ${{ github.run_number }} dist
+          name: ipydrawio-${{ github.run_number }}-dist
           path: ./dist
 
       - name: test (unix)
@@ -316,18 +316,16 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name:
-            ipydrawio ${{ github.run_number }} utest ${{ matrix.os }}${{
-            matrix.python-version }}
+          name: |-
+            ipydrawio-${{ github.run_number }}-utest-${{ matrix.os }}-${{ matrix.python-version }}
           path: ./build/pytest
 
       - name: upload (atest)
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name:
-            ipydrawio ${{ github.run_number }} atest ${{ matrix.os }}${{
-            matrix.python-version }}
+          name: |-
+            ipydrawio-${{ github.run_number }}-atest-${{ matrix.os }}-${{matrix.python-version }}
           path: ./build/atest
 
   docs:
@@ -376,7 +374,7 @@ jobs:
       - name: download (dist)
         uses: actions/download-artifact@v3
         with:
-          name: ipydrawio ${{ github.run_number }} dist
+          name: ipydrawio-${{ github.run_number }}-dist
           path: ./dist
 
       - name: build docs
@@ -398,16 +396,14 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name:
-            ipydrawio ${{ github.run_number }} atest ${{ matrix.os }}${{
-            matrix.python-version }}
+          name: |-
+            ipydrawio-${{ github.run_number }}-atest-${{ matrix.os }}${{ matrix.python-version }}
           path: ./build/atest
 
       - name: upload (docs)
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name:
-            ipydrawio ${{ github.run_number }} docs ${{ matrix.os }}${{
-            matrix.python-version }}
+          name: |-
+            ipydrawio-${{ github.run_number }}-docs-${{ matrix.os }}-${{matrix.python-version }}
           path: ./build/docs
