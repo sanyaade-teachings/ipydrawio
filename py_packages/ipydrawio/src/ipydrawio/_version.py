@@ -29,7 +29,7 @@ __ext__ = [
 ]
 
 IN_TREE = (HERE / "../../_").resolve()
-IN_PREFIX = Path(sys.prefix) / f"share/jupyter/labextextensions/{__ns__}"
+IN_PREFIX = Path(sys.prefix) / f"share/jupyter/labextensions/{__ns__}"
 
 __prefix__ = IN_TREE if IN_TREE.exists() else IN_PREFIX
 

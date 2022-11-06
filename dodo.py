@@ -168,7 +168,7 @@ def task_setup():
                         [
                             *P.PIP,
                             "install",
-                            "-vv",
+                            "-vvv",
                             "--ignore-installed",
                             "--no-deps",
                             dist_af,
@@ -188,7 +188,7 @@ def task_setup():
                         "-e",
                         ".",
                         "--no-deps",
-                        "-vv",
+                        "-vvv",
                     ],
                     shell=False,
                     cwd=pkg_setup.parent,
