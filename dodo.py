@@ -990,11 +990,7 @@ def task_test():
     for pkg, setup in P.PY_SETUP.items():
         html = P.BUILD / f"pytest/{pkg}/test.html"
         htmlcov = P.BUILD / f"pytest/{pkg}/htmlcov"
-        pytest_args = [
-            f"--cov-report=html:{htmlcov}",
-            f"--html={html}",
-            "--self-contained-html",
-        ]
+        pytest_args = [f"--html={html}", "--self-contained-html"]
 
         if pkg == P.IPD.name:
             pytest_args += ["-n", "auto"]
@@ -1011,10 +1007,10 @@ def task_test():
                     P.OK_PIP_CHECK,
                 ],
                 actions=[
-                    (P.delete_some, [htmlcov, html]),
+                    (P.delete_some, [html]),
                     _pytest(setup, *pytest_args),
                 ],
-                targets=[htmlcov / "status.json", html],
+                targets=[html],
             ),
             P.OK_PYTEST[pkg],
         )
