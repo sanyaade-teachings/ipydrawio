@@ -862,7 +862,7 @@ def _copy_one(src, dest):
     if not src.exists():
         return False
     if not dest.parent.exists():
-        dest.parent.mkdir(parents=True)
+        dest.parent.mkdir(parents=True, exist_ok=True)
     if dest.exists():
         if dest.is_dir():
             shutil.rmtree(dest)
