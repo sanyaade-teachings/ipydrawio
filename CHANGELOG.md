@@ -25,6 +25,14 @@
 
 #### @deathbeds/ipydrawio-pdf 1.2.2
 
+### ipydrawio-mathjax 1.2.2
+
+- now holds the drawio-compatible copy of MathJax
+
+#### @deathbeds/ipydrawio-mathjax 1.2.2
+
+- initial release
+
 ## Releases
 
 ### ipydrawio-widgets 1.2.1

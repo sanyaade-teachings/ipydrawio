@@ -14,19 +14,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 import shutil
 import sys
-from pathlib import Path
 
-HERE = Path(__file__).parent
-ROOT = HERE.parent
-DRAWIO = ROOT / "drawio/src/main/webapp"
-# a much shorter path
-DIO = ROOT / "dio"
+from . import DIO, DRAWIO, EXTERNAL, PACKAGES
+
+IPDM_REL = "../../../ipydrawio-mathjax/static/dio"
+
 PATCHES = {
     "js/app.min.js": [
         {
-            "name": "global ref so we can get at the App at runtime",
+            "name": "add global ref so we can get at the App at runtime",
             "before": "new App(new Editor",
             "after": "window.IPYDRAWIO_APP = new App(new Editor",
         },
@@ -35,14 +34,40 @@ PATCHES = {
             "before": "this.editor.isCorsEnabledForUrl(t)||(m=",
             "after": "(t.match(/^data:/) || this.editor.isCorsEnabledForUrl(t))||(m=",
         },
+        {
+            "name": "get mathjax from the ipydrawio-mathjax",
+            "before": "window.DRAW_MATH_URL=",
+            "after": f'window.DRAW_MATH_URL="{IPDM_REL}/math/es5";',
+        },
     ]
 }
 
 
 def copy():
     if DIO.exists():
+        print(f"... cleaning {DIO.relative_to(PACKAGES)}", flush=True)
         shutil.rmtree(DIO)
+
+    print(
+        f"... copying {DRAWIO.relative_to(PACKAGES)} --> {DIO.relative_to(PACKAGES)}",
+        flush=True,
+    )
     shutil.copytree(DRAWIO, DIO)
+
+    for src, dest in EXTERNAL.items():
+        rel_src = src.relative_to(PACKAGES)
+        rel_dest = dest.relative_to(PACKAGES)
+        if dest.exists():
+            print(f"    ... cleaning {rel_dest}", flush=True)
+            shutil.rmtree(dest)
+        print(f"    ... moving {rel_src} --> {rel_dest}", flush=True)
+        if not src.exists():
+            print(f"    !!! {rel_src} is missing", flush=True)
+            return 1
+        if not dest.parent.exists():
+            dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.move(src, dest)
+
     return 0
 
 

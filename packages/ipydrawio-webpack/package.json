@@ -14,7 +14,7 @@
   },
   "main": "lib/index.js",
   "scripts": {
-    "build:pre": "python scripts/patch.py && python scripts/static.py"
+    "build:pre": "python -m scripts.patch && python -m scripts.static"
   },
   "types": "lib/index.d.ts",
   "dependencies": {

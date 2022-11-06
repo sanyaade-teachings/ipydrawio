@@ -327,11 +327,13 @@ PY_VERSION = {
     "ipydrawio": JS_PKG_DATA["ipydrawio"]["version"],
     "ipydrawio-export": JS_PKG_DATA["ipydrawio-pdf"]["version"],
     "ipydrawio-widgets": JS_PKG_DATA["ipydrawio"]["version"],
+    "ipydrawio-mathjax": JS_PKG_DATA["ipydrawio-mathjax"]["version"],
 }
 
 IPD = PY_SETUP["ipydrawio"].parent
 IPDE = PY_SETUP["ipydrawio-export"].parent
 IPDW = PY_SETUP["ipydrawio-widgets"].parent
+IPDM = PY_SETUP["ipydrawio-mathjax"].parent
 
 IPDE_VENDOR = IPDE / "src/ipydrawio_export/vendor"
 IPDE_DIE2 = IPDE_VENDOR / "draw-image-export2"
@@ -344,15 +346,14 @@ IPDW_DEPS = {
     JS_PKG_JSON["ipydrawio"].parent / "schema/plugin.json": IPDW_SRC / "js/plugin.json",
 }
 
+IPDM_STARTUP = JS_PKG_JSON["ipydrawio-mathjax"].parent / "dio/math/es5/startup.js"
+
 IPD_VERSION = PY_VERSION["ipydrawio"]
 IPDW_VERSION = PY_VERSION["ipydrawio-widgets"]
 IPDE_VERSION = PY_VERSION["ipydrawio-export"]
+IPDM_VERSION = PY_VERSION["ipydrawio-mathjax"]
 
-PY_HAS_EXT = {
-    IPD: True,
-    IPDE: True,
-    IPDW: False,
-}
+PY_HAS_EXT = {IPD: True, IPDE: True, IPDW: False, IPDM: True}
 
 SERVER_EXT = {
     k: sorted(v.parent.glob("src/*/serverextension.py"))[0]
@@ -376,12 +377,14 @@ PY_SETUP_DEPS = {
     IPD: lambda: [OK_PYSETUP["ipydrawio-widgets"]],
     IPDE: lambda: [OK_PYSETUP["ipydrawio"]],
     IPDW: lambda: [*IPDW_DEPS.values()],
+    IPDM: lambda: [OK_PYSETUP["ipydrawio"], IPDM_STARTUP],
 }
 
 PY_SDIST = {
     IPDE.name: IPDE / "dist" / f"{IPDE.name}-{IPDE_VERSION}.tar.gz",
     IPD.name: IPD / "dist" / f"{IPD.name}-{IPD_VERSION}.tar.gz",
     IPDW.name: IPDW / "dist" / f"{IPDW.name}-{IPDW_VERSION}.tar.gz",
+    IPDM.name: IPDM / "dist" / f"{IPDM.name}-{IPDM_VERSION}.tar.gz",
 }
 PY_WHEEL = {
     IPDE.name: IPDE
@@ -393,6 +396,9 @@ PY_WHEEL = {
     IPDW.name: IPDW
     / "dist"
     / f"""{IPDW.name.replace("-", "_")}-{IPDW_VERSION}-py3-none-any.whl""",
+    IPDM.name: IPDM
+    / "dist"
+    / f"""{IPDM.name.replace("-", "_")}-{IPDM_VERSION}-py3-none-any.whl""",
 }
 PY_TEST_DEP = {}
 

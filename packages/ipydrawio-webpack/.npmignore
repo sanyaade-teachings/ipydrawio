@@ -1,9 +1,13 @@
 *.tgz
 **/.ipynb_checkpoints
-dio/.git*
 dio/*.md
+dio/*/.git*
 dio/*/.npmignore
 dio/*/*.orig
+dio/*/bower.json
+dio/*/composer.json
+dio/*/CONTRIBUTING.md
+dio/*/README.md
 dio/connect/*
 dio/dropbox*
 dio/electron*
@@ -17,7 +21,9 @@ dio/js/onedrive/*
 dio/js/viewer.min.js
 dio/math/.travis.yml
 dio/math/jax/output/HTML-CSS/*
-dio/META-INF/*
+dio/META-INF
+dio/WEB-INF
+dio/CITATION.cff
 dio/mxgraph/mxClient.js
 dio/onedrive*
 dio/onedrive*.html
@@ -25,7 +31,6 @@ dio/package.json
 dio/service-worker*
 dio/teams*
 dio/vsdx*
-dio/WEB-INF/*
 dio/workbox*
 dio/yarn.lock
 drawio/
