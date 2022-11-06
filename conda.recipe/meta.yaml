@@ -67,7 +67,7 @@ outputs:
         - pytest-cov
       commands:
         - pip check
-        - pytest -vv --pyargs ipydrawio_widgets --cov=ipydrawio_widgets --cov-report=term-missing:skip-covered
+        - pytest -vv --pyargs ipydrawio_widgets
     about:
       home: https://github.com/deathbeds/ipydrawio
       summary: Draw.io Diagrams as Jupyter Widgets (kernel only)
@@ -99,7 +99,6 @@ outputs:
       requires:
         - pip
         - pytest-console-scripts
-        - pytest-cov
         - m2-grep  # [win]
       commands:
         - pip check
@@ -110,7 +109,7 @@ outputs:
         - cat labextensions | grep -ie "@deathbeds/ipydrawio-webpack .*OK"
         - cat labextensions | grep -ie "@deathbeds/ipydrawio-notebook .*OK"
         - cat labextensions | grep -ie "@deathbeds/ipydrawio-jupyter-templates .*OK"
-        - pytest -vv --pyargs ipydrawio --cov=ipydrawio --cov-report=term-missing:skip-covered
+        - pytest -vv --pyargs ipydrawio
     about:
       home: https://github.com/deathbeds/ipydrawio
       summary: Draw.io Diagrams as Jupyter Widgets
@@ -149,7 +148,6 @@ outputs:
       requires:
         - pip
         - pytest-console-scripts  # [unix]
-        - pytest-cov  # [unix]
         - pytest-tornasync  # [unix]
         - m2-grep  # [win]
       commands:
@@ -161,7 +159,7 @@ outputs:
         - jupyter serverextension list
         - jupyter serverextension list 1>serverextensions 2>&1
         - cat serverextensions | grep -ie "ipydrawio_export .*OK"
-        - pytest -vv --pyargs ipydrawio_export --script-launch-mode=subprocess --cov=ipydrawio_export --cov-report=term-missing:skip-covered  # [unix]
+        - pytest -vv --pyargs ipydrawio_export --script-launch-mode=subprocess  # [unix]
     about:
       home: https://github.com/deathbeds/ipydrawio
       summary: PDF export for IPyDrawio
