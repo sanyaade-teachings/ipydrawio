@@ -60,7 +60,7 @@ outputs:
         - python >=3.7
     test:
       source_files:
-        - tests
+        - ipydrawio-widgets/tests
       imports:
         - ipydrawio_widgets
       requires:
@@ -68,7 +68,7 @@ outputs:
         - pytest
       commands:
         - pip check
-        - pytest -vv
+        - pytest -vv ipydrawio-widgets/tests
     about:
       home: https://github.com/deathbeds/ipydrawio
       summary: Draw.io Diagrams as Jupyter Widgets (kernel only)
@@ -96,7 +96,7 @@ outputs:
         - python >=3.7
     test:
       source_files:
-        - tests
+        - ipydrawio/tests
       imports:
         - ipydrawio
       requires:
@@ -112,7 +112,7 @@ outputs:
         - cat labextensions | grep -ie "@deathbeds/ipydrawio-webpack .*OK"
         - cat labextensions | grep -ie "@deathbeds/ipydrawio-notebook .*OK"
         - cat labextensions | grep -ie "@deathbeds/ipydrawio-jupyter-templates .*OK"
-        - pytest -vv
+        - pytest -vv ipydrawio/tests
     about:
       home: https://github.com/deathbeds/ipydrawio
       summary: Draw.io Diagrams as Jupyter Widgets
@@ -147,7 +147,7 @@ outputs:
         - requests_cache
     test:
       source_files:
-        - tests
+        - ipydrawio-export/tests
       imports:
         - ipydrawio_export
       requires:
@@ -164,7 +164,7 @@ outputs:
         - jupyter serverextension list
         - jupyter serverextension list 1>serverextensions 2>&1
         - cat serverextensions | grep -ie "ipydrawio_export .*OK"
-        - pytest -vv --script-launch-mode=subprocess  # [unix]
+        - pytest -vv --script-launch-mode=subprocess  ipydrawio-export/tests # [unix]
     about:
       home: https://github.com/deathbeds/ipydrawio
       summary: PDF export for IPyDrawio
