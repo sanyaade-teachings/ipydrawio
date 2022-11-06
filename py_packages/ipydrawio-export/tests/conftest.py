@@ -19,7 +19,7 @@ from pathlib import Path
 
 import pytest
 
-from ..app import PDFApp
+from ipydrawio_export.app import PDFApp
 
 FIXTURES = Path(__file__).parent / "fixtures"
 FIXTURE_FILES = sorted([f for f in FIXTURES.glob("*") if not f.is_dir()])

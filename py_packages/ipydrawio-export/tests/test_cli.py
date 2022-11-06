@@ -18,7 +18,7 @@ import platform
 
 import pytest
 
-from .. import __version__
+from ipydrawio_export import __version__
 
 
 @pytest.mark.skipif(platform.system() == "Windows", reason="no capture on win")

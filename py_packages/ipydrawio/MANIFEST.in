@@ -1,2 +1,2 @@
 include README.md LICENSE.txt
-recursive-include src/ipydrawio/tests/fixtures *.*
+recursive-include tests *.*

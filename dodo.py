@@ -956,7 +956,7 @@ def task_provision():
 
 def _pytest(setup_py, *pytest_args):
     return CmdAction(
-        [*P.PYM, "pytest", *P.PYTEST_ARGS, *pytest_args],
+        [*P.PYM, "coverage", "run", "-m", "pytest", *P.PYTEST_ARGS, *pytest_args],
         shell=False,
         cwd=str(setup_py.parent),
     )
@@ -990,7 +990,13 @@ def task_test():
     for pkg, setup in P.PY_SETUP.items():
         html = P.BUILD / f"pytest/{pkg}/test.html"
         htmlcov = P.BUILD / f"pytest/{pkg}/htmlcov"
-        pytest_args = [f"--html={html}", "--self-contained-html"]
+        pytest_args = [
+            "-vv",
+            "--tb=long",
+            f"--html={html}",
+            "--self-contained-html",
+            "--script-launch-mode=subprocess"
+        ]
 
         if pkg == P.IPD.name:
             pytest_args += ["-n", "auto"]

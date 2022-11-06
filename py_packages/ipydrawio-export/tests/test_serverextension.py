@@ -20,7 +20,7 @@ from urllib.parse import urlencode
 import pytest
 from tornado.simple_httpclient import HTTPTimeoutError
 
-from .. import load_jupyter_server_extension
+from ipydrawio_export import load_jupyter_server_extension
 
 
 @pytest.fixture

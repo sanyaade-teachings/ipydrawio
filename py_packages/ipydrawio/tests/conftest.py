@@ -20,7 +20,7 @@ from pathlib import Path
 import nbformat
 import pytest
 
-from ..constants import IPYNB_METADATA, MIMETYPE
+from ipydrawio.constants import IPYNB_METADATA, MIMETYPE
 
 HERE = Path(__file__).parent
 FIXTURES = HERE / "fixtures"
