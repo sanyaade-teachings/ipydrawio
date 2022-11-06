@@ -1769,6 +1769,7 @@ import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/orgchart.min.j
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/rough/rough.js.modified';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/rough/rough.min.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/sanitizer/purify.min.js';
+import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/shapes-14-6-5.min.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/shapes.min.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/simplepeer/simplepeer9.10.0.min.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/js/spin/spin.min.js';
