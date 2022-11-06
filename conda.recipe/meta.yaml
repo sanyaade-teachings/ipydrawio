@@ -117,10 +117,10 @@ outputs:
       license: Apache-2.0
       license_file:
         - ipydrawio/LICENSE.txt
-        - ipydrawio/src/ipydrawio/ext/ipd/static/third-party-licenses.json
-        - ipydrawio/src/ipydrawio/ext/ipdnb/static/third-party-licenses.json
-        - ipydrawio/src/ipydrawio/ext/ipdwp/static/third-party-licenses.json
-        - ipydrawio/src/ipydrawio/ext/ipjt/static/third-party-licenses.json
+        - ipydrawio/_/ipydrawio/static/third-party-licenses.json
+        - ipydrawio/_/ipydrawio-notebook/static/third-party-licenses.json
+        - ipydrawio/_/ipydrawio-webpack/static/third-party-licenses.json
+        - ipydrawio/_/ipydrawio-jupyter-templates/static/third-party-licenses.json
 
   - name: ipydrawio-export
     version: {{ version }}
@@ -168,7 +168,7 @@ outputs:
       license: Apache-2.0
       license_file:
       - ipydrawio-export/LICENSE.txt
-      - ipydrawio-export/src/ipydrawio_export/ext/ipdpdf/static/third-party-licenses.json
+      - ipydrawio-export/_/ipydrawio-pdf/static/third-party-licenses.json
 
 about:
   home: https://github.com/deathbeds/ipydrawio
