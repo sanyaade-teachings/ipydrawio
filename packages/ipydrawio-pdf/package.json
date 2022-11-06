@@ -18,7 +18,7 @@
   },
   "jupyterlab": {
     "extension": "lib/plugin.js",
-    "outputDir": "../../py_packages/ipydrawio-export/src/ipydrawio_export/_/ipydrawio-pdf",
+    "outputDir": "../../py_packages/ipydrawio-export/_/ipydrawio-pdf",
     "sharedPackages": {
       "@deathbeds/ipydrawio": {
         "bundled": false,

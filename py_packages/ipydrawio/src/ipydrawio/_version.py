@@ -28,10 +28,10 @@ __ext__ = [
     "ipydrawio-notebook",
 ]
 
-IN_TREE = HERE / "_"
+IN_TREE = (HERE / "../../_").resolve()
 IN_PREFIX = Path(sys.prefix) / f"share/jupyter/labextextensions/{__ns__}"
 
-__prefix__ = IN_TREE.relative_to(HERE) if IN_TREE.exists() else IN_PREFIX
+__prefix__ = IN_TREE if IN_TREE.exists() else IN_PREFIX
 
 PKG_JSON = __prefix__ / __ext__[0] / "package.json"
 

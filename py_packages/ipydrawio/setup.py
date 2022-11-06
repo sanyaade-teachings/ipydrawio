@@ -19,7 +19,7 @@ from pathlib import Path
 
 HERE = Path(__file__).parent
 
-EXT = HERE / "src/ipydrawio/_"
+EXT = HERE / "_"
 CORE = EXT / "ipydrawio"
 
 SHARE = "share/jupyter/labextensions"

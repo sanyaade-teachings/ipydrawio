@@ -23,7 +23,8 @@ from .serverextension import load_jupyter_server_extension
 
 def _jupyter_labextension_paths():
     """static paths to link for interactive installation"""
-    return _ipydrawio_labextension_paths(prefix=__prefix__, extensions=__ext__)
+    exts = _ipydrawio_labextension_paths(prefix=__prefix__, extensions=__ext__)
+    return exts
 
 
 def _jupyter_server_extension_paths():

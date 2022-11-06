@@ -46,7 +46,7 @@
     "extension": "lib/plugin.js",
     "mimeExtension": "lib/mime.js",
     "schemaDir": "schema",
-    "outputDir": "../../py_packages/ipydrawio/src/ipydrawio/_/ipydrawio",
+    "outputDir": "../../py_packages/ipydrawio/_/ipydrawio",
     "sharedPackages": {
       "@deathbeds/ipydrawio-webpack": {
         "bundled": false,

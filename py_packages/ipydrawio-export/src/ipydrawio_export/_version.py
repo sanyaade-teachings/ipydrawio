@@ -25,7 +25,7 @@ __ext__ = [
     "ipydrawio-pdf",  # source the version from here
 ]
 
-IN_TREE = HERE / "_"
+IN_TREE = (HERE / "../../_").resolve()
 
 __prefix__ = IN_TREE if IN_TREE.exists() else IN_PREFIX
 

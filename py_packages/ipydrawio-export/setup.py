@@ -18,7 +18,7 @@ import json
 from pathlib import Path
 
 HERE = Path(__file__).parent
-EXT = HERE / "src/ipydrawio_export/_"
+EXT = HERE / "_"
 
 PDF = EXT / "ipydrawio-pdf"
 

@@ -23,9 +23,8 @@ from ._version import __ext__, __js__, __ns__, __prefix__, __version__
 def _ipydrawio_labextension_paths(prefix=__prefix__, extensions=__ext__):
     """Reused by other ipydrawio extensions with other prefixes/extensions."""
     labextension_paths = [
-        dict(src=str(__prefix__ / e), dest=f"{__ns__}/{e}") for e in extensions
+        dict(src=str(prefix / e), dest=f"{__ns__}/{e}") for e in extensions
     ]
-    raise Exception(labextension_paths)
     return labextension_paths
 
 
