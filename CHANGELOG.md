@@ -10,6 +10,9 @@
   longer under test... but might still work.
   - support for `notebook 7` will become available some time after a final release
     - though `jupyterlab 4` will be likely be supported first
+- the sizes of all released artifacts are much smaller [#106]
+  - `mathjax` rendering is no longer included by default
+    - install it with `(mamba|conda|pip) install ipydrawio-mathjax`
 
 #### @deathbeds/ipydrawio 1.2.2
 
@@ -17,7 +20,7 @@
 
 #### @deathbeds/ipydrawio-webpack 20.5.300
 
-- updates to drawio v20.5.3
+- updates to drawio v20.5.3 [#106]
 
 #### @deathbeds/ipydrawio-jupyter-templates 1.2.2
 
@@ -27,11 +30,13 @@
 
 ### ipydrawio-mathjax 1.2.2
 
-- now holds the drawio-compatible copy of MathJax
+- now holds the drawio-compatible copy of MathJax [#106]
 
 #### @deathbeds/ipydrawio-mathjax 1.2.2
 
 - initial release
+
+[#106]: https://github.com/deathbeds/ipydrawio/pull/106
 
 ## Releases
 
