@@ -35,7 +35,7 @@ env:
 
   # our stuff
   ATEST_RETRIES: '3'
-  CACHE_EPOCH: '2'
+  CACHE_EPOCH: '3'
   CONDA_BUILDERER: mambabuild
 
 jobs:
@@ -45,7 +45,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu]
-        python-version: ['3.8']
+        python-version: ['3.9']
     defaults:
       run:
         shell: bash -l {0}
@@ -310,6 +310,8 @@ jobs:
           codecov --root ../..
           cd ../ipydrawio-export
           codecov --root ../..
+          cd ../ipydrawio-mathjax
+          codecov --root ../..
 
       - name: upload (utest)
         if: always()
@@ -335,7 +337,7 @@ jobs:
       fail-fast: false
       matrix:
         os: ['ubuntu']
-        python-version: ['3.9']
+        python-version: ['3.10']
     env:
       ATEST_ARGS: '["--exclude","NOTapp:lite"]'
     steps:
@@ -384,11 +386,26 @@ jobs:
         shell: bash -l {0}
         run: doit check
 
-      - name: lite tests
+      - name: tests (unit)
+        shell: bash -l {0}
+        run: doit test:pytest:*
+
+      - name: tests (robot)
         shell: bash -l {0}
         run: doit test:robot
 
-      - name: upload (atest lite)
+      - name: upload coverage
+        shell: bash -l {0}
+        run: |
+          set -eux
+          cd py_packages/ipydrawio
+          codecov --root ../..
+          cd ../ipydrawio-export
+          codecov --root ../..
+          cd ../ipydrawio-mathjax
+          codecov --root ../..
+
+      - name: upload (atest)
         if: always()
         uses: actions/upload-artifact@v3
         with:
