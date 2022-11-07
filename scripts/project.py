@@ -512,7 +512,7 @@ ALL_JSON = [
     ],
 ]
 ALL_DIO = [*DOCS_DIO, *IPJT_TMPL_DIO, *ATEST_DIO]
-ALL_MD = [*ROOT.glob("*.md"), *PACKAGES.glob("*/*.md"), *DOCS_MD]
+ALL_MD = [*ROOT.glob("*.md"), *PACKAGES.glob("*/*.md"), *DOCS_MD, *GH.rglob("*.md")]
 ALL_SETUP_CFG = [SETUP_CFG, *PY_SETUP_CFG.values()]
 ALL_JS = [PACKAGES / ".eslintrc.js"]
 ALL_TS = sum(JS_TSSRC.values(), [])
