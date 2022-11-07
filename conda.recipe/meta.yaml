@@ -165,7 +165,7 @@ outputs:
       license: Apache-2.0
       license_file:
         - ipydrawio-mathjax/LICENSE.txt
-        - ipydrawio/_/ipydrawio-mathjax/static/third-party-licenses.json
+        - ipydrawio-mathjax/_/ipydrawio-mathjax/static/third-party-licenses.json
 
   - name: ipydrawio-export
     version: {{ version }}
