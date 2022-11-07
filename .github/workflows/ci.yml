@@ -381,6 +381,10 @@ jobs:
 
       - name: tests (unit)
         shell: bash -l {0}
+        run: doit build
+
+      - name: tests (unit)
+        shell: bash -l {0}
         run: doit test:pytest:* || doit test:pytest:* || doit test:pytest:*
 
       - name: build docs
