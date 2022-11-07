@@ -84,7 +84,7 @@ jobs:
         with:
           path: '**/node_modules'
           key: |
-            ${{ env.CACHE_EPOCH }}-${{ runner.os }}-node-build-${{ hashFiles('yarn.lock', '.gitub/pip-build.txt') }}
+            ${{ env.CACHE_EPOCH }}-${{ runner.os }}-node-build-${{ hashFiles('yarn.lock', '.github/pip-build.txt') }}
 
       - name: cache (yarn)
         uses: actions/cache@v3
@@ -331,15 +331,12 @@ jobs:
 
   docs:
     name: docs
-    needs: [build]
     runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
       matrix:
         os: ['ubuntu']
         python-version: ['3.10']
-    env:
-      ATEST_ARGS: '["--exclude","NOTapp:lite"]'
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -353,8 +350,18 @@ jobs:
           restore-keys: |
             ${{ env.CACHE_EPOCH }}-${{ runner.os }}-conda-docs-${{ matrix.python-version }}-
 
+      - name: cache (node)
+        uses: actions/cache@v3
+        id: cache-node-modules
+        with:
+          path: '**/node_modules'
+          key: |
+            ${{ env.CACHE_EPOCH }}-${{ runner.os }}-node-build-${{ hashFiles('yarn.lock', '.github/pip-build.txt') }}
+
       - name: cache (yarn)
         uses: actions/cache@v3
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        id: cache-yarn-packages
         with:
           path: .yarn-packages
           key: |
@@ -372,11 +379,9 @@ jobs:
           use-only-tar-bz2: true
           use-mamba: true
 
-      - name: download (dist)
-        uses: actions/download-artifact@v3
-        with:
-          name: ipydrawio-${{ github.run_number }}-dist
-          path: ./dist
+      - name: tests (unit)
+        shell: bash -l {0}
+        run: doit test:pytest:* || doit test:pytest:* || doit test:pytest:*
 
       - name: build docs
         shell: bash -l {0}
@@ -385,10 +390,6 @@ jobs:
       - name: check docs
         shell: bash -l {0}
         run: doit check
-
-      - name: tests (unit)
-        shell: bash -l {0}
-        run: doit test:pytest:* || doit test:pytest:* || doit test:pytest:*
 
       - name: tests (robot)
         shell: bash -l {0}

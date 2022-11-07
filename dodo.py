@@ -120,19 +120,19 @@ def task_submodules():
 
 def task_setup():
     """perform general steps to get ready for development, testing, or releasing"""
-    if not P.TESTING_IN_CI:
-        if not (P.BUILDING_IN_CI and P.YARN_INTEGRITY.exists()):
-            yield dict(
-                name="js",
-                file_dep=[P.PACKAGE, P.OK_SUBMODULES]
-                + ([P.YARN_LOCK] if P.YARN_LOCK.exists() else []),
-                actions=[
-                    [*P.JLPM, "--ignore-optional", "--prefer-offline"],
-                    [*P.LERNA, "bootstrap"],
-                ],
-                targets=[P.YARN_INTEGRITY],
-            )
+    if not (P.CI and P.YARN_INTEGRITY.exists()):
+        yield dict(
+            name="js",
+            file_dep=[P.PACKAGE, P.OK_SUBMODULES]
+            + ([P.YARN_LOCK] if P.YARN_LOCK.exists() else []),
+            actions=[
+                [*P.JLPM, "--ignore-optional", "--prefer-offline"],
+                [*P.LERNA, "bootstrap"],
+            ],
+            targets=[P.YARN_INTEGRITY],
+        )
 
+    if not P.TESTING_IN_CI:
         yield dict(
             name="js:ipde",
             file_dep=[P.IPDE_DIE2_PACKAGE_JSON, P.YARN_INTEGRITY],
