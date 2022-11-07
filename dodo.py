@@ -102,6 +102,10 @@ def task_env():
 
 def task_submodules():
     """ensure submodules are available"""
+
+    if P.CI:
+        return P._ok(dict(actions=[lambda: print("OK")]) ,P.OK_SUBMODULES)
+
     subs = subprocess.check_output(["git", "submodule"]).decode("utf-8").splitlines()
 
     def _clean():
