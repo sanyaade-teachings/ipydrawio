@@ -301,7 +301,7 @@ JS_SCHEMAS = {
     if (v.parent / "schema").exists()
 }
 
-# special things for ipydrawio-webpack
+# special things for ipydrawio-webpack and friends
 IPDWP = JS_PKG_JSON["ipydrawio-webpack"].parent
 IPDWP_APP = IPDWP / "dio/js/app.min.js"
 IPDWP_PY = (IPDWP / "scripts").rglob("*.py")
@@ -309,6 +309,9 @@ DRAWIO = IPDWP / "drawio"
 IPDWP_LIB = IPDWP / "lib"
 IPDWP_IGNORE = IPDWP / ".npmignore"
 ALL_IPDWP_JS = IPDWP_LIB.glob("*.js")
+IPDM_JS = JS_PKG_JSON["ipydrawio-mathjax"].parent
+IPDM_JS_LIB = IPDM_JS / "lib"
+ALL_IPDM_JS = IPDM_JS_LIB.glob("*.js")
 
 IPJT = JS_PKG_JSON["ipydrawio-jupyter-templates"].parent
 IPJT_TMPL = IPJT / "tmpl"
@@ -568,11 +571,20 @@ RFLINT_OPTS = sum(
     ],
     [],
 )
+
+# drawio-derived
 JS_PKG_PACK[IPDWP.name][0] += [
     IPDWP_IGNORE,
     IPDWP_APP,
     *ALL_IPDWP_JS,
 ]
+
+JS_PKG_PACK[IPDM.name][0] += [
+    IPDWP_IGNORE,
+    IPDWP_APP,
+    *ALL_IPDM_JS,
+]
+
 
 # provisioning stuff
 IPYDRAWIO_DATA_DIR = Path(sys.prefix) / "share/jupyter/ipydrawio_export"
