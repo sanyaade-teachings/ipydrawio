@@ -224,7 +224,7 @@ jobs:
           name: ipydrawio-${{ github.run_number }}-conda
           path: ./build/conda-bld
 
-      - name: build (conda)
+      - name: test (conda)
         shell: bash -l {0}
         run: |
           conda index build/conda-bld

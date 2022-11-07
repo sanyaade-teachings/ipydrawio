@@ -1,3 +1,2 @@
 include README.md LICENSE.txt
 recursive-include tests *.*
-recursive-include src/ipydrawio_mathjaxs/etc *.json

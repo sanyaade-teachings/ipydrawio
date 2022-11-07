@@ -24,7 +24,7 @@ source:
 
   - folder: ipydrawio-mathjax
     url: file://{{ url_base }}/ipydrawio-mathjax-{{ version }}.tar.gz
-    # url: https://pypi.io/packages/source/{{ name[0] }}/ipydrawio/ipydrawio-{{ version }}.tar.gz
+    # url: https://pypi.io/packages/source/{{ name[0] }}/ipydrawio/ipydrawio-mathjax-{{ version }}.tar.gz
     # sha256:
 
   - folder: ipydrawio-export
@@ -135,8 +135,6 @@ outputs:
       noarch: python
       script:
         - cd ipydrawio-mathjax && {{ PYTHON }} -m pip install . -vv --no-deps
-      entry_points:
-        - jupyter-ipydrawio = ipydrawio.app:main
     requirements:
       host:
         - pip
@@ -148,13 +146,12 @@ outputs:
       source_files:
         - ipydrawio-mathjax/tests
       imports:
-        - ipydrawio_mathax
+        - ipydrawio_mathjax
       requires:
         - pip
         - m2-grep  # [win]
       commands:
         - pip check
-        - jupyter ipydrawio --version
         - jupyter labextension list
         - jupyter labextension list 1>labextensions 2>&1
         - cat labextensions | grep -ie "@deathbeds/ipydrawio-mathjax .*OK"
