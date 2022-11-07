@@ -388,7 +388,7 @@ jobs:
 
       - name: tests (unit)
         shell: bash -l {0}
-        run: doit test:pytest:*
+        run: doit test:pytest:* || doit test:pytest:* || doit test:pytest:*
 
       - name: tests (robot)
         shell: bash -l {0}
