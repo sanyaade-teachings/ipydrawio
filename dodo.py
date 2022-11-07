@@ -29,6 +29,7 @@ maybe before you push
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import shutil
 import subprocess
 import time
@@ -969,6 +970,10 @@ def _pytest(setup_py, pycov_args, pytest_args):
         ],
         shell=False,
         cwd=str(setup_py.parent),
+        env=dict(
+            COVERAGE_PROCESS_START="1",
+            **os.environ,
+        ),
     )
 
 
