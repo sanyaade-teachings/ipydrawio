@@ -385,10 +385,6 @@ jobs:
         shell: bash -l {0}
         run: doit build
 
-      - name: tests (unit)
-        shell: bash -l {0}
-        run: doit test:pytest:* || doit test:pytest:* || doit test:pytest:*
-
       - name: build docs
         shell: bash -l {0}
         run: doit docs || doit docs || doit docs
@@ -400,17 +396,6 @@ jobs:
       - name: tests (robot)
         shell: bash -l {0}
         run: doit test:robot
-
-      - name: upload coverage
-        shell: bash -l {0}
-        run: |
-          set -eux
-          cd py_packages/ipydrawio
-          codecov --root ../..
-          cd ../ipydrawio-export
-          codecov --root ../..
-          cd ../ipydrawio-mathjax
-          codecov --root ../..
 
       - name: upload (atest)
         if: always()
