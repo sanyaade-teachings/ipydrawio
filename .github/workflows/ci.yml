@@ -379,7 +379,7 @@ jobs:
           use-only-tar-bz2: true
           use-mamba: true
 
-      - name: tests (unit)
+      - name: build
         shell: bash -l {0}
         run: doit build
 
