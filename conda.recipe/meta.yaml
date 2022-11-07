@@ -148,8 +148,9 @@ outputs:
       imports:
         - ipydrawio_mathjax
       requires:
-        - pip
         - m2-grep  # [win]
+        - pip
+        - pytest
       commands:
         - pip check
         - jupyter labextension list
