@@ -21,7 +21,6 @@ import sys
 from . import DIO, DRAWIO, EXTERNAL, PACKAGES
 
 IPDM_REL = "../../../ipydrawio-mathjax/static/dio"
-IPDS_REL = "../../../ipydrawio-stencils/static/dio"
 
 PATCHES = {
     "js/app.min.js": [
@@ -39,11 +38,6 @@ PATCHES = {
             "name": "get mathjax from the ipydrawio-mathjax",
             "before": "window.DRAW_MATH_URL=",
             "after": f'window.DRAW_MATH_URL="{IPDM_REL}/math/es5";',
-        },
-        {
-            "name": "get stencils from the ipydrawio-mathjax",
-            "before": "window.STENCIL_PATH=",
-            "after": f'window.STENCIL_PATH="{IPDS_REL}/stencils";',
         },
     ]
 }

@@ -1,3 +1,0 @@
-include README.md LICENSE.txt
-recursive-include tests *.*
-recursive-include src/ipydrawio_stencils/etc *.json

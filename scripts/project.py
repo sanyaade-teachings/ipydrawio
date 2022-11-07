@@ -314,10 +314,6 @@ IPDM_JS = JS_PKG_JSON["ipydrawio-mathjax"].parent
 IPDM_JS_LIB = IPDM_JS / "lib"
 ALL_IPDM_JS = IPDM_JS_LIB.glob("*.js")
 
-IPDS_JS = JS_PKG_JSON["ipydrawio-stencils"].parent
-IPDS_JS_LIB = IPDS_JS / "lib"
-ALL_IPDS_JS = IPDS_JS_LIB.glob("*.js")
-
 IPJT = JS_PKG_JSON["ipydrawio-jupyter-templates"].parent
 IPJT_TMPL = IPJT / "tmpl"
 IPJT_TMPL_DIO = _clean(
@@ -336,14 +332,12 @@ PY_VERSION = {
     "ipydrawio-export": JS_PKG_DATA["ipydrawio-pdf"]["version"],
     "ipydrawio-widgets": JS_PKG_DATA["ipydrawio"]["version"],
     "ipydrawio-mathjax": JS_PKG_DATA["ipydrawio-mathjax"]["version"],
-    "ipydrawio-stencils": JS_PKG_DATA["ipydrawio-stencils"]["version"],
 }
 
 IPD = PY_SETUP["ipydrawio"].parent
 IPDE = PY_SETUP["ipydrawio-export"].parent
 IPDW = PY_SETUP["ipydrawio-widgets"].parent
 IPDM = PY_SETUP["ipydrawio-mathjax"].parent
-IPDS = PY_SETUP["ipydrawio-stencils"].parent
 
 IPDE_VENDOR = IPDE / "src/ipydrawio_export/vendor"
 IPDE_DIE2 = IPDE_VENDOR / "draw-image-export2"
@@ -357,9 +351,8 @@ IPDW_DEPS = {
 }
 
 IPDM_STARTUP = JS_PKG_JSON["ipydrawio-mathjax"].parent / "dio/math/es5/startup.js"
-IPDS_LICENSE = JS_PKG_JSON["ipydrawio-stencils"].parent / "dio/stencils/LICENSE"
 
-PY_HAS_EXT = {IPD: True, IPDE: True, IPDW: False, IPDM: True, IPDS: True}
+PY_HAS_EXT = {IPD: True, IPDE: True, IPDW: False, IPDM: True}
 
 SERVER_EXT = {
     k: sorted(v.parent.glob("src/*/serverextension.py"))[0]
@@ -384,7 +377,6 @@ PY_SETUP_DEPS = {
     IPDE: lambda: [OK_PYSETUP["ipydrawio"]],
     IPDW: lambda: [*IPDW_DEPS.values()],
     IPDM: lambda: [OK_PYSETUP["ipydrawio"], IPDM_STARTUP],
-    IPDS: lambda: [OK_PYSETUP["ipydrawio"], IPDS_LICENSE],
 }
 
 PY_SDIST = {
@@ -576,7 +568,6 @@ JS_PKG_PACK[IPDWP.name][0] += [
 ]
 
 JS_PKG_PACK[IPDM.name][0] += [IPDWP_IGNORE, IPDWP_APP, *ALL_IPDM_JS, IPDM_STARTUP]
-JS_PKG_PACK[IPDS.name][0] += [IPDWP_IGNORE, IPDWP_APP, *ALL_IPDS_JS, IPDS_LICENSE]
 
 
 # provisioning stuff

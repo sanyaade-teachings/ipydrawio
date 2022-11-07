@@ -24,16 +24,13 @@ DRAWIO = ROOT / "drawio/src/main/webapp"
 #: this path is shorter
 DIO = ROOT / "dio"
 IPDM_DIO = PACKAGES / "ipydrawio-mathjax/dio"
-IPDS_DIO = PACKAGES / "ipydrawio-stencils/dio"
 
 ALL_DIO = {
     "ipydrawio-webpack": DIO,
     "ipydrawio-mathjax": IPDM_DIO,
-    "ipydrawio-stencils": IPDS_DIO,
 }
 
 #: these packages will provide these files instead of the main webpack
 EXTERNAL = {
     DIO / "math": IPDM_DIO / "math",
-    DIO / "stencils": IPDS_DIO / "stencils",
 }

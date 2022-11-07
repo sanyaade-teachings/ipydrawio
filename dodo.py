@@ -455,7 +455,7 @@ def task_build():
                 *sum(P.JS_SCHEMAS.values(), []),
             ],
             actions=[[*P.LERNA, "run", "build:pre", "--stream"]],
-            targets=[P.IPDWP_APP, P.IPDM_STARTUP, P.IPDS_LICENSE],
+            targets=[P.IPDWP_APP, P.IPDM_STARTUP],
         ),
         P.OK_JS_BUILD_PRE,
     )
