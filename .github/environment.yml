@@ -51,7 +51,6 @@ dependencies:
   # unit testing
   - pytest
   - pytest-console-scripts
-  - pytest-cov
   - pytest-html
   - pytest-tornasync
   - pytest-xdist

@@ -1,6 +1,7 @@
-""" source of truth for ipydrawio-export version"""
+"""source of truth for ipydrawio version"""
 
 # Copyright 2022 ipydrawio contributors
+# Copyright 2020 jupyterlab-drawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,14 +15,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 import json
 from pathlib import Path
 
-HERE = Path(__file__).parent
+from ipydrawio._version import IN_PREFIX, __ns__
 
-__js__ = json.loads((HERE / "ext/ipdpdf/package.json").read_text(encoding="utf-8"))
+HERE = Path(__file__).parent
+__ext__ = [
+    "ipydrawio-pdf",  # source the version from here
+]
+
+IN_TREE = (HERE / "../../_").resolve()
+
+__prefix__ = IN_TREE if IN_TREE.exists() else IN_PREFIX
+
+PKG_JSON = __prefix__ / __ext__[0] / "package.json"
+
+__js__ = json.loads(PKG_JSON.read_text(encoding="utf-8"))
+
 
 __version__ = __js__["version"]
 
-__all__ = ["__version__", "__js__"]
+__all__ = ["__version__", "__js__", "__ns__", "__ext__", "__prefix__"]

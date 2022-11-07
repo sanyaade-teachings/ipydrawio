@@ -84,7 +84,9 @@ def test_drawio_versions():
 
 def test_recipe_versions():
     """is the conda recipe version correct"""
-    assert f"""version = "{P.IPD_VERSION}" """ in P.RECIPE.read_text(**P.ENC)
+    assert f"""version = "{P.PY_VERSION["ipydrawio"]}" """ in P.RECIPE.read_text(
+        **P.ENC
+    )
 
 
 @pytest.mark.parametrize(
@@ -164,7 +166,7 @@ def test_setup_cfg_version(path, upstream, version):
 @pytest.mark.parametrize(
     "path,py_count",
     [
-        [P.RECIPE, 8],
+        [P.RECIPE, 10],
         [P.ENV_BINDER, 1],
     ],
 )

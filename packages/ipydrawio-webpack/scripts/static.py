@@ -14,23 +14,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pprint
+import shutil
 from fnmatch import fnmatch
-from pathlib import Path
-from pprint import pprint
 
-HERE = Path(__file__).parent
-ROOT = HERE.parent.resolve()
-DIO = ROOT / "dio"
+from . import ALL_DIO, PACKAGES, ROOT
+
 IGNORE = ROOT / ".npmignore"
 IGNORED = {
     glob.strip(): 0
     for glob in IGNORE.read_text().strip().splitlines()
     if glob.startswith("dio/")
 }
-STATIC = ROOT / "lib/_static.js"
+
 HEADER = """
 /**
-    All files that should be copied to the labextension folder, available as:
+    All drawio files that should be included in @deathbeds/{pkg}
 
     This file generated from https://github.com/jgraph/drawio
 */
@@ -40,32 +39,53 @@ import '!!file-loader?name=[path][name].[ext]&context=.!../dio{}';
 """
 
 
-def is_ignored(path):
+def is_ignored(path, root):
+    rel = str(path.relative_to(root))
+    print("... considering", rel, flush=True)
     for ignore in IGNORED:
-        if fnmatch(str(path.relative_to(ROOT)), ignore):
+        if fnmatch(rel, ignore):
             IGNORED[ignore] += 1
+            print("   ... ignored!")
             return True
     return False
 
 
-def update_static():
-    print("ignoring\n", "\n".join(IGNORED))
+def update_one_static(pkg, dio, static):
+    print(f"... updating {static}", flush=True)
     lines = []
 
-    for path in sorted(DIO.rglob("*")):
+    all_paths = sorted(dio.rglob("*"))
+
+    for path in all_paths:
+        if is_ignored(path, dio.parent):
+            if path.is_dir():
+                shutil.rmtree(path)
+            elif path.exists():
+                path.unlink()
+            continue
         if path.is_dir():
             continue
-        if is_ignored(path):
+        if not path.exists():
             continue
         lines += [
-            TMPL.format(str(path.as_posix()).replace(str(DIO.as_posix()), "")).strip()
+            TMPL.format(str(path.as_posix()).replace(str(dio.as_posix()), "")).strip()
         ]
 
     assert lines
 
-    STATIC.write_text("\n".join([HEADER, *lines]))
-    print(f"wrote {len(lines)} lines")
-    pprint(IGNORED)
+    static.write_text("\n".join([HEADER.format(pkg=pkg), *lines]))
+    print(
+        f"    ... {static.relative_to(PACKAGES)} wrote {len(lines)} lines", flush=True
+    )
+
+
+def update_static():
+    for pkg, dio in ALL_DIO.items():
+        static = dio.parent / "lib/_static.js"
+        if static.exists():
+            static.unlink()
+        update_one_static(pkg, dio, static)
+    print("ignored\n", pprint.pformat(IGNORED))
 
 
 if __name__ == "__main__":

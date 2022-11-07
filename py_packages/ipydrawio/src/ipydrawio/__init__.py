@@ -14,26 +14,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import json
-from pathlib import Path
 
 from ipydrawio_widgets import XML, Diagram
 
-from ._version import __js__, __version__
+from ._version import __ext__, __js__, __ns__, __prefix__, __version__
 
 
-def _jupyter_labextension_paths():
-    here = Path(__file__).parent
+def _ipydrawio_labextension_paths(prefix=__prefix__, extensions=__ext__):
+    """Reused by other ipydrawio extensions with other prefixes/extensions."""
+    labextension_paths = [
+        dict(src=str(prefix / e), dest=f"{__ns__}/{e}") for e in extensions
+    ]
+    return labextension_paths
 
-    exts = []
-    for pkg in here.glob("ext/*/package.json"):
-        exts += [
-            dict(
-                src=str(pkg.parent.relative_to(here).as_posix()),
-                dest=json.loads(pkg.read_text(encoding="utf-8"))["name"],
-            )
-        ]
-    return exts
+
+_jupyter_labextension_paths = _ipydrawio_labextension_paths
 
 
 __all__ = [

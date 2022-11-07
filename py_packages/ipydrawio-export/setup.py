@@ -18,9 +18,9 @@ import json
 from pathlib import Path
 
 HERE = Path(__file__).parent
-EXT = HERE / "src/ipydrawio_export/ext"
+EXT = HERE / "_"
 
-PDF = EXT / "ipdpdf"
+PDF = EXT / "ipydrawio-pdf"
 
 SHARE = "share/jupyter/labextensions"
 

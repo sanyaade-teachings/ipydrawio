@@ -40,6 +40,12 @@
       "path": "./ipydrawio-notebook"
     },
     {
+      "path": "./ipydrawio-mathjax/src"
+    },
+    {
+      "path": "./ipydrawio-mathjax"
+    },
+    {
       "path": "./ipydrawio-pdf/src"
     },
     {

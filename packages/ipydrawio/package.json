@@ -21,7 +21,7 @@
   },
   "types": "lib/index.d.ts",
   "dependencies": {
-    "@deathbeds/ipydrawio-webpack": "^20.5.0",
+    "@deathbeds/ipydrawio-webpack": "^20.5.300",
     "@jupyterlab/application": "^3.1.0",
     "@jupyterlab/launcher": "^3.1.0",
     "@jupyterlab/mainmenu": "^3.1.0"
@@ -46,7 +46,7 @@
     "extension": "lib/plugin.js",
     "mimeExtension": "lib/mime.js",
     "schemaDir": "schema",
-    "outputDir": "../../py_packages/ipydrawio/src/ipydrawio/ext/ipd",
+    "outputDir": "../../py_packages/ipydrawio/_/ipydrawio",
     "sharedPackages": {
       "@deathbeds/ipydrawio-webpack": {
         "bundled": false,

@@ -29,6 +29,7 @@ maybe before you push
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import shutil
 import subprocess
 import time
@@ -119,7 +120,7 @@ def task_submodules():
 
 def task_setup():
     """perform general steps to get ready for development, testing, or releasing"""
-    if not P.TESTING_IN_CI:
+    if not (P.CI and P.YARN_INTEGRITY.exists()):
         yield dict(
             name="js",
             file_dep=[P.PACKAGE, P.OK_SUBMODULES]
@@ -131,6 +132,7 @@ def task_setup():
             targets=[P.YARN_INTEGRITY],
         )
 
+    if not P.TESTING_IN_CI:
         yield dict(
             name="js:ipde",
             file_dep=[P.IPDE_DIE2_PACKAGE_JSON, P.YARN_INTEGRITY],
@@ -455,7 +457,7 @@ def task_build():
                 *sum(P.JS_SCHEMAS.values(), []),
             ],
             actions=[[*P.LERNA, "run", "build:pre", "--stream"]],
-            targets=[P.IPDWP_APP],
+            targets=[P.IPDWP_APP, P.IPDM_STARTUP],
         ),
         P.OK_JS_BUILD_PRE,
     )
@@ -954,9 +956,46 @@ def task_provision():
     )
 
 
-def _pytest(setup_py, *pytest_args):
+def _pytest(setup_py, pycov_args, pytest_args):
     return CmdAction(
-        [*P.PYM, "pytest", *P.PYTEST_ARGS, *pytest_args],
+        [
+            *P.PYM,
+            "coverage",
+            "run",
+            *pycov_args,
+            "-m",
+            "pytest",
+            *P.PYTEST_ARGS,
+            *pytest_args,
+        ],
+        shell=False,
+        cwd=str(setup_py.parent),
+        env=dict(
+            COVERAGE_PROCESS_START="1",
+            **os.environ,
+        ),
+    )
+
+
+def _pycov_combine(setup_py):
+    return CmdAction(
+        [*P.PYM, "coverage", "combine"],
+        shell=False,
+        cwd=str(setup_py.parent),
+    )
+
+
+def _pycov_report(setup_py):
+    return CmdAction(
+        [*P.PYM, "coverage", "report", "--skip-covered", "--show-missing"],
+        shell=False,
+        cwd=str(setup_py.parent),
+    )
+
+
+def _pycov_html(setup_py, *pycov_html_args):
+    return CmdAction(
+        [*P.PYM, "coverage", "html", *pycov_html_args],
         shell=False,
         cwd=str(setup_py.parent),
     )
@@ -991,10 +1030,14 @@ def task_test():
         html = P.BUILD / f"pytest/{pkg}/test.html"
         htmlcov = P.BUILD / f"pytest/{pkg}/htmlcov"
         pytest_args = [
-            f"--cov-report=html:{htmlcov}",
+            "-vv",
+            "--tb=long",
             f"--html={html}",
             "--self-contained-html",
+            "--script-launch-mode=subprocess",
         ]
+        pycov_args = []
+        pycov_html_args = [f"--directory={htmlcov.parent}"]
 
         if pkg == P.IPD.name:
             pytest_args += ["-n", "auto"]
@@ -1011,10 +1054,13 @@ def task_test():
                     P.OK_PIP_CHECK,
                 ],
                 actions=[
-                    (P.delete_some, [htmlcov, html]),
-                    _pytest(setup, *pytest_args),
+                    (P.delete_some, [html]),
+                    _pytest(setup, pycov_args, pytest_args),
+                    _pycov_combine(setup),
+                    _pycov_html(setup, *pycov_html_args),
+                    _pycov_report(setup),
                 ],
-                targets=[htmlcov / "status.json", html],
+                targets=[html],
             ),
             P.OK_PYTEST[pkg],
         )

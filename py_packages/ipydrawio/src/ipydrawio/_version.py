@@ -16,13 +16,28 @@
 # limitations under the License.
 
 import json
+import sys
 from pathlib import Path
 
 HERE = Path(__file__).parent
-PKG_JSON = HERE / "ext/ipd/package.json"
+__ns__ = "@deathbeds"
+__ext__ = [
+    "ipydrawio",  # source the version from here
+    "ipydrawio-webpack",
+    "ipydrawio-jupyter-templates",
+    "ipydrawio-notebook",
+]
+
+IN_TREE = (HERE / "../../_").resolve()
+IN_PREFIX = Path(sys.prefix) / f"share/jupyter/labextensions/{__ns__}"
+
+__prefix__ = IN_TREE if IN_TREE.exists() else IN_PREFIX
+
+PKG_JSON = __prefix__ / __ext__[0] / "package.json"
 
 __js__ = json.loads(PKG_JSON.read_text(encoding="utf-8"))
 
+
 __version__ = __js__["version"]
 
-__all__ = ["__version__", "__js__"]
+__all__ = ["__version__", "__js__", "__ns__", "__ext__", "__prefix__"]

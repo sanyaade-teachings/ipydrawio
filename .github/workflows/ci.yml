@@ -35,9 +35,7 @@ env:
 
   # our stuff
   ATEST_RETRIES: '3'
-  CACHE_EPOCH: '2'
-  DOIT_N_BUILD: '-n4'
-  DOIT_N_TEST: '-n4'
+  CACHE_EPOCH: '3'
   CONDA_BUILDERER: mambabuild
 
 jobs:
@@ -47,7 +45,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu]
-        python-version: ['3.8']
+        python-version: ['3.9']
     defaults:
       run:
         shell: bash -l {0}
@@ -86,7 +84,7 @@ jobs:
         with:
           path: '**/node_modules'
           key: |
-            ${{ env.CACHE_EPOCH }}-${{ runner.os }}-node-build-${{ hashFiles('yarn.lock', '.gitub/pip-build.txt') }}
+            ${{ env.CACHE_EPOCH }}-${{ runner.os }}-node-build-${{ hashFiles('yarn.lock', '.github/pip-build.txt') }}
 
       - name: cache (yarn)
         uses: actions/cache@v3
@@ -116,14 +114,14 @@ jobs:
       - name: upload (pip freeze)
         uses: actions/upload-artifact@v3
         with:
-          name: ipydrawio ${{ github.run_number }} build pip freeze
+          name: ipydrawio-${{ github.run_number }}-build-pip-freeze
           path: ./build/pip/
 
       - name: list
         run: doit list --all --status
 
       - name: build
-        run: doit ${{ matrix.DOIT_N_BUILD }} dist || doit dist
+        run: doit dist || doit dist
 
       - name: status
         run: doit list --all --status | sort
@@ -132,7 +130,7 @@ jobs:
       - name: upload (dist)
         uses: actions/upload-artifact@v3
         with:
-          name: ipydrawio ${{ github.run_number }} dist
+          name: ipydrawio-${{ github.run_number }}-dist
           path: ./dist
 
   conda-build:
@@ -144,8 +142,7 @@ jobs:
         os: ['ubuntu']
     steps:
       - name: configure line endings
-        run: |
-          git config --global core.autocrlf false
+        run: git config --global core.autocrlf false
 
       - name: checkout
         uses: actions/checkout@v3
@@ -169,18 +166,17 @@ jobs:
       - name: download (dist)
         uses: actions/download-artifact@v3
         with:
-          name: ipydrawio ${{ github.run_number }} dist
+          name: ipydrawio-${{ github.run_number }}-dist
           path: ./dist
 
       - name: build (conda)
         shell: bash -l {0}
-        run: |
-          doit -s conda_build
+        run: doit -s conda_build
 
       - name: upload (conda)
         uses: actions/upload-artifact@v3
         with:
-          name: ipydrawio ${{ github.run_number }} conda
+          name: ipydrawio-${{ github.run_number }}-conda
           path: ./build/conda-bld
 
   conda-test:
@@ -192,8 +188,7 @@ jobs:
         os: ['ubuntu', 'macos', 'windows']
     steps:
       - name: configure line endings
-        run: |
-          git config --global core.autocrlf false
+        run: git config --global core.autocrlf false
 
       - name: checkout
         uses: actions/checkout@v3
@@ -226,10 +221,10 @@ jobs:
       - name: download (conda)
         uses: actions/download-artifact@v3
         with:
-          name: ipydrawio ${{ github.run_number }} conda
+          name: ipydrawio-${{ github.run_number }}-conda
           path: ./build/conda-bld
 
-      - name: build (conda)
+      - name: test (conda)
         shell: bash -l {0}
         run: |
           conda index build/conda-bld
@@ -243,18 +238,17 @@ jobs:
       fail-fast: false
       matrix:
         os: ['ubuntu', 'macos', 'windows']
-        python-version: ['3.7', '3.10']
+        python-version: ['3.7', '3.11']
         include:
           - python-version: '3.7'
             CI_ARTIFACT: 'sdist'
-          - python-version: '3.10'
+          - python-version: '3.11'
             CI_ARTIFACT: 'wheel'
     env:
       TESTING_IN_CI: '1'
     steps:
       - name: configure line endings
-        run: |
-          git config --global core.autocrlf false
+        run: git config --global core.autocrlf false
 
       - name: checkout
         uses: actions/checkout@v3
@@ -280,28 +274,33 @@ jobs:
       - name: tweak install (conda)
         if: matrix.python-version == '3.7'
         shell: bash -l {0}
-        run: |
-          mamba env update -n test --file .github/environment-py37.yml
+        run: mamba env update -n test --file .github/environment-py37.yml
 
       - name: download (dist)
         uses: actions/download-artifact@v3
         with:
-          name: ipydrawio ${{ github.run_number }} dist
+          name: ipydrawio-${{ github.run_number }}-dist
           path: ./dist
 
-      - name: test (unix)
+      - name: unit test (unix)
         if: matrix.os != 'windows'
         shell: bash -l {0}
-        run: |
-          doit $DOIT_N_TEST test || doit test
+        run: doit test:pytest:* || doit test:pytest:*
 
-      - name: test (windows)
+      - name: acceptance test (unix)
+        if: matrix.os != 'windows'
+        shell: bash -l {0}
+        run: doit test || doit test
+
+      - name: unit test (windows)
         if: matrix.os == 'windows'
         shell: cmd /C CALL {0}
-        env:
-          DOIT_N_TEST: '-n1'
-        run: |
-          doit %DOIT_N_TEST% test || doit test
+        run: doit test:pytest:* || doit test:pytest:*
+
+      - name: acceptance test (windows)
+        if: matrix.os == 'windows'
+        shell: cmd /C CALL {0}
+        run: doit test || doit test
 
       - name: upload coverage
         shell: bash -l {0}
@@ -311,36 +310,33 @@ jobs:
           codecov --root ../..
           cd ../ipydrawio-export
           codecov --root ../..
+          cd ../ipydrawio-mathjax
+          codecov --root ../..
 
       - name: upload (utest)
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name:
-            ipydrawio ${{ github.run_number }} utest ${{ matrix.os }}${{
-            matrix.python-version }}
+          name: |-
+            ipydrawio-${{ github.run_number }}-utest-${{ matrix.os }}-${{ matrix.python-version }}
           path: ./build/pytest
 
       - name: upload (atest)
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name:
-            ipydrawio ${{ github.run_number }} atest ${{ matrix.os }}${{
-            matrix.python-version }}
+          name: |-
+            ipydrawio-${{ github.run_number }}-atest-${{ matrix.os }}-${{matrix.python-version }}
           path: ./build/atest
 
   docs:
     name: docs
-    needs: [build]
     runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
       matrix:
         os: ['ubuntu']
-        python-version: ['3.9']
-    env:
-      ATEST_ARGS: '["--exclude","NOTapp:lite"]'
+        python-version: ['3.10']
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -354,8 +350,18 @@ jobs:
           restore-keys: |
             ${{ env.CACHE_EPOCH }}-${{ runner.os }}-conda-docs-${{ matrix.python-version }}-
 
+      - name: cache (node)
+        uses: actions/cache@v3
+        id: cache-node-modules
+        with:
+          path: '**/node_modules'
+          key: |
+            ${{ env.CACHE_EPOCH }}-${{ runner.os }}-node-build-${{ hashFiles('yarn.lock', '.github/pip-build.txt') }}
+
       - name: cache (yarn)
         uses: actions/cache@v3
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        id: cache-yarn-packages
         with:
           path: .yarn-packages
           key: |
@@ -373,41 +379,45 @@ jobs:
           use-only-tar-bz2: true
           use-mamba: true
 
-      - name: download (dist)
-        uses: actions/download-artifact@v3
-        with:
-          name: ipydrawio ${{ github.run_number }} dist
-          path: ./dist
+      - name: tests (unit)
+        shell: bash -l {0}
+        run: doit test:pytest:* || doit test:pytest:* || doit test:pytest:*
 
       - name: build docs
         shell: bash -l {0}
-        run: |
-          doit $DOIT_N_TEST docs || doit docs || doit docs
+        run: doit docs || doit docs || doit docs
 
       - name: check docs
         shell: bash -l {0}
-        run: |
-          doit $DOIT_N_TEST check
+        run: doit check
 
-      - name: lite tests
+      - name: tests (robot)
+        shell: bash -l {0}
+        run: doit test:robot
+
+      - name: upload coverage
         shell: bash -l {0}
         run: |
-          doit $DOIT_N_TEST test:robot
+          set -eux
+          cd py_packages/ipydrawio
+          codecov --root ../..
+          cd ../ipydrawio-export
+          codecov --root ../..
+          cd ../ipydrawio-mathjax
+          codecov --root ../..
 
-      - name: upload (atest lite)
+      - name: upload (atest)
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name:
-            ipydrawio ${{ github.run_number }} atest ${{ matrix.os }}${{
-            matrix.python-version }}
+          name: |-
+            ipydrawio-${{ github.run_number }}-atest-${{ matrix.os }}${{ matrix.python-version }}
           path: ./build/atest
 
       - name: upload (docs)
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name:
-            ipydrawio ${{ github.run_number }} docs ${{ matrix.os }}${{
-            matrix.python-version }}
+          name: |-
+            ipydrawio-${{ github.run_number }}-docs-${{ matrix.os }}-${{matrix.python-version }}
           path: ./build/docs

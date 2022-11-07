@@ -49,6 +49,8 @@ pip install ipydrawio[all]
       conda install -c conda-forge ipydrawio-export  # or...
       pip install ipydrawio ipydrawio-export
       ```
+- `ipydrawio-mathjax`
+  - include rich LaTeX and AsciiMath typesetting in diagrams
 
 > ⓡ: unavailable in RetroLab Ⓛ: unavailable in JupyterLite
 
@@ -130,7 +132,7 @@ browser, powered by [@jgraph/draw-image-export2], `puppeteer`, and `nodejs`.
 > For example to install all the dependencies:
 >
 > ```bash
-> conda install -yc conda-forge ipydrawio-export
+> conda install -yc conda-forge ipydrawio-export ipydrawio-mathjax
 > ```
 
 Once installed, you can use the in-browser tools _Export Diagram as PDF_ as well as the

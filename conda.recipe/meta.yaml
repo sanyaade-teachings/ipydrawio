@@ -1,4 +1,3 @@
-{% set name = "ipydrawio" %}
 {% set version = "1.2.2" %}
 
 {% set build_number = 0 %}
@@ -13,19 +12,24 @@ package:
   version: {{ version }}
 
 source:
-  - folder: {{ name }}-widgets
-    url: file://{{ url_base }}/{{ name }}-widgets-{{ version }}.tar.gz
-    # url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  - folder: ipydrawio-widgets
+    url: file://{{ url_base }}/ipydrawio-widgets-{{ version }}.tar.gz
+    # url: https://pypi.io/packages/source/{{ name[0] }}/ipydrawio/ipydrawio-{{ version }}.tar.gz
     # sha256:
 
-  - folder: {{ name }}
-    url: file://{{ url_base }}/{{ name }}-{{ version }}.tar.gz
-    # url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  - folder: ipydrawio
+    url: file://{{ url_base }}/ipydrawio-{{ version }}.tar.gz
+    # url: https://pypi.io/packages/source/{{ name[0] }}/ipydrawio/ipydrawio-{{ version }}.tar.gz
     # sha256:
 
-  - folder: {{ name }}-export
-    url: file://{{ url_base }}/{{ name }}-export-{{ version }}.tar.gz
-    # url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}-export/{{ name }}-export-{{ version }}.tar.gz
+  - folder: ipydrawio-mathjax
+    url: file://{{ url_base }}/ipydrawio-mathjax-{{ version }}.tar.gz
+    # url: https://pypi.io/packages/source/{{ name[0] }}/ipydrawio/ipydrawio-mathjax-{{ version }}.tar.gz
+    # sha256:
+
+  - folder: ipydrawio-export
+    url: file://{{ url_base }}/ipydrawio-export-{{ version }}.tar.gz
+    # url: https://pypi.io/packages/source/{{ name[0] }}/ipydrawio-export/ipydrawio-export-{{ version }}.tar.gz
     # sha256:
 
 build:
@@ -44,7 +48,7 @@ test:
     - echo "tests in outputs"
 
 outputs:
-  - name: {{ name }}-widgets
+  - name: ipydrawio-widgets
     version: {{ version }}
     build:
       number: {{ build_number }}
@@ -59,15 +63,16 @@ outputs:
         - ipywidgets >=7.6,<9
         - python >=3.7
     test:
+      source_files:
+        - ipydrawio-widgets/tests
       imports:
         - ipydrawio_widgets
       requires:
         - pip
-        - pytest-console-scripts
-        - pytest-cov
+        - pytest
       commands:
         - pip check
-        - pytest -vv --pyargs ipydrawio_widgets --cov=ipydrawio_widgets --cov-report=term-missing:skip-covered
+        - pytest -vv ipydrawio-widgets/tests
     about:
       home: https://github.com/deathbeds/ipydrawio
       summary: Draw.io Diagrams as Jupyter Widgets (kernel only)
@@ -88,18 +93,19 @@ outputs:
         - pip
         - python >=3.7
       run:
-        - ipydrawio-widgets =={{ version }}.*
+        - {{ pin_subpackage("ipydrawio-widgets", max_pin="x.x.x") }}
         - jupyterlab ==3.*
         - jupyterlab_widgets >=1
         - lxml
         - python >=3.7
     test:
+      source_files:
+        - ipydrawio/tests
       imports:
         - ipydrawio
       requires:
         - pip
         - pytest-console-scripts
-        - pytest-cov
         - m2-grep  # [win]
       commands:
         - pip check
@@ -110,17 +116,54 @@ outputs:
         - cat labextensions | grep -ie "@deathbeds/ipydrawio-webpack .*OK"
         - cat labextensions | grep -ie "@deathbeds/ipydrawio-notebook .*OK"
         - cat labextensions | grep -ie "@deathbeds/ipydrawio-jupyter-templates .*OK"
-        - pytest -vv --pyargs ipydrawio --cov=ipydrawio --cov-report=term-missing:skip-covered
+        - pytest -vv ipydrawio/tests
     about:
       home: https://github.com/deathbeds/ipydrawio
       summary: Draw.io Diagrams as Jupyter Widgets
       license: Apache-2.0
       license_file:
         - ipydrawio/LICENSE.txt
-        - ipydrawio/src/ipydrawio/ext/ipd/static/third-party-licenses.json
-        - ipydrawio/src/ipydrawio/ext/ipdnb/static/third-party-licenses.json
-        - ipydrawio/src/ipydrawio/ext/ipdwp/static/third-party-licenses.json
-        - ipydrawio/src/ipydrawio/ext/ipjt/static/third-party-licenses.json
+        - ipydrawio/_/ipydrawio/static/third-party-licenses.json
+        - ipydrawio/_/ipydrawio-notebook/static/third-party-licenses.json
+        - ipydrawio/_/ipydrawio-webpack/static/third-party-licenses.json
+        - ipydrawio/_/ipydrawio-jupyter-templates/static/third-party-licenses.json
+
+  - name: ipydrawio-mathjax
+    version: {{ version }}
+    build:
+      number: {{ build_number }}
+      noarch: python
+      script:
+        - cd ipydrawio-mathjax && {{ PYTHON }} -m pip install . -vv --no-deps
+    requirements:
+      host:
+        - pip
+        - python >=3.7
+      run:
+        - {{ pin_subpackage("ipydrawio", max_pin="x.x.x") }}
+        - python >=3.7
+    test:
+      source_files:
+        - ipydrawio-mathjax/tests
+      imports:
+        - ipydrawio_mathjax
+      requires:
+        - m2-grep  # [win]
+        - pip
+        - pytest
+      commands:
+        - pip check
+        - jupyter labextension list
+        - jupyter labextension list 1>labextensions 2>&1
+        - cat labextensions | grep -ie "@deathbeds/ipydrawio-mathjax .*OK"
+        - pytest -vv ipydrawio-mathjax/tests
+    about:
+      home: https://github.com/deathbeds/ipydrawio
+      summary: MathJax for ipydrawio
+      license: Apache-2.0
+      license_file:
+        - ipydrawio-mathjax/LICENSE.txt
+        - ipydrawio-mathjax/_/ipydrawio-mathjax/static/third-party-licenses.json
 
   - name: ipydrawio-export
     version: {{ version }}
@@ -136,7 +179,7 @@ outputs:
         - pip
         - python >=3.7
       run:
-        - ipydrawio =={{ version }}.*
+        - {{ pin_subpackage("ipydrawio", max_pin="x.x.x") }}
         - lxml
         - nodejs
         - pillow
@@ -144,12 +187,13 @@ outputs:
         - python >=3.7
         - requests_cache
     test:
+      source_files:
+        - ipydrawio-export/tests
       imports:
         - ipydrawio_export
       requires:
         - pip
         - pytest-console-scripts  # [unix]
-        - pytest-cov  # [unix]
         - pytest-tornasync  # [unix]
         - m2-grep  # [win]
       commands:
@@ -161,14 +205,14 @@ outputs:
         - jupyter serverextension list
         - jupyter serverextension list 1>serverextensions 2>&1
         - cat serverextensions | grep -ie "ipydrawio_export .*OK"
-        - pytest -vv --pyargs ipydrawio_export --script-launch-mode=subprocess --cov=ipydrawio_export --cov-report=term-missing:skip-covered  # [unix]
+        - pytest -vv --script-launch-mode=subprocess  ipydrawio-export/tests # [unix]
     about:
       home: https://github.com/deathbeds/ipydrawio
       summary: PDF export for IPyDrawio
       license: Apache-2.0
       license_file:
       - ipydrawio-export/LICENSE.txt
-      - ipydrawio-export/src/ipydrawio_export/ext/ipdpdf/static/third-party-licenses.json
+      - ipydrawio-export/_/ipydrawio-pdf/static/third-party-licenses.json
 
 about:
   home: https://github.com/deathbeds/ipydrawio

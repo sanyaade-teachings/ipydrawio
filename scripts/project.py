@@ -301,7 +301,7 @@ JS_SCHEMAS = {
     if (v.parent / "schema").exists()
 }
 
-# special things for ipydrawio-webpack
+# special things for ipydrawio-webpack and friends
 IPDWP = JS_PKG_JSON["ipydrawio-webpack"].parent
 IPDWP_APP = IPDWP / "dio/js/app.min.js"
 IPDWP_PY = (IPDWP / "scripts").rglob("*.py")
@@ -309,6 +309,10 @@ DRAWIO = IPDWP / "drawio"
 IPDWP_LIB = IPDWP / "lib"
 IPDWP_IGNORE = IPDWP / ".npmignore"
 ALL_IPDWP_JS = IPDWP_LIB.glob("*.js")
+
+IPDM_JS = JS_PKG_JSON["ipydrawio-mathjax"].parent
+IPDM_JS_LIB = IPDM_JS / "lib"
+ALL_IPDM_JS = IPDM_JS_LIB.glob("*.js")
 
 IPJT = JS_PKG_JSON["ipydrawio-jupyter-templates"].parent
 IPJT_TMPL = IPJT / "tmpl"
@@ -327,11 +331,13 @@ PY_VERSION = {
     "ipydrawio": JS_PKG_DATA["ipydrawio"]["version"],
     "ipydrawio-export": JS_PKG_DATA["ipydrawio-pdf"]["version"],
     "ipydrawio-widgets": JS_PKG_DATA["ipydrawio"]["version"],
+    "ipydrawio-mathjax": JS_PKG_DATA["ipydrawio-mathjax"]["version"],
 }
 
 IPD = PY_SETUP["ipydrawio"].parent
 IPDE = PY_SETUP["ipydrawio-export"].parent
 IPDW = PY_SETUP["ipydrawio-widgets"].parent
+IPDM = PY_SETUP["ipydrawio-mathjax"].parent
 
 IPDE_VENDOR = IPDE / "src/ipydrawio_export/vendor"
 IPDE_DIE2 = IPDE_VENDOR / "draw-image-export2"
@@ -344,15 +350,9 @@ IPDW_DEPS = {
     JS_PKG_JSON["ipydrawio"].parent / "schema/plugin.json": IPDW_SRC / "js/plugin.json",
 }
 
-IPD_VERSION = PY_VERSION["ipydrawio"]
-IPDW_VERSION = PY_VERSION["ipydrawio-widgets"]
-IPDE_VERSION = PY_VERSION["ipydrawio-export"]
+IPDM_STARTUP = JS_PKG_JSON["ipydrawio-mathjax"].parent / "dio/math/es5/startup.js"
 
-PY_HAS_EXT = {
-    IPD: True,
-    IPDE: True,
-    IPDW: False,
-}
+PY_HAS_EXT = {IPD: True, IPDE: True, IPDW: False, IPDM: True}
 
 SERVER_EXT = {
     k: sorted(v.parent.glob("src/*/serverextension.py"))[0]
@@ -376,24 +376,21 @@ PY_SETUP_DEPS = {
     IPD: lambda: [OK_PYSETUP["ipydrawio-widgets"]],
     IPDE: lambda: [OK_PYSETUP["ipydrawio"]],
     IPDW: lambda: [*IPDW_DEPS.values()],
+    IPDM: lambda: [OK_PYSETUP["ipydrawio"], IPDM_STARTUP],
 }
 
 PY_SDIST = {
-    IPDE.name: IPDE / "dist" / f"{IPDE.name}-{IPDE_VERSION}.tar.gz",
-    IPD.name: IPD / "dist" / f"{IPD.name}-{IPD_VERSION}.tar.gz",
-    IPDW.name: IPDW / "dist" / f"{IPDW.name}-{IPDW_VERSION}.tar.gz",
+    name: PY_PACKAGES / name / f"dist/{name}-{PY_VERSION[name]}.tar.gz"
+    for name, version in PY_VERSION.items()
 }
+
 PY_WHEEL = {
-    IPDE.name: IPDE
-    / "dist"
-    / f"""{IPDE.name.replace("-", "_")}-{IPDE_VERSION}-py3-none-any.whl""",
-    IPD.name: IPD
-    / "dist"
-    / f"""{IPD.name.replace("-", "_")}-{IPD_VERSION}-py3-none-any.whl""",
-    IPDW.name: IPDW
-    / "dist"
-    / f"""{IPDW.name.replace("-", "_")}-{IPDW_VERSION}-py3-none-any.whl""",
+    name: PY_PACKAGES
+    / name
+    / f"""dist/{name.replace("-", "_")}-{PY_VERSION[name]}-py3-none-any.whl"""
+    for name, version in PY_VERSION.items()
 }
+
 PY_TEST_DEP = {}
 
 # demo
@@ -515,7 +512,7 @@ ALL_JSON = [
     ],
 ]
 ALL_DIO = [*DOCS_DIO, *IPJT_TMPL_DIO, *ATEST_DIO]
-ALL_MD = [*ROOT.glob("*.md"), *PACKAGES.glob("*/*.md"), *DOCS_MD]
+ALL_MD = [*ROOT.glob("*.md"), *PACKAGES.glob("*/*.md"), *DOCS_MD, *GH.rglob("*.md")]
 ALL_SETUP_CFG = [SETUP_CFG, *PY_SETUP_CFG.values()]
 ALL_JS = [PACKAGES / ".eslintrc.js"]
 ALL_TS = sum(JS_TSSRC.values(), [])
@@ -562,11 +559,16 @@ RFLINT_OPTS = sum(
     ],
     [],
 )
+
+# drawio-derived
 JS_PKG_PACK[IPDWP.name][0] += [
     IPDWP_IGNORE,
     IPDWP_APP,
     *ALL_IPDWP_JS,
 ]
+
+JS_PKG_PACK[IPDM.name][0] += [IPDWP_IGNORE, IPDWP_APP, *ALL_IPDM_JS, IPDM_STARTUP]
+
 
 # provisioning stuff
 IPYDRAWIO_DATA_DIR = Path(sys.prefix) / "share/jupyter/ipydrawio_export"
@@ -862,7 +864,7 @@ def _copy_one(src, dest):
     if not src.exists():
         return False
     if not dest.parent.exists():
-        dest.parent.mkdir(parents=True)
+        dest.parent.mkdir(parents=True, exist_ok=True)
     if dest.exists():
         if dest.is_dir():
             shutil.rmtree(dest)
