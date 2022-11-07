@@ -166,7 +166,7 @@ def test_setup_cfg_version(path, upstream, version):
 @pytest.mark.parametrize(
     "path,py_count",
     [
-        [P.RECIPE, 8],
+        [P.RECIPE, 10],
         [P.ENV_BINDER, 1],
     ],
 )
