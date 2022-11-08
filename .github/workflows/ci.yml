@@ -332,6 +332,8 @@ jobs:
   docs:
     name: docs
     runs-on: ${{ matrix.os }}-latest
+    env:
+      ATEST_ARGS: '["--exclude","NOTapp:lite"]'
     strategy:
       fail-fast: false
       matrix:
