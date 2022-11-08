@@ -340,6 +340,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+        with:
+          submodules: recursive
 
       - name: cache (conda)
         uses: actions/cache@v3
@@ -379,9 +381,9 @@ jobs:
           use-only-tar-bz2: true
           use-mamba: true
 
-      - name: tests (unit)
+      - name: build
         shell: bash -l {0}
-        run: doit test:pytest:* || doit test:pytest:* || doit test:pytest:*
+        run: doit build
 
       - name: build docs
         shell: bash -l {0}
@@ -394,17 +396,6 @@ jobs:
       - name: tests (robot)
         shell: bash -l {0}
         run: doit test:robot
-
-      - name: upload coverage
-        shell: bash -l {0}
-        run: |
-          set -eux
-          cd py_packages/ipydrawio
-          codecov --root ../..
-          cd ../ipydrawio-export
-          codecov --root ../..
-          cd ../ipydrawio-mathjax
-          codecov --root ../..
 
       - name: upload (atest)
         if: always()

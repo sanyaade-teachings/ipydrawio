@@ -102,6 +102,7 @@ def task_env():
 
 def task_submodules():
     """ensure submodules are available"""
+
     subs = subprocess.check_output(["git", "submodule"]).decode("utf-8").splitlines()
 
     def _clean():
