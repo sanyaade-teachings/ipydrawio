@@ -1,6 +1,6 @@
 {
   "name": "@deathbeds/ipydrawio",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "A JupyterLab extension for embedding interactive drawio / mxgraph diagrams.",
   "license": "Apache-2.0",
   "author": "IPyDrawio Contributors",
@@ -21,7 +21,7 @@
   },
   "types": "lib/index.d.ts",
   "dependencies": {
-    "@deathbeds/ipydrawio-webpack": "^20.5.300",
+    "@deathbeds/ipydrawio-webpack": "^20.5.301",
     "@jupyterlab/application": "^3.1.0",
     "@jupyterlab/launcher": "^3.1.0",
     "@jupyterlab/mainmenu": "^3.1.0"

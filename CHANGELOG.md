@@ -2,6 +2,28 @@
 
 ## Unreleased
 
+### ipydrawio-widgets 1.2.3
+
+### ipydrawio 1.2.3
+
+#### @deathbeds/ipydrawio 1.2.3
+
+#### @deathbeds/ipydrawio-notebook 1.2.3
+
+#### @deathbeds/ipydrawio-webpack 20.5.301
+
+#### @deathbeds/ipydrawio-jupyter-templates 1.2.3
+
+### ipydrawio-export 1.2.3
+
+#### @deathbeds/ipydrawio-pdf 1.2.3
+
+### ipydrawio-mathjax 1.2.3
+
+#### @deathbeds/ipydrawio-mathjax 1.2.3
+
+## Releases
+
 ### ipydrawio-widgets 1.2.2
 
 ### ipydrawio 1.2.2
@@ -38,7 +60,7 @@
 
 [#106]: https://github.com/deathbeds/ipydrawio/pull/106
 
-## Releases
+---
 
 ### ipydrawio-widgets 1.2.1
 

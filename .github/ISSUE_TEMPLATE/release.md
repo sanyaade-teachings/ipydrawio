@@ -30,6 +30,10 @@ labels: maintenance
   - [ ] bump the `CACHE_EPOCH`
   - [ ] rebuild `yarn.lock`
   - [ ] update release procedures with lessons learned
+  - [ ] update the [discourse thread][discourse]
+
+[discourse]:
+  https://discourse.jupyter.org/t/ipydrawio-diagrams-in-jupyterlab-with-pages-layers-widgets-pdf-export
 
 <!--
 # Copyright 2022 ipydrawio contributors
