@@ -2,29 +2,37 @@
 
 ## Unreleased
 
-### ipydrawio-widgets 1.2.3
+### ipydrawio-widgets 1.3.0
 
-### ipydrawio 1.2.3
+- minimum supported python is now 3.8
 
-#### @deathbeds/ipydrawio 1.2.3
+### ipydrawio 1.3.0
 
-#### @deathbeds/ipydrawio-notebook 1.2.3
+- minimum supported python is now 3.8
+
+#### @deathbeds/ipydrawio 1.3.0
+
+#### @deathbeds/ipydrawio-notebook 1.3.0
 
 #### @deathbeds/ipydrawio-webpack 20.8.2400
 
 - updates to drawio v20.8.24
+  - includes mermmaidjs 10.0.0
 
-#### @deathbeds/ipydrawio-jupyter-templates 1.2.3
+#### @deathbeds/ipydrawio-jupyter-templates 1.3.0
 
-### ipydrawio-export 1.2.3
+### ipydrawio-export 1.3.0
 
+- minimum supported python is now 3.8
 - updates to draw-image-export2 v1.0.2
 
-#### @deathbeds/ipydrawio-pdf 1.2.3
+#### @deathbeds/ipydrawio-pdf 1.3.0
 
-### ipydrawio-mathjax 1.2.3
+### ipydrawio-mathjax 1.3.0
 
-#### @deathbeds/ipydrawio-mathjax 1.2.3
+- minimum supported python is now 3.8
+
+#### @deathbeds/ipydrawio-mathjax 1.3.0
 
 ## Releases
 

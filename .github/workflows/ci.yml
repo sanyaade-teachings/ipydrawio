@@ -238,9 +238,9 @@ jobs:
       fail-fast: false
       matrix:
         os: ['ubuntu', 'macos', 'windows']
-        python-version: ['3.7', '3.11']
+        python-version: ['3.8', '3.11']
         include:
-          - python-version: '3.7'
+          - python-version: '3.8'
             CI_ARTIFACT: 'sdist'
           - python-version: '3.11'
             CI_ARTIFACT: 'wheel'
@@ -272,9 +272,9 @@ jobs:
           use-mamba: true
 
       - name: tweak install (conda)
-        if: matrix.python-version == '3.7'
+        if: matrix.python-version == '3.8'
         shell: bash -l {0}
-        run: mamba env update -n test --file .github/environment-py37.yml
+        run: mamba env update -n test --file .github/environment-py38.yml
 
       - name: download (dist)
         uses: actions/download-artifact@v3

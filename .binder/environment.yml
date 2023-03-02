@@ -21,7 +21,7 @@ channels:
   - nodefaults
 
 dependencies:
-  - python >=3.7
+  - python >=3.8
   # demo toys
   - graphviz2drawio
   - jupyter-lsp-python-lsp-server
@@ -54,17 +54,16 @@ dependencies:
 
   - docutils >=0.18.1
   - jupyter-server-mathjax
-  - jupyterlab-myst
   - myst-nb
   - pkginfo
-  - pydata-sphinx-theme >=0.10.1,<0.11.0
+  - pydata-sphinx-theme >=0.13.0,<0.14.0
   - pytest-check-links
   - sphinx >=5,<6
   - sphinx-jsonschema
   - sphinxext-rediraffe
   - ssort
   - pip:
-      - jupyterlite ==0.1.0b14
+      - jupyterlite ==0.1.0b18
 
   ### ipydrawio-docs-deps ###
 
@@ -83,7 +82,7 @@ dependencies:
   - jupyterlab_widgets >=1
   - lxml
   - pillow
-  - pypdf2
+  - pypdf >=3.5
   - requests_cache
   # building
   - flit >=3.7.1

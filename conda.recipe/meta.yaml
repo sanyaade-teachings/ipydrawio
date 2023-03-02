@@ -39,9 +39,9 @@ build:
 requirements:
   host:
     - pip
-    - python >=3.7
+    - python >=3.8
   run:
-    - python >=3.7
+    - python >=3.8
 
 test:
   commands:
@@ -58,10 +58,10 @@ outputs:
     requirements:
       host:
         - pip
-        - python >=3.7
+        - python >=3.8
       run:
         - ipywidgets >=7.6,<9
-        - python >=3.7
+        - python >=3.8
     test:
       source_files:
         - ipydrawio-widgets/tests
@@ -91,13 +91,13 @@ outputs:
     requirements:
       host:
         - pip
-        - python >=3.7
+        - python >=3.8
       run:
         - {{ pin_subpackage("ipydrawio-widgets", max_pin="x.x.x") }}
         - jupyterlab ==3.*
         - jupyterlab_widgets >=1
         - lxml
-        - python >=3.7
+        - python >=3.8
     test:
       source_files:
         - ipydrawio/tests
@@ -138,10 +138,10 @@ outputs:
     requirements:
       host:
         - pip
-        - python >=3.7
+        - python >=3.8
       run:
         - {{ pin_subpackage("ipydrawio", max_pin="x.x.x") }}
-        - python >=3.7
+        - python >=3.8
     test:
       source_files:
         - ipydrawio-mathjax/tests
@@ -177,14 +177,14 @@ outputs:
     requirements:
       host:
         - pip
-        - python >=3.7
+        - python >=3.8
       run:
         - {{ pin_subpackage("ipydrawio", max_pin="x.x.x") }}
         - lxml
         - nodejs
         - pillow
-        - pypdf2
-        - python >=3.7
+        - pypdf2 >=3.5
+        - python >=3.8
         - requests_cache
     test:
       source_files:

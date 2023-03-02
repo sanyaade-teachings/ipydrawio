@@ -11,7 +11,7 @@ lxml
 pillow
 pip
 pyflakes
-pypdf2
+pypdf
 pytest
 pyyaml
 requests
