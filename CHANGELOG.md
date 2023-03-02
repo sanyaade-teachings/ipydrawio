@@ -10,11 +10,15 @@
 
 #### @deathbeds/ipydrawio-notebook 1.2.3
 
-#### @deathbeds/ipydrawio-webpack 20.5.301
+#### @deathbeds/ipydrawio-webpack 20.8.2400
+
+- updates to drawio v20.8.24
 
 #### @deathbeds/ipydrawio-jupyter-templates 1.2.3
 
 ### ipydrawio-export 1.2.3
+
+- updates to draw-image-export2 v1.0.2
 
 #### @deathbeds/ipydrawio-pdf 1.2.3
 
