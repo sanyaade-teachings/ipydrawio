@@ -12,5 +12,20 @@
     "@deathbeds/ipydrawio-notebook": "file:../ipydrawio-notebook",
     "@deathbeds/ipydrawio-pdf": "file:../ipydrawio-pdf",
     "@deathbeds/ipydrawio-webpack": "file:../ipydrawio-webpack"
+  },
+  "scripts_doit": {
+    "build": {
+      "file_dep": [
+        "../*/src/**/*.ts",
+        "../*/src/tsconfig.json",
+        "../*/style/**/*.*",
+        "../*/tsconfig.json",
+        "../tsconfigbase.json"
+      ],
+      "targets": [
+        ".root.tsbuildinfo",
+        ".src.tsbuildinfo"
+      ]
+    }
   }
 }

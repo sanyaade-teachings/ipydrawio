@@ -21,7 +21,8 @@
     "@jupyterlab/application": "^3.1.0"
   },
   "devDependencies": {
-    "@jupyterlab/builder": "^3.5.0"
+    "@jupyterlab/builder": "^3.6.1",
+    "copy-webpack-plugin": "^11.0.0"
   },
   "keywords": [
     "drawio",
@@ -41,6 +42,18 @@
           "conda"
         ]
       }
+    }
+  },
+  "scripts_doit": {
+    "build:pre": {
+      "file_dep": [
+        ".npmignore",
+        "scripts/*.py"
+      ],
+      "targets": [
+        "lib/_static.js",
+        "../ipydrawio-mathjax/dio/math/es5/startup.js"
+      ]
     }
   }
 }

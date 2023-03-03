@@ -34,6 +34,7 @@ HEADER = """
     This file generated from https://github.com/jgraph/drawio
 */
 """
+
 TMPL = """
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio{}';
 """

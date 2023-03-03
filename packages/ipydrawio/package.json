@@ -21,21 +21,16 @@
   },
   "types": "lib/index.d.ts",
   "dependencies": {
-    "@deathbeds/ipydrawio-webpack": "^20.8.24",
+    "@deathbeds/ipydrawio-webpack": "^20.8.2400",
     "@jupyterlab/application": "^3.1.0",
     "@jupyterlab/launcher": "^3.1.0",
     "@jupyterlab/mainmenu": "^3.1.0"
-  },
-  "peerDependencies": {
-    "@jupyter-widgets/base": "^4.0.0 || ^6.0.0",
-    "@jupyter-widgets/controls": "^3.0.0 || ^5.0.0",
-    "@jupyter-widgets/jupyterlab-manager": "^3.0.0 || ^5.0.0"
   },
   "devDependencies": {
     "@jupyter-widgets/base": "^4.0.0 || ^6.0.0",
     "@jupyter-widgets/controls": "^3.0.0 || ^5.0.0",
     "@jupyter-widgets/jupyterlab-manager": "^3.0.0 || ^5.0.0",
-    "@jupyterlab/builder": "^3.5.0"
+    "@jupyterlab/builder": "^3.6.1"
   },
   "keywords": [
     "jupyter",
@@ -71,6 +66,17 @@
           "conda"
         ]
       }
+    }
+  },
+  "scripts_doit": {
+    "build:pre": {
+      "file_dep": [
+        "scripts/schema.py",
+        "schema/*.json"
+      ],
+      "targets": [
+        "src/_schema.d.ts"
+      ]
     }
   }
 }

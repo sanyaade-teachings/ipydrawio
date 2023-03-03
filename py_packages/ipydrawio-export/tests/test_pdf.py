@@ -15,7 +15,7 @@
 # limitations under the License.
 
 import pytest
-from PyPDF2 import PdfFileReader
+from pypdf import PdfFileReader
 
 
 @pytest.mark.parametrize("attach_xml", [0, 1])

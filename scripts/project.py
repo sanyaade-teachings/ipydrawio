@@ -192,8 +192,7 @@ NPM = (
     or shutil.which("npm.bat")
 )
 JLPM = ["jlpm"]
-LERNA = [*JLPM, "lerna"]
-JLPM_INSTALL = [*JLPM, "--ignore-optional", "--prefer-offline"]
+JLPM_INSTALL = [*JLPM, "--prefer-offline", "--ignore-optional"]
 LAB_EXT = ["jupyter", "labextension"]
 LAB = ["jupyter", "lab"]
 PRETTIER = [str(NODE_MODULES / ".bin" / "prettier")]
@@ -211,6 +210,7 @@ ATEST_TEMPLATES = [*ATEST.rglob("*.robot.j2")]
 
 # js packages
 JS_NS = "deathbeds"
+JS_META = PACKAGES / "_meta"
 IPYDIO = PACKAGES / "ipydrawio"
 TSCONFIGBASE = PACKAGES / "tsconfigbase.json"
 TSCONFIG_TYPEDOC = PACKAGES / "tsconfig.typedoc.json"
@@ -1012,6 +1012,63 @@ def build_one_flit(py_pkg):
             shutil.copytree(py_pkg, py_tmp)
             subprocess.call(args, cwd=str(py_tmp))
             shutil.copytree(py_tmp / "dist", py_dist)
+
+
+def _maybe_expand_globs(paths, parent):
+    for path in paths:
+        if "*" in path:
+            for globbed in sorted(parent.glob(path)):
+                if globbed.is_dir():
+                    continue
+                yield globbed.resolve()
+        else:
+            yield (parent / path).resolve()
+
+
+def _merge_one_task(task, partial_task, parent=None):
+    for field, info in partial_task.items():
+        if parent and field in ["file_dep", "targets"]:
+            info = sorted(_maybe_expand_globs(info, parent))
+        if field not in task:
+            task[field] = info
+        else:
+            task[field] += info
+    return task
+
+
+def _make_one_js_task(script, data, pkg_json, **task_info):
+    from doit.tools import CmdAction
+
+    name = f"""js:{script}:{pkg_json.parent.name}"""
+    task = dict(
+        name=name,
+        actions=[CmdAction([*JLPM, script], cwd=pkg_json.parent, shell=False)],
+        file_dep=[YARN_INTEGRITY, pkg_json],
+    )
+
+    _merge_one_task(task, data.get("scripts_doit", {}).get(script, {}), pkg_json.parent)
+    _merge_one_task(task, task_info)
+    yield task
+
+
+def package_json_tasks(task_prefix: str, script: str, target: Path, **task_info):
+    """Emulate lerna behavior."""
+    task_dep = []
+
+    for pkg, pkg_json in JS_PKG_JSON.items():
+        data = JS_PKG_DATA[pkg]
+        if script not in data.get("scripts", {}):
+            continue
+        for task in _make_one_js_task(script, data, pkg_json, **task_info):
+            task_dep += [f"""{task_prefix}:{task["name"]}"""]
+            yield task
+
+    if task_dep:
+        task = _ok(
+            dict(name=f"js:{script}", task_dep=task_dep, actions=[lambda: True]), target
+        )
+        _merge_one_task(task, task_info)
+        yield task
 
 
 # Late environment hacks

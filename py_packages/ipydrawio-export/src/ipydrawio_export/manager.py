@@ -32,20 +32,12 @@ from pathlib import Path
 import lxml.etree as E
 from jupyterlab.commands import get_app_dir
 from PIL import Image
+from pypdf import PdfMerger, PdfReader, PdfWriter
 from requests import Session
 from requests_cache import CachedSession
 from tornado.concurrent import run_on_executor
 from traitlets import Bool, Dict, Instance, Int, Unicode, default
 from traitlets.config import LoggingConfigurable
-
-try:
-    from PyPDF2 import PdfMerger, PdfReader, PdfWriter
-except ImportError:  # pragma: no cover
-    from PyPDF2 import (
-        PdfFileMerger as PdfMerger,
-        PdfFileReader as PdfReader,
-        PdfFileWriter as PdfWriter,
-    )
 
 from .constants import (
     DRAWIO_APP,
@@ -372,7 +364,7 @@ class IPyDrawioExportManager(LoggingConfigurable):
                 self.drawio_export_app,
             )
             subprocess.check_call(
-                [str(JLPM), "--silent", "--ignore-optional"],
+                [str(JLPM), "--silent"],
                 cwd=str(self.drawio_export_app),
             )
         self.is_provisioning = False

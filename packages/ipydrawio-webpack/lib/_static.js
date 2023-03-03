@@ -1949,6 +1949,7 @@ import '!!file-loader?name=[path][name].[ext]&context=.!../dio/plugins/explore.j
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/plugins/flow.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/plugins/googledrive.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/plugins/import.js';
+import '!!file-loader?name=[path][name].[ext]&context=.!../dio/plugins/nextcloud.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/plugins/number.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/plugins/p1.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/plugins/page.js';
@@ -2078,13 +2079,10 @@ import '!!file-loader?name=[path][name].[ext]&context=.!../dio/styles/dark-defau
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/styles/dark.css';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/styles/default-old.xml';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/styles/default.xml';
-import '!!file-loader?name=[path][name].[ext]&context=.!../dio/styles/down.gif';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/styles/fonts/ArchitectsDaughter-Regular.ttf';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/styles/grapheditor.css';
-import '!!file-loader?name=[path][name].[ext]&context=.!../dio/styles/sprites.png';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/styles/thumb_horz.png';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/styles/thumb_vertical.png';
-import '!!file-loader?name=[path][name].[ext]&context=.!../dio/styles/up.gif';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/templates/LICENSE';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/templates/basic/classes.png';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/templates/basic/classes.xml';

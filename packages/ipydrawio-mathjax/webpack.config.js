@@ -12,16 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+const CopyPlugin = require('copy-webpack-plugin');
+
 module.exports = {
   optimization: {
     minimize: false,
   },
-  module: {
-    rules: [
-      {
-        test: /dio\/.*/,
-        type: 'asset/resource',
-      },
-    ],
-  },
+  plugins: [new CopyPlugin({ patterns: [{ from: 'dio/**/*', to: '.'}] })],
 };

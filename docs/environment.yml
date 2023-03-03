@@ -44,7 +44,7 @@ dependencies:
 
   # core
   - doit
-  - nodejs >=16,<17
+  - nodejs >=18,<19
   - python # this gets patched in ci
   # run
   - ipywidgets >=7.6,<9

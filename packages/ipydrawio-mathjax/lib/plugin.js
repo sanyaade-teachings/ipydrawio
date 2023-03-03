@@ -12,14 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-let DEBUG = false;
-
 const plugin = {
   id: '@deathbeds/ipydrawio-mathjax:plugin',
   activate: async () => {
-    if (DEBUG) {
-      await import('./_static');
-    }
+    //
   },
   autoStart: true,
 };

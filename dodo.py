@@ -33,6 +33,7 @@ import os
 import shutil
 import subprocess
 import time
+from collections import defaultdict
 from hashlib import sha256
 
 import doit
@@ -127,8 +128,7 @@ def task_setup():
             file_dep=[P.PACKAGE, P.OK_SUBMODULES]
             + ([P.YARN_LOCK] if P.YARN_LOCK.exists() else []),
             actions=[
-                [*P.JLPM, "--ignore-optional", "--prefer-offline"],
-                [*P.LERNA, "bootstrap"],
+                [*P.JLPM, "--prefer-offline", "--ignore-optional"],
             ],
             targets=[P.YARN_INTEGRITY],
         )
@@ -140,7 +140,7 @@ def task_setup():
             targets=[P.IPDE_DIE2_YARN_LOCK],
             actions=[
                 CmdAction(
-                    [*P.JLPM, "--ignore-optional", "--prefer-offline"],
+                    [*P.JLPM, "--prefer-offline", "--ignore-optional"],
                     shell=False,
                     cwd=P.IPDE_DIE2,
                 ),
@@ -331,25 +331,29 @@ def task_lint():
             P.OK_PRETTIER,
         )
     else:
+        pretty_parents = defaultdict(list)
+        [pretty_parents[p.parent.relative_to(P.ROOT)].append(p) for p in P.ALL_PRETTIER]
         pretty_tasks = []
+
         for path in P.ALL_PRETTIER:
-            name = f"prettier:{path.relative_to(P.ROOT)}"
+            if path.name != "package.json":
+                continue
+            pretty_name = f"prettier:package.json:{path.parent.relative_to(P.ROOT)}"
+            pretty_tasks += [f"lint:{pretty_name}"]
+            yield dict(
+                name=pretty_name,
+                file_dep=[path, P.YARN_INTEGRITY],
+                actions=[["jlpm", "prettier-package-json", "--write", path]],
+            )
+
+        for parent, paths in pretty_parents.items():
+            name = f"prettier:{parent}"
             pretty_tasks += [f"lint:{name}"]
-            task_dep = []
-            if path.name == "package.json":
-                pretty_name = f"prettier:package.json:{path.parent.relative_to(P.ROOT)}"
-                task_dep += [f"lint:{pretty_name}"]
-                yield dict(
-                    name=pretty_name,
-                    file_dep=[path, P.YARN_INTEGRITY],
-                    actions=[["jlpm", "prettier-package-json", "--write", path]],
-                )
 
             yield dict(
                 name=name,
-                task_dep=task_dep,
-                file_dep=[P.YARN_INTEGRITY, path],
-                actions=[[*prettier_args, path]],
+                file_dep=[P.YARN_INTEGRITY, *paths],
+                actions=[[*prettier_args, *paths]],
             )
 
         yield P._ok(
@@ -447,30 +451,12 @@ def task_build():
     if P.TESTING_IN_CI:
         return
 
-    yield P._ok(
-        dict(
-            name="js:pre",
-            file_dep=[
-                P.YARN_INTEGRITY,
-                P.IPDWP_IGNORE,
-                P.OK_SUBMODULES,
-                *sum(P.JS_PY_SCRIPTS.values(), []),
-                *sum(P.JS_SCHEMAS.values(), []),
-            ],
-            actions=[[*P.LERNA, "run", "build:pre", "--stream"]],
-            targets=[P.IPDWP_APP, P.IPDM_STARTUP],
-        ),
-        P.OK_JS_BUILD_PRE,
+    yield from P.package_json_tasks(
+        "build", "build:pre", P.OK_JS_BUILD_PRE, file_dep=[P.OK_SUBMODULES]
     )
 
-    yield P._ok(
-        dict(
-            name="js",
-            file_dep=[P.YARN_INTEGRITY, P.OK_JS_BUILD_PRE, *P.ALL_TS, *P.ALL_SRC_CSS],
-            actions=[[*P.LERNA, "run", "build", "--stream"]],
-            targets=sorted(P.JS_TSBUILDINFO.values()),
-        ),
-        P.OK_JS_BUILD,
+    yield from P.package_json_tasks(
+        "build", "build", P.OK_JS_BUILD, file_dep=[P.OK_JS_BUILD_PRE]
     )
 
     yield dict(
@@ -488,7 +474,7 @@ def task_build():
     for pkg, (file_dep, targets) in P.JS_PKG_PACK.items():
         yield dict(
             name=f"pack:{pkg}",
-            file_dep=file_dep,
+            file_dep=[*file_dep, *P.JS_TSBUILDINFO.values()],
             actions=[
                 CmdAction([P.NPM, "pack", "."], cwd=str(targets[0].parent), shell=False)
             ],
@@ -680,7 +666,7 @@ def _make_lab(watch=False):
     def _lab():
         if watch:
             print(">>> Starting typescript watcher...", flush=True)
-            ts = subprocess.Popen([*P.LERNA, "run", "watch"])
+            ts = subprocess.Popen(["jlpm", "run", "watch"], cwd=P.JS_META)
 
             ext_watchers = [
                 subprocess.Popen([*P.LAB_EXT, "watch", "."], cwd=str(p.parent))
