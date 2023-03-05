@@ -58,6 +58,7 @@ dependencies:
   - pkginfo
   - pydata-sphinx-theme >=0.13.0,<0.14.0
   - pytest-check-links
+  - python-libarchive-c
   - sphinx >=5,<6
   - sphinx-jsonschema
   - sphinxext-rediraffe
