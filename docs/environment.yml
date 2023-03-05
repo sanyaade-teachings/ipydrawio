@@ -72,6 +72,7 @@ dependencies:
   - pytest
   - pytest-console-scripts
   - pytest-html
+  - pytest-jupyter-server
   - pytest-tornasync
   - pytest-xdist
   # acceptance testing
