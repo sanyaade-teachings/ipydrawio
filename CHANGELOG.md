@@ -16,15 +16,17 @@
 
 #### @deathbeds/ipydrawio-webpack 21.0.200
 
-- updates to drawio v21.0.2
-  - includes mermmaidjs 10.0.0
+- updates to [drawio v21.0.2](https://github.com/jgraph/drawio/releases/tag/v21.0.2)
+  - includes
+    [mermaidjs 10.0.0](https://github.com/mermaid-js/mermaid/releases/tag/v10.0.0)
 
 #### @deathbeds/ipydrawio-jupyter-templates 1.3.0
 
 ### ipydrawio-export 1.3.0
 
 - minimum supported python is now 3.8
-- updates to draw-image-export2 v1.0.2
+- updates to
+  [draw-image-export2 v1.0.2](https://github.com/jgraph/draw-image-export2/releases/tag/v1.0.2)
 
 #### @deathbeds/ipydrawio-pdf 1.3.0
 
