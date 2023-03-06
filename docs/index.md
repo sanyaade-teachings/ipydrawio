@@ -14,9 +14,17 @@ Install `ipydrawio` (and optionally `ipydrawio-export`) with `pip`, `mamba`, or 
 
 ```bash
 pip install ipydrawio[all]
-# or
+```
+
+or...
+
+```bash
 mamba install -c conda-forge ipydrawio  # ipydrawio-export
-# or
+```
+
+or...
+
+```bash
 conda install -c conda-forge ipydrawio  # ipydrawio-export
 ```
 

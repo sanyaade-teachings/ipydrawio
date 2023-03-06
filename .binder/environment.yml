@@ -52,6 +52,7 @@ dependencies:
   ############################################################################
   ### ipydrawio-docs-deps ###
 
+  - autodoc-traits
   - docutils >=0.18.1
   - jupyter-server-mathjax
   - myst-nb
@@ -60,6 +61,7 @@ dependencies:
   - pytest-check-links
   - python-libarchive-c
   - sphinx >=5,<6
+  - sphinx-copybutton
   - sphinx-jsonschema
   - sphinxext-rediraffe
   - ssort

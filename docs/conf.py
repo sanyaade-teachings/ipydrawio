@@ -18,15 +18,12 @@ import json
 import os
 import re
 import subprocess
-import sys
 from pathlib import Path
 
 from sphinx.application import Sphinx
 
 HERE = Path(__file__).parent
 RTD = json.loads(os.environ.get("READTHEDOCS", "False").lower())
-
-sys.path += [str(HERE / "vendor")]
 
 ROOT = HERE.parent
 APP_PKG = ROOT / "packages/ipydrawio/package.json"
@@ -57,6 +54,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.autosectionlabel",
     "sphinx.ext.autodoc",
+    "sphinx_copybutton",
     # for routing
     "sphinxext.rediraffe",
     "sphinx-jsonschema",
