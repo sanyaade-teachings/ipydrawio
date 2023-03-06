@@ -183,7 +183,7 @@ outputs:
         - lxml
         - nodejs
         - pillow
-        - pypdf2 >=3.5
+        - pypdf >=3.5
         - python >=3.8
         - requests_cache
     test:
