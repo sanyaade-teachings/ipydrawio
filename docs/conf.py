@@ -99,7 +99,17 @@ html_theme_options = {
     "github_url": APP_DATA["repository"]["url"],
     "use_edit_page_button": True,
     # "navbar_start": ["navbar-logo.html", "launch.html"],
+    "icon_links": [
+        {
+            "name": "PyPI",
+            "url": "https://pypi.org/project/ipydrawio",
+            "icon": "fa-solid fa-box",
+        },
+    ],
+    "pygment_light_style": "gotthard-light",
+    "pygment_dark_style": "gotthard-dark",
 }
+
 html_sidebars = {
     "**": [
         "demo.html",
