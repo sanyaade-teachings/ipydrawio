@@ -1074,6 +1074,8 @@ def package_json_tasks(task_prefix: str, script: str, target: Path, **task_info)
 # Late environment hacks
 os.environ.update(
     CONDARC=str(CONDARC),
-    IPYDRAWIO_DATA_DIR=str(IPYDRAWIO_DATA_DIR),
     PIP_DISABLE_PIP_VERSION_CHECK="1",
+    JUPYTER_PLATFORM_DIRS="1",
+    PYDEVD_DISABLE_FILE_VALIDATION="1",
+    IPYDRAWIO_DATA_DIR=str(IPYDRAWIO_DATA_DIR),
 )
