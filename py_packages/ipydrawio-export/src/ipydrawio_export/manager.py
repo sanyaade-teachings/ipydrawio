@@ -74,6 +74,7 @@ class IPyDrawioExportManager(LoggingConfigurable):
     is_provisioning = Bool(False)
     is_starting = Bool(False)
     init_wait_sec = Int(2).tag(config=True)
+    export_retries = Int(5).tag(config=True)
     _server = Instance(subprocess.Popen, allow_none=True)
     _session = Instance(Session)
 
@@ -89,45 +90,55 @@ class IPyDrawioExportManager(LoggingConfigurable):
         """
         data = dict(pdf_request)
         data.update(**self.core_params)
-        status_code = None
-        pdf_text = None
-        res = None
 
-        retries = 3
+        retries = self.export_retries
+        status_code = None
+        res = None
+        pdf_text = None
 
         while retries:
-            status_code = None
-
             if self._server.returncode is not None:  # pragma: no cover
                 self.start_server()
                 time.sleep(self.init_wait_sec)
             try:
-                self.log.warning(f"[ipydrawio-export] exporting ({retries} retries)...")
+                self.log.warning(
+                    "[ipydrawio-export] exporting (%s retries remaining)...", retries
+                )
                 res = self._session.post(self.url, timeout=None, data=data)
                 pdf_text = res.text
+                pdf_text_len = len(res.text)
                 status_code = res.status_code
+                self.log.info(
+                    "[ipydrawio-export] ... %s response: %s bytes",
+                    status_code,
+                    pdf_text_len,
+                )
             except Exception as err:  # pragma: no cover
                 self.log.warning(f"[ipydrawio-export] Pre-HTTP Error: {err}")
-                time.sleep((3 - retries) * self.init_wait_sec)
+                time.sleep((self.export_retries - retries) * self.init_wait_sec)
 
             if status_code is not None:
                 if status_code <= 400:
                     break
-                elif res:  # pragma: no cover
+
+                if res:  # pragma: no cover
                     self.log.warning(
                         f"[ipydrawio-export] HTTP {res.status_code}: {res.text}"
                     )
-                else:  # pragma: no cover
-                    self.log.warning("[ipydrawio-export] retrying...")
+
+                status_code = None
+                res = None
+                pdf_text = None
+
+                self.log.warning(
+                    "[ipydrawio-export] retrying, %s remaining...", retries
+                )
 
             retries -= 1  # pragma: no cover
 
-        if res:
-            self.log.debug(f"[ipydrawio-export] {len(res.text)} bytes")
-
         if pdf_text and self.attach_xml and self.attachments:
             self.log.info(
-                f"[ipydrawio-export] attaching drawio XML as {self.attachment_name}"
+                "[ipydrawio-export] attaching drawio XML as %s", self.attachment_name
             )
             with tempfile.TemporaryDirectory() as td:
                 tdp = Path(td)
