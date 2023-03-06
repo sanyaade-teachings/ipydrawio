@@ -27,6 +27,7 @@ def test_export_empty(tmp_path, export_app, any_diagram, attach_xml):
     export_app.start()
 
     out = tmp_path / f"{any_diagram.stem}.pdf"
+    assert out.exists(), f"{out} was not created"
     reader = PdfReader(str(out), "rb")
     assert len(reader.pages) == 1
 
