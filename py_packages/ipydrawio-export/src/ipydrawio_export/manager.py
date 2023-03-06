@@ -422,4 +422,4 @@ class IPyDrawioExportManager(LoggingConfigurable):
         for i, name in enumerate(attachments, 1):
             if not isinstance(name, str):
                 continue
-            yield name, attachments[i].getObject()["/EF"]["/F"].getData()
+            yield name, attachments[i].get_object()["/EF"]["/F"].get_data()

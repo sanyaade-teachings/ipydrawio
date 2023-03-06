@@ -15,7 +15,7 @@
 # limitations under the License.
 
 import pytest
-from pypdf import PdfFileReader
+from pypdf import PdfReader
 
 
 @pytest.mark.parametrize("attach_xml", [0, 1])
@@ -27,8 +27,8 @@ def test_export_empty(tmp_path, export_app, any_diagram, attach_xml):
     export_app.start()
 
     out = tmp_path / f"{any_diagram.stem}.pdf"
-    reader = PdfFileReader(str(out), "rb")
-    assert reader.getNumPages() == 1
+    reader = PdfReader(str(out), "rb")
+    assert len(reader.pages) == 1
 
     attachments = sorted(manager.attachments(out))
     assert len(attachments) == attach_xml
@@ -45,8 +45,8 @@ def test_export_merged(tmp_path, export_app, empty_dio, svg, png, ipynb, attach_
     out = tmp_path / f"{empty_dio.stem}.pdf"
     assert out.exists(), f"{out} was not created"
 
-    reader = PdfFileReader(str(out), "rb")
-    assert reader.getNumPages() == 4, "unexpected number of pages"
+    reader = PdfReader(str(out), "rb")
+    assert len(reader.pages) == 4, "unexpected number of pages"
 
     attachments = sorted(manager.attachments(out))
     assert len(attachments) == attach_xml, "unexpected attachment status"
