@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
+
 from ipydrawio.constants import IPYNB_METADATA
 
 # the header to look for in PNG metadata
@@ -38,3 +40,7 @@ __all__ = [
     "ENV_IPYDRAWIO_DATA_DIR",
     "WORK_DIR",
 ]
+
+PUPPETEER_CACHE_DIR_ENV_VAR = "IPYDRAWIO_PUPPETEER_CACHE_DIR"
+PUPPETEER_CACHE_DIR = os.environ.get(PUPPETEER_CACHE_DIR_ENV_VAR)
+PUPPETEER_INSTALL = "install.js"

@@ -44,6 +44,8 @@ from .constants import (
     ENV_IPYDRAWIO_DATA_DIR,
     ENV_JUPYTER_DATA_DIR,
     PNG_DRAWIO_INFO,
+    PUPPETEER_CACHE_DIR,
+    PUPPETEER_INSTALL,
     WORK_DIR,
 )
 
@@ -133,11 +135,11 @@ class IPyDrawioExportManager(LoggingConfigurable):
                 output_pdf.write_bytes(b64decode(pdf_text))
                 final_pdf = tdp / "final.pdf"
                 final = PdfWriter()
-                final.appendPagesFromReader(PdfReader(str(output_pdf), "rb"))
+                final.append_pages_from_reader(PdfReader(str(output_pdf), "rb"))
                 xml = pdf_request["xml"]
                 if hasattr(xml, "encode"):
                     xml = xml.encode("utf-8")
-                final.addAttachment(self.attachment_name, xml)
+                final.add_attachment(self.attachment_name, xml)
                 with final_pdf.open("wb") as fpt:
                     final.write(fpt)
 
@@ -169,9 +171,11 @@ class IPyDrawioExportManager(LoggingConfigurable):
             merger.write(str(output_pdf))
             composite_xml = E.tostring(tree).decode("utf-8")
             final = PdfWriter()
-            final.appendPagesFromReader(PdfReader(str(output_pdf), "rb"))
+            final.append_pages_from_reader(PdfReader(str(output_pdf), "rb"))
             if self.attach_xml:
-                final.addAttachment(self.attachment_name, composite_xml.encode("utf-8"))
+                final.add_attachment(
+                    self.attachment_name, composite_xml.encode("utf-8")
+                )
             with final_pdf.open("wb") as fpt:
                 final.write(fpt)
             return b64encode(final_pdf.read_bytes()).decode("utf-8")
@@ -338,12 +342,26 @@ class IPyDrawioExportManager(LoggingConfigurable):
         return self.drawio_export_app / "node_modules"
 
     @property
+    def drawio_export_chromium(self):
+        return (
+            self.drawio_export_app / ".chromium"
+            if PUPPETEER_CACHE_DIR is None
+            else Path(PUPPETEER_CACHE_DIR)
+        )
+
+    @property
+    def drawio_export_puppeteer(self):
+        return self.drawio_export_node_modules / "puppeteer"
+
+    @property
     def drawio_export_integrity(self):
         return self.drawio_export_node_modules / ".yarn-integrity"
 
     @run_on_executor
     def provision(self, force=False):  # pragma: no cover
         self.is_provisioning = True
+        env = dict(**os.environ)
+        env["PUPPETEER_CACHE_DIR"] = str(self.drawio_export_chromium)
         if not self.drawio_export_app.exists():
             if not self.drawio_export_app.parent.exists():
                 self.drawio_export_app.parent.mkdir(parents=True)
@@ -364,8 +382,20 @@ class IPyDrawioExportManager(LoggingConfigurable):
                 self.drawio_export_app,
             )
             subprocess.check_call(
-                [str(JLPM), "--silent"],
+                [str(JLPM), "--silent", "--ignore-scripts", "--no-optional"],
                 cwd=str(self.drawio_export_app),
+                env=env,
+            )
+
+        if not self.drawio_export_chromium.exists() or force:
+            self.log.info(
+                "[ipydrawio-export] installing puppeteer %s",
+                self.drawio_export_chromium,
+            )
+            subprocess.check_call(
+                [str(NODE), PUPPETEER_INSTALL],
+                cwd=str(self.drawio_export_puppeteer),
+                env=env,
             )
         self.is_provisioning = False
 
