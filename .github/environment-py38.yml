@@ -21,7 +21,5 @@ channels:
   - nodefaults
 
 dependencies:
-  # for flake8, sigh
-  - importlib-metadata <4.3
   # for legacy ipywidgets
   - ipywidgets <8
