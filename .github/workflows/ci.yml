@@ -35,7 +35,7 @@ env:
 
   # our stuff
   ATEST_RETRIES: '3'
-  CACHE_EPOCH: '4'
+  CACHE_EPOCH: '5'
   CONDA_BUILDERER: mambabuild
 
 jobs:
@@ -147,15 +147,6 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
 
-      - name: cache (conda)
-        uses: actions/cache@v3
-        with:
-          path: ~/conda_pkgs_dir
-          key: |
-            ${{ env.CACHE_EPOCH }}-${{ runner.os }}-conda-build-${{ hashFiles('.github/environment-conda-build.yml') }}
-          restore-keys: |
-            ${{ env.CACHE_EPOCH }}-${{ runner.os }}-conda-build-
-
       - name: install (conda)
         uses: conda-incubator/setup-miniconda@v2
         with:
@@ -179,6 +170,10 @@ jobs:
           name: ipydrawio-${{ github.run_number }}-conda
           path: ./build/conda-bld
 
+      - name: Rename uncached conda packages
+        shell: bash
+        run: mv "${CONDA_PKGS_DIR}" "${CONDA_PKGS_DIR}_do_not_cache"
+
   conda-test:
     needs: [conda-build]
     runs-on: ${{ matrix.os }}-latest
@@ -192,15 +187,6 @@ jobs:
 
       - name: checkout
         uses: actions/checkout@v3
-
-      - name: cache (conda)
-        uses: actions/cache@v3
-        with:
-          path: ~/conda_pkgs_dir
-          key: |
-            ${{ env.CACHE_EPOCH }}-${{ runner.os }}-conda-build-${{ hashFiles('.github/environment-*.yml') }}
-          restore-keys: |
-            ${{ env.CACHE_EPOCH }}-${{ runner.os }}-conda-build-
 
       - name: install (conda)
         uses: conda-incubator/setup-miniconda@v2
@@ -230,6 +216,10 @@ jobs:
           conda index build/conda-bld
           doit -s conda_test || doit -s conda_test
 
+      - name: Rename uncached conda packages
+        shell: bash
+        run: mv "${CONDA_PKGS_DIR}" "${CONDA_PKGS_DIR}_do_not_cache"
+
   test:
     needs: [build]
     name: ${{ matrix.os }} ${{ matrix.python-version }}
@@ -253,22 +243,12 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
 
-      - name: cache (conda)
-        uses: actions/cache@v3
-        with:
-          path: ~/conda_pkgs_dir
-          key: |
-            ${{ env.CACHE_EPOCH }}-${{ runner.os }}-conda-${{ matrix.python-version }}-${{ hashFiles('.github/environment*.yml') }}
-          restore-keys: |
-            ${{ env.CACHE_EPOCH }}-${{ runner.os }}-conda-${{ matrix.python-version }}-
-
       - name: install (conda)
         uses: conda-incubator/setup-miniconda@v2
         with:
           miniforge-variant: Mambaforge
           python-version: ${{ matrix.python-version }}
           environment-file: .github/environment.yml
-          use-only-tar-bz2: true
           use-mamba: true
 
       - name: tweak install (conda)
@@ -329,6 +309,10 @@ jobs:
             ipydrawio-${{ github.run_number }}-atest-${{ matrix.os }}-${{matrix.python-version }}
           path: ./build/atest
 
+      - name: Rename uncached conda packages
+        shell: bash
+        run: mv "${CONDA_PKGS_DIR}" "${CONDA_PKGS_DIR}_do_not_cache"
+
   docs:
     name: docs
     runs-on: ${{ matrix.os }}-latest
@@ -338,21 +322,12 @@ jobs:
       fail-fast: false
       matrix:
         os: ['ubuntu']
-        python-version: ['3.10']
+        python-version: ['3.11']
     steps:
       - name: checkout
         uses: actions/checkout@v3
         with:
           submodules: recursive
-
-      - name: cache (conda)
-        uses: actions/cache@v3
-        with:
-          path: ~/conda_pkgs_dir
-          key: |
-            ${{ env.CACHE_EPOCH }}-${{ runner.os }}-conda-docs-${{ matrix.python-version }}-${{ hashFiles('./docs/environment.yml') }}
-          restore-keys: |
-            ${{ env.CACHE_EPOCH }}-${{ runner.os }}-conda-docs-${{ matrix.python-version }}-
 
       - name: cache (node)
         uses: actions/cache@v3
@@ -380,7 +355,6 @@ jobs:
           miniforge-variant: Mambaforge
           python-version: ${{ matrix.python-version }}
           environment-file: docs/environment.yml
-          use-only-tar-bz2: true
           use-mamba: true
 
       - name: build
@@ -414,3 +388,7 @@ jobs:
           name: |-
             ipydrawio-${{ github.run_number }}-docs-${{ matrix.os }}-${{matrix.python-version }}
           path: ./build/docs
+
+      - name: Rename uncached conda packages
+        shell: bash
+        run: mv "${CONDA_PKGS_DIR}" "${CONDA_PKGS_DIR}_do_not_cache"
