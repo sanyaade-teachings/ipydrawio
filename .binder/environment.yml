@@ -45,10 +45,8 @@ dependencies:
   - jupyterlab_widgets
   - jupyterlab-tour
   - jupyterlab-webrtc-docprovider
-  - wxyz_datagrid
-  - wxyz_json_schema_form
-  - wxyz_lab
-  - wxyz_svg
+  - jupyterlite-pyodide-kernel ==0.0.6
+  - jupyterlite-javascript-kernel
   ### FEDERATED EXTENSIONS ###
   ############################################################################
   ### ipydrawio-docs-deps ###
@@ -56,9 +54,8 @@ dependencies:
   - autodoc-traits
   - docutils >=0.18.1
   - jupyter-server-mathjax
-  - jupyterlite-core ==0.1.0
+  - jupyterlite ==0.1.0
   - jupyterlite-core-with-libarchive
-  - jupyterlite-pyodide-kernel ==0.0.6
   - myst-nb
   - pkginfo
   - pydata-sphinx-theme >=0.13.3,<0.14.0
