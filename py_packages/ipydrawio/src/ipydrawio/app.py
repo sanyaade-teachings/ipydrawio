@@ -1,4 +1,4 @@
-"""CLI for ipydrawio"""
+"""CLI for ipydrawio."""
 
 # Copyright 2023 ipydrawio contributors
 #
@@ -34,7 +34,8 @@ class BaseApp(JupyterApp):
 
 
 class CleanApp(BaseApp):
-    """clean drawio files"""
+
+    """clean drawio files."""
 
     dio_files = T.Tuple()
     pretty = T.Bool(True, help="pretty-print the XML").tag(config=True)
@@ -53,10 +54,11 @@ class CleanApp(BaseApp):
                 {"CleanApp": {"tabs": True}},
                 "Indent with tabs instead of spaces",
             ),
-        }
+        },
     )
     aliases = dict(
-        **base_aliases, **{"mx-attrs": "CleanApp.mx_attrs", "indent": "CleanApp.indent"}
+        **base_aliases,
+        **{"mx-attrs": "CleanApp.mx_attrs", "indent": "CleanApp.indent"},
     )
 
     def parse_command_line(self, argv=None):
@@ -80,12 +82,13 @@ class CleanApp(BaseApp):
 
 
 class IPyDrawioApp(BaseApp):
-    """ipydrawio utilities"""
+
+    """ipydrawio utilities."""
 
     name = "ipydrawio"
-    subcommands = dict(
-        clean=(CleanApp, CleanApp.__doc__.splitlines()[0]),
-    )
+    subcommands = {
+        "clean": (CleanApp, CleanApp.__doc__.splitlines()[0]),
+    }
 
 
 main = launch_instance = IPyDrawioApp.launch_instance

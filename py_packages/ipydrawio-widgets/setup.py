@@ -1,4 +1,4 @@
-"""dynamic setup information for setuptools, also see package.json and setup.cfg"""
+"""dynamic setup information for setuptools, also see package.json and setup.cfg."""
 
 # Copyright 2023 ipydrawio contributors
 #

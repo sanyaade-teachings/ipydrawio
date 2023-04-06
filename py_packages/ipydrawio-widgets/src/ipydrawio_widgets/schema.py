@@ -1,4 +1,4 @@
-"""schema for ipydrawio-widgets"""
+"""schema for ipydrawio-widgets."""
 
 # Copyright 2023 ipydrawio contributors
 #

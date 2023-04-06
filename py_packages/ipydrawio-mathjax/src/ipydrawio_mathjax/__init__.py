@@ -1,4 +1,4 @@
-"""MathJax for ipydrawio"""
+"""MathJax for ipydrawio."""
 
 # Copyright 2023 ipydrawio contributors
 #
@@ -20,9 +20,8 @@ from ._version import __ext__, __js__, __prefix__, __version__
 
 
 def _jupyter_labextension_paths():
-    """static paths to link for interactive installation"""
-    exts = _ipydrawio_labextension_paths(prefix=__prefix__, extensions=__ext__)
-    return exts
+    """Static paths to link for interactive installation."""
+    return _ipydrawio_labextension_paths(prefix=__prefix__, extensions=__ext__)
 
 
 __all__ = [

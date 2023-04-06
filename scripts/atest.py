@@ -1,4 +1,4 @@
-"""acceptance testing"""
+"""acceptance testing."""
 # Copyright 2023 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -76,22 +76,22 @@ def run_tests(attempt=0, extra_args=None):
     ]
 
     if out_dir.exists():
-        print(">>> trying to clean out {}".format(out_dir), flush=True)
+        print(f">>> trying to clean out {out_dir}", flush=True)
         try:
             shutil.rmtree(out_dir)
         except Exception as err:
             print(
-                "... error, hopefully harmless: {}".format(err),
+                f"... error, hopefully harmless: {err}",
                 flush=True,
             )
 
     if not out_dir.exists():
-        print(">>> trying to prepare output directory: {}".format(out_dir), flush=True)
+        print(f">>> trying to prepare output directory: {out_dir}", flush=True)
         try:
             out_dir.mkdir(parents=True)
         except Exception as err:
             print(
-                "... Error, hopefully harmless: {}".format(err),
+                f"... Error, hopefully harmless: {err}",
                 flush=True,
             )
 
@@ -120,7 +120,7 @@ def run_tests(attempt=0, extra_args=None):
 
 
 def attempt_atest_with_retries(extra_args=None):
-    """retry the robot tests a number of times"""
+    """Retry the robot tests a number of times."""
     extra_args = list(extra_args or [])
     attempt = P.ATEST_ATTEMPT
     fail_count = -1
@@ -130,7 +130,7 @@ def attempt_atest_with_retries(extra_args=None):
 
     while fail_count != 0 and attempt <= retries:
         attempt += 1
-        print("attempt {} of {}...".format(attempt, retries + 1), flush=True)
+        print(f"attempt {attempt} of {retries + 1}...", flush=True)
         start_time = time.time()
         fail_count = run_tests(attempt=attempt, extra_args=extra_args)
         print(

@@ -1,4 +1,4 @@
-"""do out-of-band things with the export server"""
+"""do out-of-band things with the export server."""
 
 # Copyright 2023 ipydrawio contributors
 #
@@ -18,6 +18,6 @@ import requests
 
 
 def get_ipydrawio_export_status(url):
-    """get the ipydrawio export status"""
+    """Get the ipydrawio export status."""
     r = requests.get(url)
     return r.json()

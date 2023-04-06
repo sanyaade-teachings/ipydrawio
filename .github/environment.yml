@@ -42,13 +42,12 @@ dependencies:
   - wheel
   # linting
   - black
-  - flake8
-  - isort >=5
-  - pyflakes
+  - nbqa
   - pyyaml
   - robotframework-lint
   - robotframework-tidy
   - ruff
+  - ssort
   # unit testing
   - pytest
   - pytest-console-scripts

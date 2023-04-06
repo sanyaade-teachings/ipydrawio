@@ -1,4 +1,4 @@
-"""drawio export manager"""
+"""drawio export manager."""
 
 # Copyright 2023 ipydrawio contributors
 #
@@ -49,6 +49,9 @@ from .constants import (
     WORK_DIR,
 )
 
+# http error code
+FOUR_HUNDRED = 400
+
 VEND = Path(__file__).parent / "vendor/draw-image-export2"
 
 DRAWIO_STATIC = (Path(get_app_dir()) / DRAWIO_APP).resolve()
@@ -56,12 +59,13 @@ DRAWIO_STATIC = (Path(get_app_dir()) / DRAWIO_APP).resolve()
 JLPM = Path(shutil.which("jlpm")).resolve()
 
 NODE = Path(
-    shutil.which("node") or shutil.which("node.exe") or shutil.which("node.cmd")
+    shutil.which("node") or shutil.which("node.exe") or shutil.which("node.cmd"),
 ).resolve()
 
 
 class IPyDrawioExportManager(LoggingConfigurable):
-    """manager of (currently) another node-based server"""
+
+    """manager of (currently) another node-based server."""
 
     drawio_server_url = Unicode().tag(config=True)
     drawio_port = Int().tag(config=True)
@@ -86,7 +90,7 @@ class IPyDrawioExportManager(LoggingConfigurable):
     @run_on_executor
     def _pdf(self, pdf_request):
         """TODO: enable more customization... I guess over HTTP headers?
-        X-JPYDIO-embed: 1
+        X-JPYDIO-embed: 1.
         """
         data = dict(pdf_request)
         data.update(**self.core_params)
@@ -102,7 +106,8 @@ class IPyDrawioExportManager(LoggingConfigurable):
                 time.sleep(self.init_wait_sec)
             try:
                 self.log.warning(
-                    "[ipydrawio-export] exporting (%s retries remaining)...", retries
+                    "[ipydrawio-export] exporting (%s retries remaining)...",
+                    retries,
                 )
                 res = self._session.post(self.url, timeout=None, data=data)
                 pdf_text = res.text
@@ -118,12 +123,12 @@ class IPyDrawioExportManager(LoggingConfigurable):
                 time.sleep((self.export_retries - retries) * self.init_wait_sec)
 
             if status_code is not None:
-                if status_code <= 400:
+                if status_code <= FOUR_HUNDRED:
                     break
 
                 if res:  # pragma: no cover
                     self.log.warning(
-                        f"[ipydrawio-export] HTTP {res.status_code}: {res.text}"
+                        f"[ipydrawio-export] HTTP {res.status_code}: {res.text}",
                     )
 
                 status_code = None
@@ -131,14 +136,16 @@ class IPyDrawioExportManager(LoggingConfigurable):
                 pdf_text = None
 
                 self.log.warning(
-                    "[ipydrawio-export] retrying, %s remaining...", retries
+                    "[ipydrawio-export] retrying, %s remaining...",
+                    retries,
                 )
 
             retries -= 1  # pragma: no cover
 
         if pdf_text and self.attach_xml and self.attachments:
             self.log.info(
-                "[ipydrawio-export] attaching drawio XML as %s", self.attachment_name
+                "[ipydrawio-export] attaching drawio XML as %s",
+                self.attachment_name,
             )
             with tempfile.TemporaryDirectory() as td:
                 tdp = Path(td)
@@ -156,7 +163,7 @@ class IPyDrawioExportManager(LoggingConfigurable):
 
                 pdf_text = b64encode(final_pdf.read_bytes())
                 self.log.debug(
-                    f"[ipydrawio-export] {len(pdf_text)} bytes (with attachment)"
+                    f"[ipydrawio-export] {len(pdf_text)} bytes (with attachment)",
                 )
 
         return pdf_text
@@ -185,7 +192,8 @@ class IPyDrawioExportManager(LoggingConfigurable):
             final.append_pages_from_reader(PdfReader(str(output_pdf), "rb"))
             if self.attach_xml:
                 final.add_attachment(
-                    self.attachment_name, composite_xml.encode("utf-8")
+                    self.attachment_name,
+                    composite_xml.encode("utf-8"),
                 )
             with final_pdf.open("wb") as fpt:
                 final.write(fpt)
@@ -246,7 +254,7 @@ class IPyDrawioExportManager(LoggingConfigurable):
 
     @default("core_params")
     def _default_core_params(self):
-        return dict(format="pdf", base64="1")
+        return {"format": "pdf", "base64": "1"}
 
     @default("drawio_export_workdir")
     def _default_drawio_export_workdir(self):
@@ -303,11 +311,11 @@ class IPyDrawioExportManager(LoggingConfigurable):
 
     def _start_process(self):
         env = dict(os.environ)
-        env_updates = dict(
-            PORT=str(self.drawio_port),
-            DRAWIO_SERVER_URL=self.drawio_server_url,
-            NODE_ENV="production",
-        )
+        env_updates = {
+            "PORT": str(self.drawio_port),
+            "DRAWIO_SERVER_URL": self.drawio_server_url,
+            "NODE_ENV": "production",
+        }
         env.update(env_updates)
 
         self.log.debug(f"[ipydrawio-export] extra env: {env_updates}")
@@ -327,7 +335,7 @@ class IPyDrawioExportManager(LoggingConfigurable):
         self._start_process()
 
         self.log.warning(
-            f"[ipydrawio-export] waiting {self.init_wait_sec}s for server to start"
+            f"[ipydrawio-export] waiting {self.init_wait_sec}s for server to start",
         )
 
         await asyncio.sleep(self.init_wait_sec)
@@ -423,7 +431,7 @@ class IPyDrawioExportManager(LoggingConfigurable):
         return port
 
     def attachments(self, pdf_path):
-        """iterate over the name, attachment pairs in the PDF"""
+        """Iterate over the name, attachment pairs in the PDF."""
         reader = PdfReader(str(pdf_path), "rb")
         attachments = []
         try:

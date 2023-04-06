@@ -1,4 +1,4 @@
-"""ReadTheDocs-compatible sphinx configuration"""
+"""ReadTheDocs-compatible sphinx configuration."""
 # Copyright 2023 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,6 +24,8 @@ from sphinx.application import Sphinx
 
 HERE = Path(__file__).parent
 RTD = json.loads(os.environ.get("READTHEDOCS", "False").lower())
+NOW = datetime.datetime.now(tz=datetime.timezone.utc).date()
+
 
 ROOT = HERE.parent
 APP_PKG = ROOT / "packages/ipydrawio/package.json"
@@ -40,7 +42,7 @@ RTD_TASKS = [
 # metadata
 author = APP_DATA["author"]
 project = author.replace("Contributors", "").strip()
-copyright = f"{datetime.date.today().year}, {author}"
+copyright = f"{NOW.year}, {author}"
 
 # The full version, including alpha/beta/rc tags
 release = APP_DATA["version"]
@@ -96,7 +98,6 @@ html_logo = "_static/logo.svg"
 html_theme_options = {
     "github_url": APP_DATA["repository"]["url"],
     "use_edit_page_button": True,
-    # "navbar_start": ["navbar-logo.html", "launch.html"],
     "icon_links": [
         {
             "name": "PyPI",
@@ -114,7 +115,7 @@ html_sidebars = {
         "search-field.html",
         "sidebar-nav-bs.html",
         "sidebar-ethical-ads.html",
-    ]
+    ],
 }
 
 html_context = {
@@ -144,7 +145,7 @@ def clean_schema(app: Sphinx, error):
 
 
 def before_rtd_build(app: Sphinx, error):
-    """performs the full frontend build, and ensures the typedoc"""
+    """Performs the full frontend build, and ensures the typedoc."""
     for task in RTD_TASKS:
         print(f"running doit {task}", flush=True)
         subprocess.check_call(["doit", task], cwd=str(ROOT))

@@ -1,4 +1,4 @@
-"""source of truth for ipydrawio version"""
+"""source of truth for ipydrawio version."""
 
 # Copyright 2023 ipydrawio contributors
 # Copyright 2020 jupyterlab-drawio contributors

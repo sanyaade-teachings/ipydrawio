@@ -1,4 +1,4 @@
-"""automation for ipydrawio
+"""automation for ipydrawio.
 
 > see https://pydoit.org/tutorial_1.html#incremental-computation
 
@@ -42,20 +42,20 @@ from doit.tools import PythonInteractiveAction, config_changed
 
 import scripts.project as P
 
-DOIT_CONFIG = dict(
-    backend="sqlite3",
-    verbosity=2,
-    par_type="thread",
-    default_tasks=["setup"],
-)
+DOIT_CONFIG = {
+    "backend": "sqlite3",
+    "verbosity": 2,
+    "par_type": "thread",
+    "default_tasks": ["setup"],
+}
 
 
 def task_all():
-    """do _everything_ (except start long-running servers)"""
-    return dict(
-        uptodate=[lambda: False],
-        task_dep=["check"],
-        file_dep=[
+    """Do _everything_ (except start long-running servers)."""
+    return {
+        "uptodate": [lambda: False],
+        "task_dep": ["check"],
+        "file_dep": [
             *[P.OK_CONDA_TEST / f"{name}.ok" for name in P.CONDA_PKGS],
             *P.OK_PYTEST.values(),
             P.DOCS_BUILDINFO,
@@ -65,87 +65,89 @@ def task_all():
             P.OK_PROVISION,
             P.SHA256SUMS,
         ],
-        actions=[
-            (P._show, ["nothing left to do"], {"shasums": P.SHA256SUMS.read_text})
+        "actions": [
+            (P._show, ["nothing left to do"], {"shasums": P.SHA256SUMS.read_text}),
         ],
-    )
+    }
 
 
 def task_fetch():
-    """fetch local copies of key configuration documentation"""
+    """Fetch local copies of key configuration documentation."""
     for path, url in P.DIA_URLS.items():
         yield P.fetch_one(url, path)
 
 
 def task_dist():
-    """create a minimum viable release product"""
-    return dict(
-        uptodate=[lambda: False],
-        file_dep=[P.OK_INTEGRITY, P.SHA256SUMS, P.OK_LINT],
-        actions=[lambda: print(P.SHA256SUMS.read_text())],
-    )
+    """Create a minimum viable release product."""
+    return {
+        "uptodate": [lambda: False],
+        "file_dep": [P.OK_INTEGRITY, P.SHA256SUMS, P.OK_LINT],
+        "actions": [lambda: print(P.SHA256SUMS.read_text())],
+    }
 
 
 def task_env():
-    """sync environments"""
+    """Sync environments."""
     if P.RTD:
         return
 
     for env, inherits in P.ENV_INHERITS.items():
-        yield dict(
-            name=f"""{env.relative_to(P.ROOT)}:{':'.join([str(inh.relative_to(P.ROOT)) for inh in inherits])}""",
-            file_dep=[*inherits, P.YARN_INTEGRITY],
-            actions=[(P.patch_one_env, [inh, env]) for inh in inherits]
+        yield {
+            "name": f"""{env.relative_to(P.ROOT)}:{':'.join([str(inh.relative_to(P.ROOT)) for inh in inherits])}""",
+            "file_dep": [*inherits, P.YARN_INTEGRITY],
+            "actions": [(P.patch_one_env, [inh, env]) for inh in inherits]
             + [["jlpm", "prettier", "--list-different", "--write", env]],
-            targets=[env],
-        )
+            "targets": [env],
+        }
 
 
 def task_submodules():
-    """ensure submodules are available"""
-
+    """Ensure submodules are available."""
     subs = subprocess.check_output(["git", "submodule"]).decode("utf-8").splitlines()
 
     def _clean():
-        """clean drawio, as it gets patched in-place"""
-        if any([x.startswith("-") for x in subs]) and P.DRAWIO.exists():
+        """Clean drawio, as it gets patched in-place."""
+        if any(x.startswith("-") for x in subs) and P.DRAWIO.exists():
             shutil.rmtree(P.DRAWIO)
 
     return P._ok(
-        dict(
-            uptodate=[config_changed({"subs": subs})],
-            actions=[_clean, ["git", "submodule", "update", "--init", "--recursive"]],
-        ),
+        {
+            "uptodate": [config_changed({"subs": subs})],
+            "actions": [
+                _clean,
+                ["git", "submodule", "update", "--init", "--recursive"],
+            ],
+        },
         P.OK_SUBMODULES,
     )
 
 
 def task_setup():
-    """perform general steps to get ready for development, testing, or releasing"""
+    """Perform general steps to get ready for development, testing, or releasing."""
     if not (P.CI and P.YARN_INTEGRITY.exists()):
-        yield dict(
-            name="js",
-            file_dep=[P.PACKAGE, P.OK_SUBMODULES]
+        yield {
+            "name": "js",
+            "file_dep": [P.PACKAGE, P.OK_SUBMODULES]
             + ([P.YARN_LOCK] if P.YARN_LOCK.exists() else []),
-            actions=[
+            "actions": [
                 [*P.JLPM, "--prefer-offline", "--ignore-optional"],
             ],
-            targets=[P.YARN_INTEGRITY],
-        )
+            "targets": [P.YARN_INTEGRITY],
+        }
 
     if not P.TESTING_IN_CI:
-        yield dict(
-            name="js:ipde",
-            file_dep=[P.IPDE_DIE2_PACKAGE_JSON, P.YARN_INTEGRITY],
-            targets=[P.IPDE_DIE2_YARN_LOCK],
-            actions=[
+        yield {
+            "name": "js:ipde",
+            "file_dep": [P.IPDE_DIE2_PACKAGE_JSON, P.YARN_INTEGRITY],
+            "targets": [P.IPDE_DIE2_YARN_LOCK],
+            "actions": [
                 CmdAction(
                     [*P.JLPM, "--prefer-offline", "--ignore-optional"],
                     shell=False,
                     cwd=P.IPDE_DIE2,
                 ),
             ],
-        )
+        }
 
     for pkg, pkg_setup in P.PY_SETUP.items():
         # TODO: refactor
@@ -164,10 +166,10 @@ def task_setup():
             dist_af = P.DIST / ci_af.name
 
             yield P._ok(
-                dict(
-                    name=f"py:{pkg}",
-                    file_dep=[dist_af],
-                    actions=[
+                {
+                    "name": f"py:{pkg}",
+                    "file_dep": [dist_af],
+                    "actions": [
                         [
                             *P.PIP,
                             "install",
@@ -175,9 +177,9 @@ def task_setup():
                             "--ignore-installed",
                             "--no-deps",
                             dist_af,
-                        ]
+                        ],
                     ],
-                ),
+                },
                 P.OK_PYSETUP[pkg],
             )
         else:
@@ -214,20 +216,25 @@ def task_setup():
                 ]
 
             yield P._ok(
-                dict(
-                    name=f"py:{pkg}",
-                    file_dep=[pkg_setup, P.PY_SETUP_CFG[pkg], *ext_deps, *extra_deps],
-                    actions=actions,
-                ),
+                {
+                    "name": f"py:{pkg}",
+                    "file_dep": [
+                        pkg_setup,
+                        P.PY_SETUP_CFG[pkg],
+                        *ext_deps,
+                        *extra_deps,
+                    ],
+                    "actions": actions,
+                },
                 P.OK_PYSETUP[pkg],
             )
 
     yield P._ok(
-        dict(
-            name="pip:check",
-            file_dep=[*P.OK_PYSETUP.values()],
-            actions=[P.pip_check],
-        ),
+        {
+            "name": "pip:check",
+            "file_dep": [*P.OK_PYSETUP.values()],
+            "actions": [P.pip_check],
+        },
         P.OK_PIP_CHECK,
     )
 
@@ -245,69 +252,53 @@ def task_setup():
             enable_args = ["echo", "'(installed by pip)'"]
 
         yield P._ok(
-            dict(
-                name=f"ext:{ext}",
-                doc=f"ensure {ext} is a serverextension",
-                file_dep=[ext_py, P.OK_PIP_CHECK],
-                actions=[
+            {
+                "name": f"ext:{ext}",
+                "doc": f"ensure {ext} is a serverextension",
+                "file_dep": [ext_py, P.OK_PIP_CHECK],
+                "actions": [
                     enable_args,
                     ["jupyter", "serverextension", "list"],
                 ],
-            ),
+            },
             P.OK_SERVEREXT[ext],
         )
 
 
 def task_lint():
-    """format all source files"""
-
+    """Format all source files."""
     if P.TESTING_IN_CI:
         return
 
     rel_py = [p.relative_to(P.ROOT) for p in P.ALL_PY]
-
+    black_dep = []
     if P.HAS_SSORT:
+        black_dep += [P.OK_SSORT]
         yield P._ok(
-            dict(
-                name="ssort",
-                file_dep=[
+            {
+                "name": "ssort",
+                "file_dep": [
                     *P.ALL_PY,
                 ],
-                actions=[["ssort", *rel_py]],
-            ),
+                "actions": [["ssort", *rel_py]],
+            },
             P.OK_SSORT,
         )
     yield P._ok(
-        dict(
-            name="isort",
-            file_dep=[*P.ALL_PY, P.SETUP_CFG, *([P.OK_SSORT] if P.HAS_SSORT else [])],
-            actions=[["isort", *rel_py]],
-        ),
-        P.OK_ISORT,
-    )
-    yield P._ok(
-        dict(
-            name="black",
-            file_dep=[*P.ALL_PY, P.OK_ISORT],
-            actions=[["black", "--quiet", *rel_py]],
-        ),
+        {
+            "name": "black",
+            "file_dep": [*P.ALL_PY, *black_dep],
+            "actions": [["black", "--quiet", *rel_py]],
+        },
         P.OK_BLACK,
     )
     yield P._ok(
-        dict(
-            name="flake8",
-            file_dep=[*P.ALL_PY, P.OK_BLACK, P.SETUP_CFG],
-            actions=[["flake8", *rel_py]],
-        ),
-        P.OK_FLAKE8,
-    )
-    yield P._ok(
-        dict(
-            name="pyflakes",
-            file_dep=[*P.ALL_PY, P.OK_BLACK],
-            actions=[["pyflakes", *rel_py]],
-        ),
-        P.OK_PYFLAKES,
+        {
+            "name": "ruff",
+            "file_dep": [*P.ALL_PY, P.OK_BLACK],
+            "actions": [["ruff", *rel_py]],
+        },
+        P.OK_RUFF,
     )
 
     prettier_args = [
@@ -320,14 +311,14 @@ def task_lint():
 
     if P.CI:
         yield P._ok(
-            dict(
-                name="prettier",
-                file_dep=[
+            {
+                "name": "prettier",
+                "file_dep": [
                     P.YARN_INTEGRITY,
                     *[p for p in P.ALL_PRETTIER if P != P.DEMO_CONFIG],
                 ],
-                actions=[[*prettier_args, *P.ALL_PRETTIER]],
-            ),
+                "actions": [[*prettier_args, *P.ALL_PRETTIER]],
+            },
             P.OK_PRETTIER,
         )
     else:
@@ -340,146 +331,150 @@ def task_lint():
                 continue
             pretty_name = f"prettier:package.json:{path.parent.relative_to(P.ROOT)}"
             pretty_tasks += [f"lint:{pretty_name}"]
-            yield dict(
-                name=pretty_name,
-                file_dep=[path, P.YARN_INTEGRITY],
-                actions=[["jlpm", "prettier-package-json", "--write", path]],
-            )
+            yield {
+                "name": pretty_name,
+                "file_dep": [path, P.YARN_INTEGRITY],
+                "actions": [["jlpm", "prettier-package-json", "--write", path]],
+            }
 
         for parent, paths in pretty_parents.items():
             name = f"prettier:{parent}"
             pretty_tasks += [f"lint:{name}"]
 
-            yield dict(
-                name=name,
-                file_dep=[P.YARN_INTEGRITY, *paths],
-                actions=[[*prettier_args, *paths]],
-            )
+            yield {
+                "name": name,
+                "file_dep": [P.YARN_INTEGRITY, *paths],
+                "actions": [[*prettier_args, *paths]],
+            }
 
         yield P._ok(
-            dict(
-                name="prettier",
-                file_dep=[P.YARN_INTEGRITY, *P.ALL_PRETTIER],
-                task_dep=pretty_tasks,
-                actions=[["echo", "OK"]],
-            ),
+            {
+                "name": "prettier",
+                "file_dep": [P.YARN_INTEGRITY, *P.ALL_PRETTIER],
+                "task_dep": pretty_tasks,
+                "actions": [["echo", "OK"]],
+            },
             P.OK_PRETTIER,
         )
 
     # yield P._ok(
     #     dict(
-    #         name="eslint",
-    #         file_dep=[
     #             P.YARN_INTEGRITY,
     #             *P.ALL_TS,
     #             P.OK_PRETTIER,
     #             P.ESLINTRC,
     #             P.TSCONFIGBASE,
     #         ],
-    #         actions=[["jlpm", "eslint"]],
     #     ),
     #     P.OK_ESLINT,
-    # )
 
     dio_tasks = []
 
     for dio_file in P.ALL_DIO + P.EXAMPLE_IPYNB + P.DOCS_IPYNB:
         name = f"dio:clean:{dio_file.relative_to(P.ROOT)}"
         dio_tasks += [f"lint:{name}"]
-        yield dict(
-            name=name,
-            file_dep=[dio_file, *P.OK_PYSETUP.values()],
-            actions=[["jupyter", "ipydrawio", "clean", dio_file]],
-        )
+        yield {
+            "name": name,
+            "file_dep": [dio_file, *P.OK_PYSETUP.values()],
+            "actions": [["jupyter", "ipydrawio", "clean", dio_file]],
+        }
 
     yield P._ok(
-        dict(
-            name="dio:clean",
-            file_dep=[*P.ALL_DIO],
-            task_dep=dio_tasks,
-            actions=[["echo", "ok"]],
-        ),
+        {
+            "name": "dio:clean",
+            "file_dep": [*P.ALL_DIO],
+            "task_dep": dio_tasks,
+            "actions": [["echo", "ok"]],
+        },
         P.OK_DIOLINT,
     )
 
     yield P._ok(
-        dict(
-            name="all",
-            actions=[P._echo_ok("all ok")],
-            file_dep=[
+        {
+            "name": "all",
+            "actions": [P._echo_ok("all ok")],
+            "file_dep": [
                 P.OK_BLACK,
                 # P.OK_ESLINT,
-                P.OK_FLAKE8,
-                P.OK_ISORT,
+                P.OK_RUFF,
                 P.OK_PRETTIER,
-                P.OK_PYFLAKES,
             ],
-        ),
+        },
         P.OK_LINT,
     )
 
     yield P._ok(
-        dict(
-            name="robot:tidy",
-            file_dep=P.ALL_ROBOT,
-            actions=[["robotidy", *P.ALL_ROBOT]],
-        ),
+        {
+            "name": "robot:tidy",
+            "file_dep": P.ALL_ROBOT,
+            "actions": [["robotidy", *P.ALL_ROBOT]],
+        },
         P.OK_ROBOTIDY,
     )
 
     yield P._ok(
-        dict(
-            name="robot:lint",
-            file_dep=[*P.ALL_ROBOT, P.OK_ROBOTIDY],
-            actions=[["rflint", *P.RFLINT_OPTS, *P.ALL_ROBOT]],
-        ),
+        {
+            "name": "robot:lint",
+            "file_dep": [*P.ALL_ROBOT, P.OK_ROBOTIDY],
+            "actions": [["rflint", *P.RFLINT_OPTS, *P.ALL_ROBOT]],
+        },
         P.OK_RFLINT,
     )
 
     yield P._ok(
-        dict(
-            name="robot:dryrun",
-            file_dep=[*P.ALL_ROBOT, P.OK_RFLINT],
-            actions=[[*P.PYM, "scripts.atest", "--dryrun"]],
-        ),
+        {
+            "name": "robot:dryrun",
+            "file_dep": [*P.ALL_ROBOT, P.OK_RFLINT],
+            "actions": [[*P.PYM, "scripts.atest", "--dryrun"]],
+        },
         P.OK_ROBOT_DRYRUN,
     )
 
 
 def task_build():
-    """build intermediates and release artifacts"""
+    """Build intermediates and release artifacts."""
     if P.TESTING_IN_CI:
         return
 
     yield from P.package_json_tasks(
-        "build", "build:pre", P.OK_JS_BUILD_PRE, file_dep=[P.OK_SUBMODULES]
+        "build",
+        "build:pre",
+        P.OK_JS_BUILD_PRE,
+        file_dep=[P.OK_SUBMODULES],
     )
 
     yield from P.package_json_tasks(
-        "build", "build", P.OK_JS_BUILD, file_dep=[P.OK_JS_BUILD_PRE]
+        "build",
+        "build",
+        P.OK_JS_BUILD,
+        file_dep=[P.OK_JS_BUILD_PRE],
     )
 
-    yield dict(
-        name="readme:ipydrawio",
-        file_dep=[P.README],
-        targets=[P.IPD / "README.md"],
-        actions=[
+    yield {
+        "name": "readme:ipydrawio",
+        "file_dep": [P.README],
+        "targets": [P.IPD / "README.md"],
+        "actions": [
             lambda: [
                 (P.IPD / "README.md").write_text(P.README.read_text(), **P.ENC),
                 None,
-            ][-1]
+            ][-1],
         ],
-    )
+    }
 
     for pkg, (file_dep, targets) in P.JS_PKG_PACK.items():
-        yield dict(
-            name=f"pack:{pkg}",
-            file_dep=[*file_dep, *P.JS_TSBUILDINFO.values()],
-            actions=[
-                CmdAction([P.NPM, "pack", "."], cwd=str(targets[0].parent), shell=False)
+        yield {
+            "name": f"pack:{pkg}",
+            "file_dep": [*file_dep, *P.JS_TSBUILDINFO.values()],
+            "actions": [
+                CmdAction(
+                    [P.NPM, "pack", "."],
+                    cwd=str(targets[0].parent),
+                    shell=False,
+                ),
             ],
-            targets=targets,
-        )
+            "targets": targets,
+        }
         pkg_data = P.JS_PKG_DATA[pkg]
 
         if "jupyterlab" not in pkg_data:
@@ -490,18 +485,18 @@ def task_build():
         ).resolve()
 
         yield P._ok(
-            dict(
-                name=f"ext:build:{pkg}",
-                actions=[
+            {
+                "name": f"ext:build:{pkg}",
+                "actions": [
                     CmdAction(
                         [*P.LAB_EXT, "build", "."],
                         shell=False,
                         cwd=P.JS_PKG_JSON[pkg].parent,
-                    )
+                    ),
                 ],
-                file_dep=targets,
-                targets=[out_dir / "package.json"],
-            ),
+                "file_dep": targets,
+                "targets": [out_dir / "package.json"],
+            },
             P.OK_EXT_BUILD[pkg],
         )
 
@@ -517,18 +512,15 @@ def task_build():
         ]
 
         file_dep = sorted(
-            set(
-                [
-                    *ext_deps,
-                    *P.PY_SRC[py_pkg],
-                    P.OK_SUBMODULES,
-                    py_setup,
-                    py_setup.parent / "setup.cfg",
-                    py_setup.parent / "MANIFEST.in",
-                    py_setup.parent / "README.md",
-                    py_setup.parent / "LICENSE.txt",
-                ]
-            )
+            {
+                *ext_deps,
+                *P.PY_SRC[py_pkg],
+                P.OK_SUBMODULES,
+                py_setup,
+                py_setup.parent / "MANIFEST.in",
+                py_setup.parent / "README.md",
+                py_setup.parent / "LICENSE.txt",
+            },
         )
 
         if py_setup.parent == P.IPDE:
@@ -536,37 +528,37 @@ def task_build():
         elif py_setup.parent == P.IPDW:
             for src, dest in P.IPDW_DEPS.items():
                 file_dep += [dest]
-                yield dict(
-                    name=f"copy:{py_pkg}:{src.name}",
-                    file_dep=[src],
-                    targets=[dest],
-                    actions=[(P._copy_one, [src, dest])],
-                )
+                yield {
+                    "name": f"copy:{py_pkg}:{src.name}",
+                    "file_dep": [src],
+                    "targets": [dest],
+                    "actions": [(P._copy_one, [src, dest])],
+                }
 
-        yield dict(
-            name=f"sdist:{py_pkg}",
-            file_dep=file_dep,
-            actions=[
+        yield {
+            "name": f"sdist:{py_pkg}",
+            "file_dep": file_dep,
+            "actions": [
                 CmdAction(
                     ["python", "setup.py", "sdist"],
                     shell=False,
                     cwd=str(py_setup.parent),
                 ),
             ],
-            targets=[P.PY_SDIST[py_pkg]],
-        )
-        yield dict(
-            name=f"whl:{py_pkg}",
-            file_dep=file_dep,
-            actions=[
+            "targets": [P.PY_SDIST[py_pkg]],
+        }
+        yield {
+            "name": f"whl:{py_pkg}",
+            "file_dep": file_dep,
+            "actions": [
                 CmdAction(
                     ["python", "setup.py", "bdist_wheel"],
                     shell=False,
                     cwd=str(py_setup.parent),
                 ),
             ],
-            targets=[P.PY_WHEEL[py_pkg]],
-        )
+            "targets": [P.PY_WHEEL[py_pkg]],
+        }
 
     def _make_hashfile():
         # mimic sha256sum CLI
@@ -587,51 +579,50 @@ def task_build():
         print(output)
         P.SHA256SUMS.write_text(output, **P.ENC)
 
-    yield dict(
-        name="hash",
-        file_dep=[*P.HASH_DEPS],
-        targets=[P.SHA256SUMS, *[P.DIST / d.name for d in P.HASH_DEPS]],
-        actions=[_make_hashfile],
-    )
+    yield {
+        "name": "hash",
+        "file_dep": [*P.HASH_DEPS],
+        "targets": [P.SHA256SUMS, *[P.DIST / d.name for d in P.HASH_DEPS]],
+        "actions": [_make_hashfile],
+    }
 
 
 def task_conda_build():
-    """test building with conda-build"""
-
-    yield dict(
-        name="build",
-        file_dep=[
+    """Test building with conda-build."""
+    yield {
+        "name": "build",
+        "file_dep": [
             P.RECIPE,
             P.CONDARC,
             *[P.DIST / p.name for p in P.PY_SDIST.values()],
         ],
-        actions=[
+        "actions": [
             [
                 *P.CONDA_BUILD_ARGS,
                 "--no-test",
                 "--output-folder",
                 P.CONDA_BLD,
                 P.RECIPE.parent,
-            ]
+            ],
         ],
-        targets=[*P.CONDA_PKGS.values()],
-    )
+        "targets": [*P.CONDA_PKGS.values()],
+    }
 
 
 def task_conda_test():
     for name, pkg in P.CONDA_PKGS.items():
         yield P._ok(
-            dict(
-                name=f"test:{name}",
-                file_dep=[pkg],
-                actions=[[*P.CONDA_BUILD_ARGS, "--test", pkg]],
-            ),
+            {
+                "name": f"test:{name}",
+                "file_dep": [pkg],
+                "actions": [[*P.CONDA_BUILD_ARGS, "--test", pkg]],
+            },
             P.OK_CONDA_TEST / f"{name}.ok",
         )
 
 
 def task_serve():
-    """run processes "normally" (not watching sources)"""
+    """Run processes "normally" (not watching sources)."""
     if P.TESTING_IN_CI:
         return
 
@@ -647,19 +638,19 @@ def task_serve():
 
         proc.wait()
 
-    yield dict(
-        name="lab",
-        uptodate=[lambda: False],
-        file_dep=[*P.OK_SERVEREXT.values()],
-        actions=[PythonInteractiveAction(lab)],
-    )
+    yield {
+        "name": "lab",
+        "uptodate": [lambda: False],
+        "file_dep": [*P.OK_SERVEREXT.values()],
+        "actions": [PythonInteractiveAction(lab)],
+    }
 
-    yield dict(
-        name="demo",
-        uptodate=[lambda: False],
-        file_dep=[P.DEMO_ARCHIVE],
-        actions=[(P._lite, [["doit"], ["--", "-s", "serve"]])],
-    )
+    yield {
+        "name": "demo",
+        "uptodate": [lambda: False],
+        "file_dep": [P.DEMO_ARCHIVE],
+        "actions": [(P._lite, [["doit"], ["--", "-s", "serve"]])],
+    }
 
 
 def _make_lab(watch=False):
@@ -711,28 +702,28 @@ def _make_lab(watch=False):
 
 
 def task_watch():
-    """watch things"""
+    """Watch things."""
     if P.TESTING_IN_CI:
         return
 
-    yield dict(
-        name="lab",
-        doc="watch labextensions for changes, rebuilding",
-        uptodate=[lambda: False],
-        file_dep=[*P.OK_SERVEREXT.values(), P.OK_PIP_CHECK],
-        actions=[
+    yield {
+        "name": "lab",
+        "doc": "watch labextensions for changes, rebuilding",
+        "uptodate": [lambda: False],
+        "file_dep": [*P.OK_SERVEREXT.values(), P.OK_PIP_CHECK],
+        "actions": [
             P.CMD_LIST_EXTENSIONS,
             PythonInteractiveAction(_make_lab(watch=True)),
         ],
-    )
+    }
 
-    yield dict(
-        name="docs",
-        doc="watch docs for changes, rebuilding",
-        uptodate=[lambda: False],
-        file_dep=[P.DOCS_BUILDINFO, P.OK_PIP_CHECK],
-        actions=[["sphinx-autobuild", *P.SPHINX_ARGS, "-j8", P.DOCS, P.DOCS_BUILD]],
-    )
+    yield {
+        "name": "docs",
+        "doc": "watch docs for changes, rebuilding",
+        "uptodate": [lambda: False],
+        "file_dep": [P.DOCS_BUILDINFO, P.OK_PIP_CHECK],
+        "actions": [["sphinx-autobuild", *P.SPHINX_ARGS, "-j8", P.DOCS, P.DOCS_BUILD]],
+    }
 
 
 def task_demo():
@@ -745,37 +736,37 @@ def task_demo():
     for py_pkg, wheel in P.PYOLITE_PACKAGES.items():
         name = py_pkg.name
         js_wheels += [wheel]
-        yield dict(
-            name=f"js:py:{name}",
-            doc=f"build the {name} python package for the browser with flit",
-            file_dep=[*py_pkg.rglob("*.py"), py_pkg / "pyproject.toml"],
-            actions=[(P.build_one_flit, [py_pkg])],
-            targets=[wheel],
-        )
+        yield {
+            "name": f"js:py:{name}",
+            "doc": f"build the {name} python package for the browser with flit",
+            "file_dep": [*py_pkg.rglob("*.py"), py_pkg / "pyproject.toml"],
+            "actions": [(P.build_one_flit, [py_pkg])],
+            "targets": [wheel],
+        }
 
-    yield dict(
-        name="pyodide:packages",
-        doc="fetch the pyodide packages.json",
-        uptodate=[doit.tools.config_changed(P.PYODIDE_URL)],
-        targets=[P.PYODIDE_PACKAGES],
-        actions=[P.fetch_pyodide_packages],
-    )
+    yield {
+        "name": "pyodide:packages",
+        "doc": "fetch the pyodide packages.json",
+        "uptodate": [doit.tools.config_changed(P.PYODIDE_URL)],
+        "targets": [P.PYODIDE_PACKAGES],
+        "actions": [P.fetch_pyodide_packages],
+    }
 
     demo_tasks += ["demo:wheels"]
 
-    yield dict(
-        name="wheels",
-        doc="fetch wheels",
-        file_dep=[P.PYODIDE_PACKAGES, P.DEMO_REQS],
-        actions=[P.fetch_wheels],
-    )
+    yield {
+        "name": "wheels",
+        "doc": "fetch wheels",
+        "file_dep": [P.PYODIDE_PACKAGES, P.DEMO_REQS],
+        "actions": [P.fetch_wheels],
+    }
 
-    yield dict(
-        name="extensions",
-        doc="update jupyter-lite.json from the conda env",
-        file_dep=[P.ENV_BINDER, *P.PY_WHEEL.values(), *js_wheels],
-        targets=[P.DEMO_CONFIG],
-        actions=[
+    yield {
+        "name": "extensions",
+        "doc": "update jupyter-lite.json from the conda env",
+        "file_dep": [P.ENV_BINDER, *P.PY_WHEEL.values(), *js_wheels],
+        "targets": [P.DEMO_CONFIG],
+        "actions": [
             (
                 P._sync_lite_config,
                 [
@@ -785,46 +776,46 @@ def task_demo():
                     [P.PY_WHEEL[P.IPD.name]],
                     [P.PY_WHEEL[P.IPDW.name], *js_wheels],
                 ],
-            )
+            ),
         ],
-    )
+    }
 
     for src, dest in P.ALL_DEMO_CONTENTS.items():
         name = f"stage:{src.name}"
         demo_dest += [dest]
         demo_tasks += [f"demo:{name}"]
         final_dest += [P.DEMO_BUILD / f"files/{src.name}"]
-        yield dict(
-            name=name,
-            file_dep=[src],
-            targets=[dest],
-            actions=[(P._copy_one, [src, dest])],
-        )
+        yield {
+            "name": name,
+            "file_dep": [src],
+            "targets": [dest],
+            "actions": [(P._copy_one, [src, dest])],
+        }
 
     assert demo_dest
     assert final_dest
     assert demo_tasks
 
-    yield dict(
-        name="archive",
-        task_dep=demo_tasks,
-        file_dep=[*demo_dest, *P.DEMO_WHEELS.glob(f"*{P.NOARCH_WHL}")],
-        targets=[P.DEMO_ARCHIVE, P.DEMO_HASHES, *final_dest, P.DEMO_CONTENTS_API],
-        actions=[(P._lite, [["build", "archive"], []])],
-    )
+    yield {
+        "name": "archive",
+        "task_dep": demo_tasks,
+        "file_dep": [*demo_dest, *P.DEMO_WHEELS.glob(f"*{P.NOARCH_WHL}")],
+        "targets": [P.DEMO_ARCHIVE, P.DEMO_HASHES, *final_dest, P.DEMO_CONTENTS_API],
+        "actions": [(P._lite, [["build", "archive"], []])],
+    }
 
 
 def task_docs():
-    """build the docs"""
+    """Build the docs."""
     if P.TESTING_IN_CI:
         return
 
     if shutil.which("convert"):
-        yield dict(
-            name="favicon",
-            doc="regenerate the favicon",
-            file_dep=[P.DOCS_FAVICON_SVG],
-            actions=[
+        yield {
+            "name": "favicon",
+            "doc": "regenerate the favicon",
+            "file_dep": [P.DOCS_FAVICON_SVG],
+            "actions": [
                 [
                     "convert",
                     "-density",
@@ -837,32 +828,32 @@ def task_docs():
                     "-colors",
                     "256",
                     P.DOCS_FAVICON_ICO,
-                ]
+                ],
             ],
-            targets=[P.DOCS_FAVICON_ICO],
-        )
+            "targets": [P.DOCS_FAVICON_ICO],
+        }
 
-    yield dict(
-        name="typedoc:ensure",
-        file_dep=[*P.JS_PKG_JSON.values()],
-        actions=[P.typedoc_conf],
-        targets=[P.TYPEDOC_JSON, P.TSCONFIG_TYPEDOC],
-    )
+    yield {
+        "name": "typedoc:ensure",
+        "file_dep": [*P.JS_PKG_JSON.values()],
+        "actions": [P.typedoc_conf],
+        "targets": [P.TYPEDOC_JSON, P.TSCONFIG_TYPEDOC],
+    }
 
-    yield dict(
-        name="typedoc:build",
-        doc="build the TS API documentation with typedoc",
-        file_dep=[*P.JS_TSBUILDINFO.values(), *P.TYPEDOC_CONF, P.YARN_INTEGRITY],
-        actions=[["jlpm", "typedoc", "--options", P.TYPEDOC_JSON]],
-        targets=[P.DOCS_RAW_TYPEDOC_README],
-    )
+    yield {
+        "name": "typedoc:build",
+        "doc": "build the TS API documentation with typedoc",
+        "file_dep": [*P.JS_TSBUILDINFO.values(), *P.TYPEDOC_CONF, P.YARN_INTEGRITY],
+        "actions": [["jlpm", "typedoc", "--options", P.TYPEDOC_JSON]],
+        "targets": [P.DOCS_RAW_TYPEDOC_README],
+    }
 
-    yield dict(
-        name="typedoc:mystify",
-        doc="transform raw typedoc into myst markdown",
-        file_dep=[P.DOCS_RAW_TYPEDOC_README],
-        targets=[P.DOCS_TS_MYST_INDEX, *P.DOCS_TS_MODULES],
-        actions=[
+    yield {
+        "name": "typedoc:mystify",
+        "doc": "transform raw typedoc into myst markdown",
+        "file_dep": [P.DOCS_RAW_TYPEDOC_README],
+        "targets": [P.DOCS_TS_MYST_INDEX, *P.DOCS_TS_MODULES],
+        "actions": [
             P.mystify,
             [
                 "jlpm",
@@ -872,7 +863,7 @@ def task_docs():
                 P.DOCS_TS_MYST_INDEX.parent,
             ],
         ],
-    )
+    }
 
     sphinx_deps = [
         *P.ALL_DOCS_STATIC,
@@ -885,27 +876,27 @@ def task_docs():
     ]
     sphinx_task_deps = []
 
-    yield dict(
-        name="sphinx",
-        doc="build the documentation site with sphinx",
-        file_dep=sphinx_deps,
-        task_dep=sphinx_task_deps,
-        actions=[
-            ["sphinx-build", *P.SPHINX_ARGS, "-j8", "-b", "html", P.DOCS, P.DOCS_BUILD]
+    yield {
+        "name": "sphinx",
+        "doc": "build the documentation site with sphinx",
+        "file_dep": sphinx_deps,
+        "task_dep": sphinx_task_deps,
+        "actions": [
+            ["sphinx-build", *P.SPHINX_ARGS, "-j8", "-b", "html", P.DOCS, P.DOCS_BUILD],
         ],
-        targets=[P.DOCS_BUILDINFO],
-    )
+        "targets": [P.DOCS_BUILDINFO],
+    }
 
 
 @doit.create_after("docs")
 def task_check():
-    """check built artifacts"""
+    """Check built artifacts."""
     file_dep = [*P.DOCS_BUILD.rglob("*.html")]
     yield P._ok(
-        dict(
-            name="links",
-            file_dep=[*file_dep, P.DOCS_BUILDINFO],
-            actions=[
+        {
+            "name": "links",
+            "file_dep": [*file_dep, P.DOCS_BUILDINFO],
+            "actions": [
                 [
                     "pytest-check-links",
                     "--check-anchors",
@@ -914,23 +905,23 @@ def task_check():
                     "--check-links-ignore",
                     "https://",
                     *[p for p in file_dep if p.name not in ["schema.html"]],
-                ]
+                ],
             ],
-        ),
+        },
         P.OK_LINK_CHECK,
     )
 
 
 def task_provision():
-    """ensure the ipydrawio-export server has been provisioned with npm (ick)"""
+    """Ensure the ipydrawio-export server has been provisioned with npm (ick)."""
     return P._ok(
-        dict(
-            file_dep=[*P.OK_SERVEREXT.values()],
-            actions=[
+        {
+            "file_dep": [*P.OK_SERVEREXT.values()],
+            "actions": [
                 ["jupyter", "ipydrawio-export", "--version"],
                 ["jupyter", "ipydrawio-export", "provision"],
             ],
-        ),
+        },
         P.OK_PROVISION,
     )
 
@@ -981,12 +972,12 @@ def _pycov_html(setup_py, *pycov_html_args):
 
 
 def task_test():
-    """run tests"""
+    """Run tests."""
     if not P.TESTING_IN_CI:
         yield P._ok(
-            dict(
-                name="integrity",
-                file_dep=[
+            {
+                "name": "integrity",
+                "file_dep": [
                     *P.OK_SERVEREXT.values(),
                     *P.PY_SDIST.values(),
                     *P.PY_WHEEL.values(),
@@ -998,10 +989,10 @@ def task_test():
                     P.RECIPE,
                     P.SCRIPTS / "integrity.py",
                 ],
-                actions=[
-                    ["python", "-m", "pytest", "--pyargs", "scripts.integrity", "-vv"]
+                "actions": [
+                    ["python", "-m", "pytest", "--pyargs", "scripts.integrity", "-vv"],
                 ],
-            ),
+            },
             P.OK_INTEGRITY,
         )
 
@@ -1022,25 +1013,25 @@ def task_test():
             pytest_args += ["-n", "auto"]
 
         yield P._ok(
-            dict(
-                name=f"pytest:{pkg}",
-                uptodate=[config_changed(dict(PYTEST_ARGS=P.PYTEST_ARGS))],
-                file_dep=[
+            {
+                "name": f"pytest:{pkg}",
+                "uptodate": [config_changed({"PYTEST_ARGS": P.PYTEST_ARGS})],
+                "file_dep": [
                     *P.PY_SRC[pkg],
                     P.PY_SETUP_CFG[pkg],
                     *P.PY_TEST_DEP.get(pkg, []),
                     P.OK_PROVISION,
                     P.OK_PIP_CHECK,
                 ],
-                actions=[
+                "actions": [
                     (P.delete_some, [html]),
                     _pytest(setup, pycov_args, pytest_args),
                     _pycov_combine(setup),
                     _pycov_html(setup, *pycov_html_args),
                     _pycov_report(setup),
                 ],
-                targets=[html],
-            ),
+                "targets": [html],
+            },
             P.OK_PYTEST[pkg],
         )
 
@@ -1063,26 +1054,26 @@ def task_test():
 
         for tmpl in P.ATEST_TEMPLATES:
             dest = tmpl.parent / tmpl.name.replace(".j2", "")
-            yield dict(
-                name=f"template:{tmpl.relative_to(P.ATEST)}",
-                file_dep=[tmpl, *demo_files],
-                targets=[dest],
-                actions=[
+            yield {
+                "name": f"template:{tmpl.relative_to(P.ATEST)}",
+                "file_dep": [tmpl, *demo_files],
+                "targets": [dest],
+                "actions": [
                     (P.template_one, [tmpl, dest]),
                     ["robotidy", dest],
                 ],
-            )
+            }
 
     yield P._ok(
-        dict(
-            name="robot",
-            uptodate=[
+        {
+            "name": "robot",
+            "uptodate": [
                 config_changed(
-                    dict(ATEST_ARGS=P.ATEST_ARGS, ATEST_ATTEMPT=P.ATEST_ATTEMPT)
-                )
+                    {"ATEST_ARGS": P.ATEST_ARGS, "ATEST_ATTEMPT": P.ATEST_ATTEMPT},
+                ),
             ],
-            file_dep=file_dep,
-            actions=[["python", "-m", "scripts.atest"]],
-        ),
+            "file_dep": file_dep,
+            "actions": [["python", "-m", "scripts.atest"]],
+        },
         P.OK_ATEST,
     )

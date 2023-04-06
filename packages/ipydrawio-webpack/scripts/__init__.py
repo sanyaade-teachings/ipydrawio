@@ -1,4 +1,4 @@
-""" handle drawio sources for embedding in JupyterLab"""
+"""handle drawio sources for embedding in JupyterLab."""
 
 # Copyright 2023 ipydrawio contributors
 #

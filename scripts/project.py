@@ -1,6 +1,6 @@
-""" important project paths
+"""important project paths.
 
-    this should not import anything not in py36+ stdlib, or any local paths
+this should not import anything not in py36+ stdlib, or any local paths
 """
 
 # Copyright 2023 ipydrawio contributors
@@ -100,8 +100,8 @@ WIN = PLATFORM == "Windows"
 OSX = PLATFORM == "Darwin"
 UNIX = not WIN
 PREFIX = Path(sys.prefix)
-ENC = dict(encoding="utf-8")
-JSON_FMT = dict(indent=2, sort_keys=True)
+ENC = {"encoding": "utf-8"}
+JSON_FMT = {"indent": 2, "sort_keys": True}
 
 BUILDING_IN_CI = bool(json.loads(os.environ.get("BUILDING_IN_CI", "0")))
 TESTING_IN_CI = bool(json.loads(os.environ.get("TESTING_IN_CI", "0")))
@@ -140,7 +140,6 @@ DIST = ROOT / "dist"
 DOCS = ROOT / "docs"
 README = ROOT / "README.md"
 CHANGELOG = ROOT / "CHANGELOG.md"
-SETUP_CFG = ROOT / "setup.cfg"
 
 # external URLs
 # archive.org template
@@ -149,7 +148,7 @@ HTTP_CACHE = BUILD / ".requests-cache"
 
 
 def A_O(archive_id, url, cache_bust=CACHE_EPOCH):
-    return "https://web.archive.org/web/{}/{}#{}".format(archive_id, url, cache_bust)
+    return f"https://web.archive.org/web/{archive_id}/{url}#{cache_bust}"
 
 
 DIA_FAQ = "https://www.diagrams.net/doc/faq"
@@ -236,7 +235,7 @@ JS_PKG_NOT_META = {k: v for k, v in JS_PKG_JSON.items() if k.startswith("_")}
 
 
 def _norm_js_version(pkg):
-    """undo some package weirdness"""
+    """Undo some package weirdness."""
     v = pkg["version"]
     final = ""
     # alphas, beta use dashes
@@ -271,7 +270,7 @@ JS_TSSRC = {
         [
             *(v.parent).rglob("*.ts"),
             *(v.parent / "src").rglob("*.tsx"),
-        ]
+        ],
     )
     for k, v in JS_TSCONFIG.items()
 }
@@ -357,7 +356,6 @@ SERVER_EXT = {
     if sorted(v.parent.glob("src/*/serverextension.py"))
 }
 
-# package: [dependencies, targets]
 JS_PKG_PACK = {
     k: [[v.parent / "package.json", *v.parent.glob("schema/*.json")], [v]]
     for k, v in JS_TARBALL.items()
@@ -436,7 +434,7 @@ DOCS_MD = _clean(
         p
         for p in DOCS.rglob("*.md")
         if not (p.parent.name == "ts" or p.parent.parent.name == "ts")
-    ]
+    ],
 )
 DOCS_DIO = _clean(DOCS.rglob("*.dio"), DOCS.rglob("*.dio.svg"))
 DOCS_RST = _clean(DOCS.rglob("*.rst"))
@@ -510,7 +508,7 @@ ALL_JSON = [
 ]
 ALL_DIO = [*DOCS_DIO, *IPJT_TMPL_DIO, *ATEST_DIO]
 ALL_MD = [*ROOT.glob("*.md"), *PACKAGES.glob("*/*.md"), *DOCS_MD, *GH.rglob("*.md")]
-ALL_SETUP_CFG = [SETUP_CFG, *PY_SETUP_CFG.values()]
+ALL_SETUP_CFG = [*PY_SETUP_CFG.values()]
 ALL_JS = [PACKAGES / ".eslintrc.js"]
 ALL_TS = sum(JS_TSSRC.values(), [])
 ALL_SRC_CSS = [*sum(JS_STYLE.values(), [])]
@@ -575,12 +573,11 @@ OK_PIP_CHECK = BUILD / "pip.check.ok"
 OK_INTEGRITY = BUILD / "integrity.ok"
 OK_SUBMODULES = BUILD / "submodules.ok"
 OK_BLACK = BUILD / "black.ok"
+OK_RUFF = BUILD / "ruff.ok"
 OK_FLAKE8 = BUILD / "flake8.ok"
-OK_ISORT = BUILD / "isort.ok"
 OK_SSORT = BUILD / "ssort.ok"
 OK_LINT = BUILD / "lint.ok"
 OK_ROBOTIDY = BUILD / "robot.tidy.ok"
-OK_PYFLAKES = BUILD / "pyflakes.ok"
 OK_PRETTIER = BUILD / "prettier.ok"
 OK_ESLINT = BUILD / "eslint.ok"
 OK_JS_BUILD_PRE = BUILD / "js.build.pre.ok"
@@ -638,7 +635,7 @@ ENV_INHERITS = {
 
 
 def get_atest_stem(attempt=1, extra_args=None, browser=None):
-    """get the directory in ATEST_OUT for this platform/apps"""
+    """Get the directory in ATEST_OUT for this platform/apps."""
     browser = browser or "headlessfirefox"
     extra_args = extra_args or []
 
@@ -667,17 +664,17 @@ def ensure_session():
 def fetch_one(url, path):
     import doit
 
-    yield dict(
-        uptodate=[doit.tools.config_changed({"url": url})],
-        name=path.name,
-        actions=[
+    yield {
+        "uptodate": [doit.tools.config_changed({"url": url})],
+        "name": path.name,
+        "actions": [
             (doit.tools.create_folder, [HTTP_CACHE]),
             (doit.tools.create_folder, [path.parent]),
             (ensure_session, []),
             lambda: [path.write_bytes(_SESSION.get(url).content), None][-1],
         ],
-        targets=[path],
-    )
+        "targets": [path],
+    }
 
 
 def patch_one_env(source, target):
@@ -694,7 +691,7 @@ def patch_one_env(source, target):
                 new_source[1],
                 comment.rstrip(),
                 old_target[2],
-            ]
+            ],
         ),
         **ENC,
     )
@@ -712,11 +709,11 @@ def typedoc_conf():
                     else p.parent / "lib/index.d.ts"
                 )
                 .relative_to(PACKAGES)
-                .as_posix()
+                .as_posix(),
             )
             for p in JS_PKG_JSON.values()
             if p.parent.name not in NO_TYPEDOC
-        ]
+        ],
     )
 
     if json.dumps(original_entry_points) != json.dumps(new_entry_points):
@@ -743,7 +740,7 @@ def typedoc_conf():
 
 
 def mystify():
-    """unwrap monorepo docs into per-module docs"""
+    """Unwrap monorepo docs into per-module docs."""
     if DOCS_TS.exists():
         shutil.rmtree(DOCS_TS)
 
@@ -809,7 +806,7 @@ def mystify():
                 "classes/*",
                 "```",
                 MD_FOOTER,
-            ]
+            ],
         ),
         **ENC,
     )
@@ -869,8 +866,10 @@ def _copy_one(src, dest):
             dest.unlink()
     if src.is_dir():
         shutil.copytree(src, dest)
+        return None
     else:
         shutil.copy2(src, dest)
+        return None
 
 
 def _lite(lite_actions, extra_args=[]):
@@ -890,10 +889,11 @@ def _lite(lite_actions, extra_args=[]):
         if subprocess.call(act_args, cwd=DEMO) != 0:
             print("FAILED", *act_args)
             return False
+    return None
 
 
 def _sync_lite_config(from_env, to_json, marker, extra_federated, extra_pyolite):
-    """use conda list to derive tarball names"""
+    """Use conda list to derive tarball names."""
     raw_lock = subprocess.check_output(["conda", "list", "--explicit"])
     ext_packages = [
         p.strip().split(" ")[0]
@@ -902,7 +902,7 @@ def _sync_lite_config(from_env, to_json, marker, extra_federated, extra_pyolite)
     ]
 
     federated_extensions = sorted(
-        ["../" + str(extra.relative_to(ROOT).as_posix()) for extra in extra_federated]
+        ["../" + str(extra.relative_to(ROOT).as_posix()) for extra in extra_federated],
     )
     piplite_urls = [
         "../" + str(extra.relative_to(ROOT).as_posix()) for extra in extra_pyolite
@@ -985,7 +985,7 @@ def template_one(src, dest):
 
 
 def build_one_flit(py_pkg):
-    """attempt to build one package with flit: on RTD, allow doing a build in /tmp"""
+    """Attempt to build one package with flit: on RTD, allow doing a build in /tmp."""
     import tempfile
 
     print(f"[{py_pkg.name}] trying in-tree build...", flush=True)
@@ -1039,11 +1039,11 @@ def _make_one_js_task(script, data, pkg_json, **task_info):
     from doit.tools import CmdAction
 
     name = f"""js:{script}:{pkg_json.parent.name}"""
-    task = dict(
-        name=name,
-        actions=[CmdAction([*JLPM, script], cwd=pkg_json.parent, shell=False)],
-        file_dep=[YARN_INTEGRITY, pkg_json],
-    )
+    task = {
+        "name": name,
+        "actions": [CmdAction([*JLPM, script], cwd=pkg_json.parent, shell=False)],
+        "file_dep": [YARN_INTEGRITY, pkg_json],
+    }
 
     _merge_one_task(task, data.get("scripts_doit", {}).get(script, {}), pkg_json.parent)
     _merge_one_task(task, task_info)
@@ -1064,7 +1064,8 @@ def package_json_tasks(task_prefix: str, script: str, target: Path, **task_info)
 
     if task_dep:
         task = _ok(
-            dict(name=f"js:{script}", task_dep=task_dep, actions=[lambda: True]), target
+            {"name": f"js:{script}", "task_dep": task_dep, "actions": [lambda: True]},
+            target,
         )
         _merge_one_task(task, task_info)
         yield task

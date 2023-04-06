@@ -1,4 +1,4 @@
-""""main importable for ipydrawio-widgets"""
+""""main importable for ipydrawio-widgets."""
 
 # Copyright 2023 ipydrawio contributors
 #

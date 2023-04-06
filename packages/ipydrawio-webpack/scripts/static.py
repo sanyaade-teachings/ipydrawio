@@ -1,4 +1,4 @@
-"""update the vendored drawio"""
+"""update the vendored drawio."""
 
 # Copyright 2023 ipydrawio contributors
 #
@@ -69,14 +69,16 @@ def update_one_static(pkg, dio, static):
         if not path.exists():
             continue
         lines += [
-            TMPL.format(str(path.as_posix()).replace(str(dio.as_posix()), "")).strip()
+            TMPL.format(str(path.as_posix()).replace(str(dio.as_posix()), "")).strip(),
         ]
 
-    assert lines
+    if not lines:
+        raise ValueError
 
     static.write_text("\n".join([HEADER.format(pkg=pkg), *lines]))
     print(
-        f"    ... {static.relative_to(PACKAGES)} wrote {len(lines)} lines", flush=True
+        f"    ... {static.relative_to(PACKAGES)} wrote {len(lines)} lines",
+        flush=True,
     )
 
 

@@ -44,7 +44,8 @@ def patch():
     out = subprocess.check_output(["jlpm", "--silent", "json2ts", IN_FILE])
     OUT_FILE.write_text("\n".join([HEADER, out.decode("utf-8")]), encoding="utf-8")
     subprocess.check_call(
-        ["jlpm", "prettier", "--write", OUT_FILE.resolve()], cwd=str(ROOT)
+        ["jlpm", "prettier", "--write", OUT_FILE.resolve()],
+        cwd=str(ROOT),
     )
     return 0
 

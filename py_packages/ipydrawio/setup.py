@@ -1,4 +1,4 @@
-"""dynamic setup information for setuptools, also see package.json and setup.cfg"""
+"""dynamic setup information for setuptools, also see package.json and setup.cfg."""
 
 # Copyright 2023 ipydrawio contributors
 #
@@ -42,7 +42,7 @@ for package_json in EXT.glob("*/package.json"):
             (
                 f"""{SHARE}/{pkg["name"]}/{parent}""",
                 [str(path.relative_to(HERE).as_posix())],
-            )
+            ),
         ]
 
 

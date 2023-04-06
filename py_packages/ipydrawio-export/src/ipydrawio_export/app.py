@@ -1,4 +1,4 @@
-"""CLI for ipydrawio-export"""
+"""CLI for ipydrawio-export."""
 
 # Copyright 2023 ipydrawio contributors
 #
@@ -61,7 +61,8 @@ class ManagedApp(BaseApp):
 
 
 class ProvisionApp(ManagedApp):
-    """pre-provision drawio export tools"""
+
+    """pre-provision drawio export tools."""
 
     show_workdir = T.Bool(False).tag(config=True)
 
@@ -86,7 +87,8 @@ class ProvisionApp(ManagedApp):
 
 
 class PDFApp(ManagedApp):
-    """export a drawio as PDF"""
+
+    """export a drawio as PDF."""
 
     dio_files = T.Tuple()
 
@@ -104,7 +106,7 @@ class PDFApp(ManagedApp):
                 pdf_request = {}
                 if dio.name.endswith(".png"):
                     pdf_request["xml"] = base64.b64encode(dio.read_bytes()).decode(
-                        "utf-8"
+                        "utf-8",
                     )
                 elif dio.name.endswith(".ipynb"):
                     meta = json.loads(dio.read_text(encoding="utf-8"))["metadata"]
@@ -128,13 +130,14 @@ class PDFApp(ManagedApp):
 
 
 class DrawioExportApp(BaseApp):
-    """ipydrawio export tools"""
+
+    """ipydrawio export tools."""
 
     name = "ipydrawio-export"
-    subcommands = dict(
-        provision=(ProvisionApp, ProvisionApp.__doc__.splitlines()[0]),
-        pdf=(PDFApp, PDFApp.__doc__.splitlines()[0]),
-    )
+    subcommands = {
+        "provision": (ProvisionApp, ProvisionApp.__doc__.splitlines()[0]),
+        "pdf": (PDFApp, PDFApp.__doc__.splitlines()[0]),
+    }
 
 
 main = launch_instance = DrawioExportApp.launch_instance

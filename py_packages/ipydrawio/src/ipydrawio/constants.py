@@ -1,4 +1,4 @@
-"""constants for ipydrawio"""
+"""constants for ipydrawio."""
 
 # Copyright 2023 ipydrawio contributors
 #
@@ -30,9 +30,9 @@ XML_EXTENSIONS = [".drawio", ".dio", ".svg", ".xml"]
 MX_CLEAN_ATTRS = ["host", "modified", "agent", "etag"]
 
 #: XML entities to preserve in diagraml XML
-MX_PRESERVE_ENTITIES = dict(
-    ATTR_NEWLINE="&#10;",
-)
+MX_PRESERVE_ENTITIES = {
+    "ATTR_NEWLINE": "&#10;",
+}
 
 #: Key set in notebook.ipynb#/metadata/
 IPYNB_METADATA = "@deathbeds/ipydrawio"

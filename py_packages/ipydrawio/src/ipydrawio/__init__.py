@@ -1,4 +1,4 @@
-""""main importable for ipydrawio"""
+""""main importable for ipydrawio."""
 
 # Copyright 2023 ipydrawio contributors
 #
@@ -22,10 +22,7 @@ from ._version import __ext__, __js__, __ns__, __prefix__, __version__
 
 def _ipydrawio_labextension_paths(prefix=__prefix__, extensions=__ext__):
     """Reused by other ipydrawio extensions with other prefixes/extensions."""
-    labextension_paths = [
-        dict(src=str(prefix / e), dest=f"{__ns__}/{e}") for e in extensions
-    ]
-    return labextension_paths
+    return [{"src": str(prefix / e), "dest": f"{__ns__}/{e}"} for e in extensions]
 
 
 _jupyter_labextension_paths = _ipydrawio_labextension_paths
