@@ -1,6 +1,7 @@
 # basically ipydrawio[all,test] and ipydrawio-export... plus robot, pyyaml
 black
 doit
+flit
 ipywidgets >=7.6,<9
 jsonpointer
 jupyterlab ==3.*
