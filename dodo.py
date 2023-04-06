@@ -15,7 +15,7 @@ maybe before you push
     doit -n8 lint
 """
 
-# Copyright 2022 ipydrawio contributors
+# Copyright 2023 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -736,10 +736,6 @@ def task_watch():
 
 
 def task_demo():
-    if not P.LITE_PREFIX:
-        print("jupyterlite not found, this might be okay", flush=True)
-        return
-
     demo_dest = [*P.DEMO.glob("*.json")]
     demo_tasks = []
     final_dest = []
@@ -879,19 +875,15 @@ def task_docs():
     )
 
     sphinx_deps = [
+        *P.ALL_DOCS_STATIC,
+        *P.DOCS_SRC,
+        P.DEMO_ARCHIVE,
+        P.DEMO_HASHES,
         P.DOCS_CONF,
         P.DOCS_FAVICON_ICO,
         P.OK_PIP_CHECK,
-        *P.DOCS_SRC,
-        *P.ALL_DOCS_STATIC,
     ]
     sphinx_task_deps = []
-
-    if P.LITE_PREFIX:
-        sphinx_deps += [
-            P.DEMO_HASHES,
-            P.DEMO_ARCHIVE,
-        ]
 
     yield dict(
         name="sphinx",

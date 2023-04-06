@@ -3,7 +3,7 @@
     this should not import anything not in py36+ stdlib, or any local paths
 """
 
-# Copyright 2022 ipydrawio contributors
+# Copyright 2023 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -50,12 +50,9 @@ try:
 except ImportError:
     pass
 
-LITE_PREFIX = None
 SOURCE_DATE_EPOCH = None
 
 try:
-    __import__("jupyterlite_core.manager")
-    LITE_PREFIX = "demo_"
     SOURCE_DATE_EPOCH = (
         subprocess.check_output(["git", "log", "-1", "--format=%ct"])
         .decode("utf-8")
@@ -461,7 +458,7 @@ DOCS_RAW_TYPEDOC = BUILD / "typedoc"
 DOCS_RAW_TYPEDOC_README = DOCS_RAW_TYPEDOC / "README.md"
 MD_FOOTER = """
 ```
-Copyright 2022 ipydrawio contributors
+Copyright 2023 ipydrawio contributors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

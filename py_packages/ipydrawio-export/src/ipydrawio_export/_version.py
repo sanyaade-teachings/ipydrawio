@@ -1,6 +1,6 @@
 """source of truth for ipydrawio version"""
 
-# Copyright 2022 ipydrawio contributors
+# Copyright 2023 ipydrawio contributors
 # Copyright 2020 jupyterlab-drawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");

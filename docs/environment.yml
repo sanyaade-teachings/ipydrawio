@@ -1,6 +1,6 @@
 # ReadTheDocs-ready environment, assuming CONDA_USE_MAMBA feature flag
 
-# Copyright 2022 ipydrawio contributors
+# Copyright 2023 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,6 +26,9 @@ dependencies:
   - autodoc-traits
   - docutils >=0.18.1
   - jupyter-server-mathjax
+  - jupyterlite-core ==0.1.0
+  - jupyterlite-core-with-libarchive
+  - jupyterlite-pyodide-kernel ==0.0.6
   - myst-nb
   - pkginfo
   - pydata-sphinx-theme >=0.13.3,<0.14.0
@@ -36,9 +39,6 @@ dependencies:
   - sphinx-design
   - sphinx-jsonschema
   - sphinxext-rediraffe
-  - ssort
-  - pip:
-      - jupyterlite ==0.1.0
 
   ### ipydrawio-docs-deps ###
 
@@ -72,7 +72,6 @@ dependencies:
   - robotframework-lint
   - robotframework-tidy
   - ruff
-  - ssort
   # unit testing
   - pytest
   - pytest-console-scripts

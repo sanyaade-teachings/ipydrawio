@@ -94,7 +94,7 @@ The vendored code from [@jgraph/draw-image-export2][] is also licensed under the
 [Apache-2.0][draw2-license] License.
 
 ```
-Copyright 2022 ipydrawio contributors
+Copyright 2023 ipydrawio contributors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
