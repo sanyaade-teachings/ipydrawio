@@ -42,6 +42,7 @@ from traitlets.config import LoggingConfigurable
 from .constants import (
     DOT_CHROMIUM,
     DRAWIO_APP,
+    DRAWIO_EXPORT_JS,
     DRAWIO_NODE_ENV_VAR,
     DRAWIO_PORT_ENV_VAR,
     DRAWIO_SERVER_URL_ENV_VAR,
@@ -324,16 +325,16 @@ class IPyDrawioExportManager(LoggingConfigurable):
     def _start_process(self):
         env = dict(os.environ)
         env_updates = {
-            DRAWIO_PORT_ENV_VAR: str(self.drawio_port),
+            DRAWIO_PORT_ENV_VAR: self.drawio_port,
             DRAWIO_SERVER_URL_ENV_VAR: self.drawio_server_url,
             DRAWIO_NODE_ENV_VAR: "production",
             PUPPETEER_CACHE_DIR_ENV_VAR: self.drawio_export_chromium,
         }
-        env.update(env_updates)
+        env.update({k: f"{v}" for k, v in env_updates.items()})
 
         self.log.debug(f"[ipydrawio-export] extra env: {env_updates}")
 
-        args = [NODE, self.drawio_export_app / "export.js"]
+        args = [NODE, self.drawio_export_app / DRAWIO_EXPORT_JS]
         self._server = subprocess.Popen([*map(str, args)], env=env)
         return self._server
 
