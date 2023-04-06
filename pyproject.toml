@@ -75,3 +75,6 @@ select = [
 "py_packages/*/setup.py" = ["INP001"]
 "py_packages/ipydrawio/src/ipydrawio/clean.py" = ["C901", "PLR0912", "ARG001", "EM102"]
 "py_packages/ipydrawio-export/src/ipydrawio_export/manager.py" = ["SIM105"]
+
+[tool.robocop]
+exclude = ["0201", "0302", "0503", "0914", "0319", "0701", "0913", "0203", "0508", "0911", "0301", "0505", "0507"]

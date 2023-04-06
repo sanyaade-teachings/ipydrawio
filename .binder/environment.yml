@@ -54,8 +54,9 @@ dependencies:
   - autodoc-traits
   - docutils >=0.18.1
   - jupyter-server-mathjax
-  - jupyterlite ==0.1.0
+  - jupyterlite-core ==0.1.0
   - jupyterlite-core-with-libarchive
+  - jupyterlite-pyodide-kernel ==0.0.6
   - myst-nb
   - pkginfo
   - pydata-sphinx-theme >=0.13.3,<0.14.0
@@ -95,8 +96,8 @@ dependencies:
   - black
   - nbqa
   - pyyaml
-  - robotframework-lint
   - robotframework-tidy
+  - robotframework-robocop
   - ruff
   - ssort
   # unit testing

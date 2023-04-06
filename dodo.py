@@ -79,9 +79,12 @@ def task_fetch():
 
 def task_dist():
     """Create a minimum viable release product."""
+    file_dep = [P.SHA256SUMS]
+    if not P.BUILDING_IN_CI:
+        file_dep += [P.OK_INTEGRITY, P.OK_LINT]
     return {
         "uptodate": [lambda: False],
-        "file_dep": [P.OK_INTEGRITY, P.SHA256SUMS, P.OK_LINT],
+        "file_dep": file_dep,
         "actions": [lambda: print(P.SHA256SUMS.read_text())],
     }
 
@@ -267,7 +270,7 @@ def task_setup():
 
 def task_lint():
     """Format all source files."""
-    if P.TESTING_IN_CI:
+    if P.TESTING_IN_CI or P.BUILDING_IN_CI:
         return
 
     rel_py = [p.relative_to(P.ROOT) for p in P.ALL_PY]
@@ -414,17 +417,17 @@ def task_lint():
 
     yield P._ok(
         {
-            "name": "robot:lint",
+            "name": "robot:cop",
             "file_dep": [*P.ALL_ROBOT, P.OK_ROBOTIDY],
-            "actions": [["rflint", *P.RFLINT_OPTS, *P.ALL_ROBOT]],
+            "actions": [["robocop", *P.ALL_ROBOT]],
         },
-        P.OK_RFLINT,
+        P.OK_ROBOCOP,
     )
 
     yield P._ok(
         {
             "name": "robot:dryrun",
-            "file_dep": [*P.ALL_ROBOT, P.OK_RFLINT],
+            "file_dep": [*P.ALL_ROBOT, P.OK_ROBOCOP],
             "actions": [[*P.PYM, "scripts.atest", "--dryrun"]],
         },
         P.OK_ROBOT_DRYRUN,

@@ -35,7 +35,7 @@ env:
 
   # our stuff
   ATEST_RETRIES: '3'
-  CACHE_EPOCH: '5'
+  CACHE_EPOCH: '6'
   CONDA_BUILDERER: mambabuild
 
 jobs:
@@ -356,6 +356,10 @@ jobs:
           python-version: ${{ matrix.python-version }}
           environment-file: docs/environment.yml
           use-mamba: true
+
+      - name: lint
+        shell: bash -l {0}
+        run: doit -n8 lint || doit lint
 
       - name: build
         shell: bash -l {0}

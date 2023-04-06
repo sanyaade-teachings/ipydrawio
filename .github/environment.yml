@@ -44,8 +44,8 @@ dependencies:
   - black
   - nbqa
   - pyyaml
-  - robotframework-lint
   - robotframework-tidy
+  - robotframework-robocop
   - ruff
   - ssort
   # unit testing
