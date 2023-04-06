@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
 
 from ipydrawio.constants import IPYNB_METADATA
 
@@ -41,6 +40,12 @@ __all__ = [
     "WORK_DIR",
 ]
 
-PUPPETEER_CACHE_DIR_ENV_VAR = "IPYDRAWIO_PUPPETEER_CACHE_DIR"
-PUPPETEER_CACHE_DIR = os.environ.get(PUPPETEER_CACHE_DIR_ENV_VAR)
+# drawio export server
+DRAWIO_NODE_ENV_VAR = "NODE_ENV"
+DRAWIO_SERVER_URL_ENV_VAR = "DRAWIO_SERVER_URL"
+DRAWIO_PORT_ENV_VAR = "PORT"
+IPYDRAWIO_PORT_ENV_VAR = "IPYDRAWIO_PORT"
+PUPPETEER_CACHE_DIR_ENV_VAR = "PUPPETEER_CACHE_DIR"
+IPYDRAWIO_PUPPETEER_CACHE_DIR_ENV_VAR = "IPYDRAWIO_PUPPETEER_CACHE_DIR"
 PUPPETEER_INSTALL = "install.js"
+DOT_CHROMIUM = ".chromium"

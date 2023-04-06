@@ -40,11 +40,17 @@ from traitlets import Bool, Dict, Instance, Int, Unicode, default
 from traitlets.config import LoggingConfigurable
 
 from .constants import (
+    DOT_CHROMIUM,
     DRAWIO_APP,
+    DRAWIO_NODE_ENV_VAR,
+    DRAWIO_PORT_ENV_VAR,
+    DRAWIO_SERVER_URL_ENV_VAR,
     ENV_IPYDRAWIO_DATA_DIR,
     ENV_JUPYTER_DATA_DIR,
+    IPYDRAWIO_PORT_ENV_VAR,
+    IPYDRAWIO_PUPPETEER_CACHE_DIR_ENV_VAR,
     PNG_DRAWIO_INFO,
-    PUPPETEER_CACHE_DIR,
+    PUPPETEER_CACHE_DIR_ENV_VAR,
     PUPPETEER_INSTALL,
     WORK_DIR,
 )
@@ -233,7 +239,13 @@ class IPyDrawioExportManager(LoggingConfigurable):
 
     @default("drawio_port")
     def _default_drawio_port(self):
-        port = self.get_unused_port()
+        port = os.environ.get(
+            IPYDRAWIO_PORT_ENV_VAR,
+            os.environ.get(DRAWIO_PORT_ENV_VAR),
+        )
+        if port is None:
+            self.log.debug("[ipydrawio-export] getting unused port...")
+            port = self.get_unused_port()
         self.log.debug(f"[ipydrawio-export] port: {port}")
         return port
 
@@ -312,9 +324,10 @@ class IPyDrawioExportManager(LoggingConfigurable):
     def _start_process(self):
         env = dict(os.environ)
         env_updates = {
-            "PORT": str(self.drawio_port),
-            "DRAWIO_SERVER_URL": self.drawio_server_url,
-            "NODE_ENV": "production",
+            DRAWIO_PORT_ENV_VAR: str(self.drawio_port),
+            DRAWIO_SERVER_URL_ENV_VAR: self.drawio_server_url,
+            DRAWIO_NODE_ENV_VAR: "production",
+            PUPPETEER_CACHE_DIR_ENV_VAR: self.drawio_export_chromium,
         }
         env.update(env_updates)
 
@@ -362,11 +375,13 @@ class IPyDrawioExportManager(LoggingConfigurable):
 
     @property
     def drawio_export_chromium(self):
-        return (
-            self.drawio_export_app / ".chromium"
-            if PUPPETEER_CACHE_DIR is None
-            else Path(PUPPETEER_CACHE_DIR)
+        cache_dir = os.environ.get(
+            IPYDRAWIO_PUPPETEER_CACHE_DIR_ENV_VAR,
+            os.environ.get(PUPPETEER_CACHE_DIR_ENV_VAR),
         )
+        if cache_dir is None:
+            cache_dir = self.drawio_export_app / DOT_CHROMIUM
+        return Path(cache_dir)
 
     @property
     def drawio_export_puppeteer(self):
@@ -380,7 +395,7 @@ class IPyDrawioExportManager(LoggingConfigurable):
     def provision(self, force=False):  # pragma: no cover
         self.is_provisioning = True
         env = dict(**os.environ)
-        env["PUPPETEER_CACHE_DIR"] = str(self.drawio_export_chromium)
+        env[PUPPETEER_CACHE_DIR_ENV_VAR] = str(self.drawio_export_chromium)
         if not self.drawio_export_app.exists():
             if not self.drawio_export_app.parent.exists():
                 self.drawio_export_app.parent.mkdir(parents=True)

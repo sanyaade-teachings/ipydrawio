@@ -19,7 +19,7 @@ import json
 from pathlib import Path
 
 import traitlets as T
-from jupyter_core.application import base_flags
+from ipydrawio.app import TRIMMED_FLAGS
 from tornado import ioloop
 from traitlets.config import Application
 
@@ -30,6 +30,8 @@ from .manager import IPyDrawioExportManager
 
 class BaseApp(Application):
     version = __version__
+
+    flags = TRIMMED_FLAGS
 
     @property
     def description(self):  # pragma: no cover
@@ -67,7 +69,7 @@ class ProvisionApp(ManagedApp):
     show_workdir = T.Bool(False).tag(config=True)
 
     flags = dict(
-        **base_flags,
+        **TRIMMED_FLAGS,
         workdir=(
             {"ProvisionApp": {"show_workdir": True}},
             "Print the export working directory",

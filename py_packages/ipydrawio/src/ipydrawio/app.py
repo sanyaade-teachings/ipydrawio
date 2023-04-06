@@ -24,9 +24,17 @@ from ._version import __version__
 from .clean import clean_drawio_file
 from .constants import MX_CLEAN_ATTRS
 
+TRIMMED_FLAGS = {
+    name: flag
+    for name, flag in base_flags.items()
+    if name not in ["show-config", "show-config-json", "generate-config", "y"]
+}
+
 
 class BaseApp(JupyterApp):
     version = __version__
+
+    flags = TRIMMED_FLAGS
 
     @property
     def description(self):  # pragma: no cover
@@ -44,7 +52,7 @@ class CleanApp(BaseApp):
     tabs = T.Bool(False, help="indent with tabs instead of spaces").tag(config=True)
 
     flags = dict(
-        **base_flags,
+        **TRIMMED_FLAGS,
         **{
             "no-pretty": (
                 {"CleanApp": {"pretty": False}},
