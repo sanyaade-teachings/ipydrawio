@@ -121,7 +121,10 @@ jobs:
         run: doit list --all --status
 
       - name: build
-        run: doit dist || doit dist
+        run: doit -n8 dist || exit 0
+
+      - name: build (again, maybe)
+        run: doit dist
 
       - name: status
         run: doit list --all --status | sort
@@ -413,7 +416,7 @@ jobs:
 
       - name: build
         shell: bash -l {0}
-        run: doit build
+        run: doit -n4 build
 
       - name: build docs
         shell: bash -l {0}
