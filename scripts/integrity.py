@@ -90,25 +90,25 @@ def test_recipe_versions():
 
 
 @pytest.mark.parametrize(
-    "pointer,value",
+    ["pointer", "value"],
     [
-        ["output_archive", f"../build/demo/{P.DEMO_ARCHIVE.name}"],
-        [
-            "federated_extensions/0",
+        (
+            "/LiteBuildConfig/output_archive",
+            f"../build/demo/{P.DEMO_ARCHIVE.name}",
+        ),
+        (
+            "/LiteBuildConfig/federated_extensions/0",
             f"""../{P.PY_WHEEL["ipydrawio"].relative_to(P.ROOT)}""",
-        ],
-        [
-            "piplite_urls/0",
+        ),
+        (
+            "/PipliteAddon/piplite_urls/0",
             f"""../{P.PY_WHEEL["ipydrawio-widgets"].relative_to(P.ROOT)}""",
-        ],
+        ),
     ],
 )
 def test_demo_paths(the_demo_config, pointer, value):
     """are the version-specific paths correct in the demo configuration?"""
-    assert (
-        jsonpointer.resolve_pointer(the_demo_config, f"/LiteBuildConfig/{pointer}")
-        == value
-    )
+    assert jsonpointer.resolve_pointer(the_demo_config, pointer) == value
 
 
 @pytest.mark.parametrize("path", P.ALL_HEADERS)

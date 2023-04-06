@@ -14,9 +14,9 @@
 
 #### @deathbeds/ipydrawio-notebook 1.3.0
 
-#### @deathbeds/ipydrawio-webpack 21.0.200
+#### @deathbeds/ipydrawio-webpack 21.1.400
 
-- updates to [drawio v21.0.2](https://github.com/jgraph/drawio/releases/tag/v21.0.2)
+- updates to [drawio v21.0.4](https://github.com/jgraph/drawio/releases/tag/v21.0.4)
   - includes
     [mermaidjs 10.0.0](https://github.com/mermaid-js/mermaid/releases/tag/v10.0.0)
 

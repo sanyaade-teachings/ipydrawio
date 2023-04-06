@@ -31,6 +31,7 @@ dependencies:
   - matplotlib-base
   - nbgitpuller
   - networkx
+  - pandas <2
   - pygraphviz
   - python-graphviz
   - qrcode-artistic
@@ -57,16 +58,17 @@ dependencies:
   - jupyter-server-mathjax
   - myst-nb
   - pkginfo
-  - pydata-sphinx-theme >=0.13.0,<0.14.0
+  - pydata-sphinx-theme >=0.13.3,<0.14.0
   - pytest-check-links
   - python-libarchive-c
   - sphinx >=5,<6
   - sphinx-copybutton
+  - sphinx-design
   - sphinx-jsonschema
   - sphinxext-rediraffe
   - ssort
   - pip:
-      - jupyterlite ==0.1.0b18
+      - jupyterlite ==0.1.0
 
   ### ipydrawio-docs-deps ###
 
@@ -81,7 +83,7 @@ dependencies:
   - python # this gets patched in ci
   # run
   - ipywidgets >=7.6,<9
-  - jupyterlab >=3.5.0,<4.0.0a0
+  - jupyterlab >=3.6.3,<4.0.0a0
   - jupyterlab_widgets >=1
   - lxml
   - pillow
@@ -100,6 +102,8 @@ dependencies:
   - pyyaml
   - robotframework-lint
   - robotframework-tidy
+  - ruff
+  - ssort
   # unit testing
   - pytest
   - pytest-console-scripts

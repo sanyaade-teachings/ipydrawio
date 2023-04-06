@@ -1951,7 +1951,6 @@ import '!!file-loader?name=[path][name].[ext]&context=.!../dio/plugins/googledri
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/plugins/import.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/plugins/nextcloud.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/plugins/number.js';
-import '!!file-loader?name=[path][name].[ext]&context=.!../dio/plugins/p1.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/plugins/page.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/plugins/props.js';
 import '!!file-loader?name=[path][name].[ext]&context=.!../dio/plugins/rackF5.js';

@@ -54,7 +54,7 @@ LITE_PREFIX = None
 SOURCE_DATE_EPOCH = None
 
 try:
-    __import__("jupyterlite.manager")
+    __import__("jupyterlite_core.manager")
     LITE_PREFIX = "demo_"
     SOURCE_DATE_EPOCH = (
         subprocess.check_output(["git", "log", "-1", "--format=%ct"])
@@ -929,6 +929,8 @@ def _sync_lite_config(from_env, to_json, marker, extra_federated, extra_pyolite)
 
     config["LiteBuildConfig"].update(
         federated_extensions=federated_extensions,
+    )
+    config.setdefault("PipliteAddon", {}).update(
         piplite_urls=piplite_urls,
     )
 
@@ -966,7 +968,7 @@ def fetch_wheels():
         dest = DEMO_WHEELS / pkg.name
 
         if dest.exists():
-            if pkg.stat().st_mtime > dest.stat().st_mtime():
+            if pkg.stat().st_mtime > dest.stat().st_mtime:
                 dest.unlink()
             else:
                 continue

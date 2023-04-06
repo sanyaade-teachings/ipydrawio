@@ -31,8 +31,8 @@ PATCHES = {
         },
         {
             "name": "patch cors check for data URI",
-            "before": "this.editor.isCorsEnabledForUrl(y)||(m=",
-            "after": "(y.match(/^data:/) || this.editor.isCorsEnabledForUrl(y))||(m=",
+            "before": "this.editor.isCorsEnabledForUrl(v)||(m=",
+            "after": "(v.match(/^data:/) || this.editor.isCorsEnabledForUrl(v))||(m=",
         },
         {
             "name": "get mathjax from the ipydrawio-mathjax",
