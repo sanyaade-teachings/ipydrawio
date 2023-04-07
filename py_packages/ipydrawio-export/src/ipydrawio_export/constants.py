@@ -17,19 +17,28 @@
 
 from ipydrawio.constants import IPYNB_METADATA
 
-# the header to look for in PNG metadata
+#: the header to look for in PNG metadata
 PNG_DRAWIO_INFO = "mxfile"
 
-# TODO: hoist this to `package.json` and consume directly
+#: a path to the drawio static assets
 DRAWIO_APP = "../labextensions/@deathbeds/ipydrawio-webpack/static/dio"
 
 # environment variables
+#: environment variable for the well-known Jupyter data directory environment variable
 ENV_JUPYTER_DATA_DIR = "JUPYTER_DATA_DIR"
+#: environment variable for a custom data directory for ``ipydrawio-export``
 ENV_IPYDRAWIO_DATA_DIR = "IPYDRAWIO_DATA_DIR"
+#: environment variable for the URL for the drawio server
+ENV_DRAWIO_SERVER_URL = "DRAWIO_SERVER_URL"
+#: environment variable for a port to bind the drawio server to, otherwise pick an unused port
+ENV_IPYDRAWIO_PORT = "IPYDRAWIO_PORT"
+#: environment variable for the cache directory for the chromium download
+ENV_PUPPETEER_CACHE_DIR = "PUPPETEER_CACHE_DIR"
+#: environment variable for a custom cache directory for the chromium download
+ENV_IPYDRAWIO_PUPPETEER_CACHE_DIR = "IPYDRAWIO_PUPPETEER_CACHE_DIR"
 
-# always appended to *_DATA_DIR
+#: always appended to ``*_DATA_DIR``
 WORK_DIR = "ipydrawio_export"
-
 
 __all__ = [
     "IPYNB_METADATA",
@@ -41,12 +50,13 @@ __all__ = [
 ]
 
 # drawio export server
-DRAWIO_NODE_ENV_VAR = "NODE_ENV"
-DRAWIO_SERVER_URL_ENV_VAR = "DRAWIO_SERVER_URL"
-DRAWIO_PORT_ENV_VAR = "PORT"
-IPYDRAWIO_PORT_ENV_VAR = "IPYDRAWIO_PORT"
-PUPPETEER_CACHE_DIR_ENV_VAR = "PUPPETEER_CACHE_DIR"
-IPYDRAWIO_PUPPETEER_CACHE_DIR_ENV_VAR = "IPYDRAWIO_PUPPETEER_CACHE_DIR"
+#: the port of the drawio server
+ENV_DRAWIO_PORT = "PORT"
+#: the nodejs environment string ``production`` given to the drawio server
+ENV_DRAWIO_NODE_ENV = "NODE_ENV"
+#: the name of the puppeteer install script
 PUPPETEER_INSTALL = "install.js"
+#: the directory for the downloaded chromium
 DOT_CHROMIUM = ".chromium"
+#: the path to the export script
 DRAWIO_EXPORT_JS = "export.js"

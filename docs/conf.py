@@ -96,13 +96,23 @@ html_css_files = [
 html_theme = "pydata_sphinx_theme"
 html_logo = "_static/logo.svg"
 html_theme_options = {
-    "github_url": APP_DATA["repository"]["url"],
     "use_edit_page_button": True,
     "icon_links": [
         {
             "name": "PyPI",
             "url": "https://pypi.org/project/ipydrawio",
-            "icon": "fa-solid fa-box",
+            "icon": "fa-brands fa-python",
+        },
+        {
+            "name": "Conda Forge",
+            "url": "https://github.com/conda-forge/ipydrawio-feedstock",
+            "icon": "./_static/anvil.svg",
+            "type": "local",
+        },
+        {
+            "name": "GitHub",
+            "url": APP_DATA["repository"]["url"],
+            "icon": "fa-brands fa-github",
         },
     ],
     "pygment_light_style": "gotthard-light",
