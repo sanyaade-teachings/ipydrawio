@@ -410,18 +410,6 @@ IGNORED_WHEELS = ["widgetsnbextension", "nbformat", "ipykernel", "pyolite"]
 # sync swith jupyterlite
 PYODIDE_URL = "https://cdn.jsdelivr.net/pyodide/v0.21.1/full"
 PYODIDE_PACKAGES = BUILD / "pyodide-packages.json"
-DEMO_PATCHES = DEMO / "mocks"
-PYOLITE_PACKAGES = {
-    pyproj.parent: pyproj.parent
-    / "dist/{}-{}-py3-none-any.whl".format(
-        pyproj.parent.name,
-        re.findall(
-            r'''__version__ = "(.*)"''',
-            next((pyproj.parent).glob("*/__init__.py")).read_text(encoding="utf-8"),
-        )[0],
-    )
-    for pyproj in DEMO_PATCHES.glob("*/pyproject.toml")
-}
 
 # docs
 SPHINX_ARGS = json.loads(os.environ.get("SPHINX_ARGS", "[]"))
