@@ -373,6 +373,30 @@ def task_lint():
 
     dio_tasks = []
 
+    yield P._ok(
+        {
+            "name": "black:jupyter",
+            "file_dep": P.EXAMPLE_IPYNB + P.DOCS_IPYNB,
+            "actions": [
+                ["black", *P.EXAMPLE_IPYNB, *P.DOCS_IPYNB],
+                ["nbqa", "ruff", "--fix", *P.EXAMPLE_IPYNB, *P.DOCS_IPYNB],
+            ],
+        },
+        P.OK_BLACK_JUPYTER,
+    )
+
+    yield P._ok(
+        {
+            "name": "nqqa:ruff",
+            "file_dep": P.EXAMPLE_IPYNB + P.DOCS_IPYNB,
+            "actions": [
+                ["black", *P.EXAMPLE_IPYNB, *P.DOCS_IPYNB],
+                ["nbqa", "ruff", "--fix", *P.EXAMPLE_IPYNB, *P.DOCS_IPYNB],
+            ],
+        },
+        P.OK_NBQA_RUFF,
+    )
+
     for dio_file in P.ALL_DIO + P.EXAMPLE_IPYNB + P.DOCS_IPYNB:
         name = f"dio:clean:{dio_file.relative_to(P.ROOT)}"
         dio_tasks += [f"lint:{name}"]
@@ -401,6 +425,8 @@ def task_lint():
                 # P.OK_ESLINT,
                 P.OK_RUFF,
                 P.OK_PRETTIER,
+                P.OK_BLACK_JUPYTER,
+                P.OK_NBQA_RUFF,
             ],
         },
         P.OK_LINT,

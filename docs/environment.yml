@@ -64,7 +64,7 @@ dependencies:
   - twine >=3.7.1
   - wheel
   # linting
-  - black
+  - black-jupyter
   - nbqa
   - pyyaml
   - robotframework-tidy
