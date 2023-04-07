@@ -50,7 +50,7 @@ def run_tests(attempt=0, extra_args=None):
         runner = ["robot"]
 
     try:
-        __import__("jupyterlite")
+        __import__("jupyterlite_core")
     except Exception as err:
         print("skipping lite tests because", err)
         extra_args += ["--exclude", "app:lite"]
@@ -58,20 +58,13 @@ def run_tests(attempt=0, extra_args=None):
     args = [
         *runner,
         *extra_args,
-        "--name",
-        f"""{P.PLATFORM[:3]}{P.PY_MAJOR}""",
-        "--outputdir",
-        out_dir,
-        "--variable",
-        f"OS:{P.PLATFORM}",
-        "--variable",
-        f"PY:{P.PY_MAJOR}",
-        "--variable",
-        f"ROOT:{P.ROOT}",
-        "--randomize",
-        "all",
-        "--xunit",
-        "xunit.xml",
+        *("--name", f"""{P.PLATFORM[:3]}{P.PY_MAJOR}"""),
+        *("--outputdir", out_dir),
+        *("--variable", f"OS:{P.PLATFORM}"),
+        *("--variable", f"PY:{P.PY_MAJOR}"),
+        *("--variable", f"ROOT:{P.ROOT}"),
+        *("--randomize", "all"),
+        *("--xunit", "xunit.xml"),
         ".",
     ]
 
