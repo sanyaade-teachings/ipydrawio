@@ -1,4 +1,4 @@
-"""constants for ipydrawio."""
+"""constants for ``ipydrawio``."""
 
 # Copyright 2023 ipydrawio contributors
 #

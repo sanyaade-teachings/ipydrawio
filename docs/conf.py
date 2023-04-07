@@ -17,7 +17,6 @@ import datetime
 import json
 import os
 import re
-import subprocess
 from pathlib import Path
 
 from sphinx.application import Sphinx
@@ -31,13 +30,6 @@ ROOT = HERE.parent
 APP_PKG = ROOT / "packages/ipydrawio/package.json"
 APP_DATA = json.loads(APP_PKG.read_text(encoding="utf-8"))
 RTD = json.loads(os.environ.get("READTHEDOCS", "False").lower())
-RTD_TASKS = [
-    "build",
-    "setup:pip:check",
-    "docs:typedoc:mystify",
-    "demo:stage*",
-    "demo",
-]
 
 # metadata
 author = APP_DATA["author"]
@@ -63,6 +55,9 @@ extensions = [
     "autodoc_traits",
 ]
 
+
+# content
+autosummary_generate = True
 autosectionlabel_prefix_document = True
 myst_heading_anchors = 3
 suppress_warnings = ["autosectionlabel.*"]
@@ -71,6 +66,14 @@ rediraffe_redirects = {
     "demo/index": "_static/lab/index",
     "demo/retro/index": "_static/retro/tree/index",
 }
+
+autodoc_typehints = "none"
+autodoc_default_options = {
+    "members": True,
+    "show-inheritance": True,
+    "undoc-members": True,
+}
+inheritance_alias = {}
 
 # files
 templates_path = ["_templates"]
@@ -154,14 +157,5 @@ def clean_schema(app: Sphinx, error):
             schema_html.write_text(new_text, encoding="utf-8")
 
 
-def before_rtd_build(app: Sphinx, error):
-    """Performs the full frontend build, and ensures the typedoc."""
-    for task in RTD_TASKS:
-        print(f"running doit {task}", flush=True)
-        subprocess.check_call(["doit", task], cwd=str(ROOT))
-
-
 def setup(app):
     app.connect("build-finished", clean_schema)
-    if RTD:
-        app.connect("config-inited", before_rtd_build)

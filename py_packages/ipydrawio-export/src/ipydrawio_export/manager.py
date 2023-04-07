@@ -1,4 +1,4 @@
-"""drawio export manager."""
+"""``ipdrawio-export`` manager."""
 
 # Copyright 2023 ipydrawio contributors
 #

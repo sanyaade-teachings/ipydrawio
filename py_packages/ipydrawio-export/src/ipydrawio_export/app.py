@@ -29,6 +29,8 @@ from .manager import IPyDrawioExportManager
 
 
 class BaseApp(Application):
+    """The base app for ``ipydrawio-export`` apps."""
+
     version = __version__
 
     flags = TRIMMED_FLAGS
@@ -39,6 +41,8 @@ class BaseApp(Application):
 
 
 class ManagedApp(BaseApp):
+    """an ``ipydrawio-export`` app with a manager."""
+
     drawio_manager: IPyDrawioExportManager = T.Instance(IPyDrawioExportManager)
     io_loop = T.Instance(ioloop.IOLoop)
 
@@ -90,7 +94,7 @@ class ProvisionApp(ManagedApp):
 
 class PDFApp(ManagedApp):
 
-    """export a drawio as PDF."""
+    """export a drawio diagram as a PDF."""
 
     dio_files = T.Tuple()
 
@@ -133,7 +137,7 @@ class PDFApp(ManagedApp):
 
 class DrawioExportApp(BaseApp):
 
-    """ipydrawio export tools."""
+    """``ipydrawio`` export tools."""
 
     name = "ipydrawio-export"
     subcommands = {

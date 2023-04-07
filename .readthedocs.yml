@@ -18,10 +18,23 @@ build:
   os: ubuntu-20.04
   tools:
     python: mambaforge-4.10
-
-conda:
-  environment: docs/environment.yml
+  jobs:
+    pre_build:
+      - doit list
+      - doit build
+      - doit list
+      - doit setup:pip:check
+      - doit list
+      - doit docs:typedoc:mystify
+      - doit list
+      - doit demo:stage*
+      - doit list
+      - doit demo
 
 sphinx:
   builder: html
   configuration: docs/conf.py
+  fail_on_warning: true
+
+conda:
+  environment: docs/environment.yml
