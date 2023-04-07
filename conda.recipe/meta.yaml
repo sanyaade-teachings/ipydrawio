@@ -216,6 +216,7 @@ outputs:
       license_file:
       - ipydrawio-export/LICENSE.txt
       - ipydrawio-export/_/ipydrawio-pdf/static/third-party-licenses.json
+      - ipydrawio-export/src/ipydrawio_export/vendor/draw-image-export2/LICENSE
 
 about:
   home: https://github.com/deathbeds/ipydrawio

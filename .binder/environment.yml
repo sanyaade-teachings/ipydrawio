@@ -31,7 +31,7 @@ dependencies:
   - matplotlib-base
   - nbgitpuller
   - networkx
-  - pandas <2
+  - pandas
   - pygraphviz
   - python-graphviz
   - qrcode-artistic
