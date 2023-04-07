@@ -151,6 +151,7 @@ outputs:
         - m2-grep  # [win]
         - pip
         - pytest
+        - pytest-jupyter-server
       commands:
         - pip check
         - jupyter labextension list
@@ -195,6 +196,7 @@ outputs:
         - pip
         - pytest-console-scripts  # [unix]
         - pytest-tornasync  # [unix]
+        - pytest-jupyter-server  # [unix]
         - m2-grep  # [win]
       commands:
         - pip check
