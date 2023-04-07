@@ -16,7 +16,7 @@
 
 #### @deathbeds/ipydrawio-webpack 21.1.400
 
-- updates to [drawio v21.0.4](https://github.com/jgraph/drawio/releases/tag/v21.0.4)
+- updates to [drawio v21.1.4](https://github.com/jgraph/drawio/releases/tag/v21.1.4)
   - includes
     [mermaidjs 10.0.0](https://github.com/mermaid-js/mermaid/releases/tag/v10.0.0)
 
@@ -27,6 +27,8 @@
 - minimum supported python is now 3.8
 - updates to
   [draw-image-export2 v1.0.2](https://github.com/jgraph/draw-image-export2/releases/tag/v1.0.2)
+- by default uses a private copy of chromium in `{sys.prefix}/jupyter/ipydrawio_export`
+  - can be overridden with `IPYDRAWIO_PUPPETEER_CACHE_DIR` or `PUPPETEER_CACHE_DIR`
 
 #### @deathbeds/ipydrawio-pdf 1.3.0
 
