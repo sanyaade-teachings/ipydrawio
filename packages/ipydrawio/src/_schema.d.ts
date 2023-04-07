@@ -71,6 +71,12 @@ export type PluginUrlList = string[];
  * Colour codes for the upper palette in the colour dialog (no leading # for the colour codes).
  */
 export type ColorSet2 = Color[];
+export type Off = '0';
+export type On = '';
+export type On1 = '';
+export type Off1 = '0';
+export type On2 = '1';
+export type Off2 = '';
 /**
  * [min|atlas|dark|sketch]: Uses the Minimal, Atlas, Dark or Sketch UI theme (default is Kennedy).
  */
@@ -367,11 +373,11 @@ export interface DrawioURLParams {
   /**
    * 0/1: Disables local storage as a storage location (`0`) or shows the browser option in the storage dialog (`1`).
    */
-  browser?: number;
+  browser?: (Off | On) & string;
   /**
    * 0: Uses the chromeless read-only viewer.
    */
-  chrome?: number;
+  chrome?: (On1 | Off1) & string;
   /**
    * key1;key2;key;...;keyN: Specifies custom libraries (keys are file IDs or _URLs with a U-prefix_)
    */
@@ -379,15 +385,15 @@ export interface DrawioURLParams {
   /**
    * 1: Runs diagrams.net in client mode. This displays a normal UI and sends a `ready` message to the opener or parent when the page is loaded. After receiving a message containing XML or compressed XML, a local file is created. The file is then set to `modified` so the connection to the window can be closed after sending the initial XML. Whether the XML is loaded again after a page refresh, depends on the caller implementation. Use `proto=json` to use a custom protocol for special cases.
    */
-  client?: number;
+  client?: (On2 | Off2) & string;
   /**
    * 1: Shows the *Close* button in chromeless mode which closes the window when selected.
    */
-  close?: number;
+  close?: (On2 | Off2) & string;
   /**
    * 1: Sends the `configure` event and waits for the `configure` action. See more about the _embed mode_. **NEW `14.6.10`**
    */
-  configure?: number;
+  configure?: (On1 | Off1) & string;
   /**
    * regex: Checks whether URLS have CORS enabled using a URL encoded regular expression, e.g.cors=%5Ehttps%3F%3A%5C%2F%5C%2F.*%5C.github%5C.io%5C%2F **TBD `14.6.10`**
    */
@@ -399,7 +405,7 @@ export interface DrawioURLParams {
   /**
    * [0|1]: Disables/enables dark mode in Sketch and Minimal editor themes.
    */
-  dark?: number;
+  dark?: (Off | On) & string;
   /**
    * data: Gets the XML data for the diagram (used in client mode to bypass message passing and cross frame access). **TBD `14.6.10`**
    */
@@ -407,11 +413,11 @@ export interface DrawioURLParams {
   /**
    * 0: Disables the Dropbox integration.
    */
-  db?: number;
+  db?: (On1 | Off1) & string;
   /**
    * 1: Shortcut for `db=0&gapi=0&math=0&picker=0`, disables the splash screen and creates an empty, local diagram file.
    */
-  demo?: number;
+  demo?: (On2 | Off2) & string;
   /**
    * {compressed-json}: Passes the CSV import descriptor (_example](https://web.archive.org/web/20210425055302/https://www.draw.io/?desc=SnVTtjpswEHwafl50gUP5nZC7F7i+gIMdvI3xIrMkSp++u7bh0tKoVSUE9sx6PPuRFLtDUZZTcPwuqj2/LdEwxuUHP9+7oAa76YDsdNoAMqSDugG+aFDM9aMgX0sMXWtVoE07XkWybPh9xtArWm54pLQitRBFWTl1Mi7uXouy9qo3/Cmq5hSK6p2/wMRId2eK6ljUotCiQyb37OBeVIcESnBZDzgCAfokwe4gicxifPOrDea8aPUKHGG8vjaykZOz4HsEoo6S83XDwlU2I4az9wP0qov+yjot5frDzQKZz0G1Qt24qoxZ6vnAccvLgJPXRufdGZxrUmIiI9ukMlLAi3mgEpDIbAm08QR0T65eMiq1HNP1AnMToB8w0My36L1pKdd+lwt5DtjPFYhErpPnvEImpJGZ4OKtgmMTV5HgrybQYzSFyTxGpHI+uXv8XTE+kkecnCdPPJM6ttJtp3Bd6m+83oeAN96eHLaXbxZ8gj+kFblJ6OkTfkg/t9uv0dsd/6OiPIWrlP5cTtDruH9J6W9unTnTclgAwuGX/Q002YSoKToT1BroLK3gQWkNvssjuC3n0ew8hjyBnEjZ5B9Ikya8ydOcHYG/pFD5f8pTjDpO8aL9NtszunvCOHXH6dFiTPsn)). Works with the [www.draw.io_ domain only. **NEW `14.6.10`**
    */
@@ -421,11 +427,11 @@ export interface DrawioURLParams {
   /**
    * 0: Disables draft states (does not save unsaved files in *IndexedDB*).
    */
-  drafts?: number;
+  drafts?: (On1 | Off1) & string;
   /**
    * 0: Simulates _app.diagrams.net_ regardless of the domain name (uses the old app ID).
    */
-  drive?: number;
+  drive?: (On1 | Off1) & string;
   /**
    * move: Disables the handling of connector segments without having previously selected the connector.
    */
@@ -443,15 +449,15 @@ export interface DrawioURLParams {
   /**
    * 0: Disables the format panel on the right.
    */
-  format?: number;
+  format?: (On1 | Off1) & string;
   /**
    * 0: Disables the Google integration.
    */
-  gapi?: number;
+  gapi?: (On1 | Off1) & string;
   /**
    * 0: Disables the Github integration.
    */
-  gh?: number;
+  gh?: (On1 | Off1) & string;
   /**
    * url: Sets the URL-encoded path to a custom GitLab installation to use for GitLab file operations.
    */
@@ -463,15 +469,15 @@ export interface DrawioURLParams {
   /**
    * 0: Disables the GitLab integration.
    */
-  gl?: number;
+  gl?: (On1 | Off1) & string;
   /**
    * 1: Uses the chromeles mode with the grid enabled.
    */
-  grid?: number;
+  grid?: (On2 | Off2) & string;
   /**
    * 1: Hides the controls that allow you to change the current page in lightbox mode. **NEW `14.6.10`**
    */
-  'hide-pages'?: number;
+  'hide-pages'?: (Off | On) & string;
   /**
    * hex: Specifies the highlight colour (with no leading `#`) for links in chromeless mode.
    */
@@ -479,7 +485,7 @@ export interface DrawioURLParams {
   /**
    * 1: If modified specifies a resource key, this is used to keep the modified state after Save is selected. **TBD `14.6.10`**
    */
-  keepmodified?: number;
+  keepmodified?: (On2 | Off2) & string;
   /**
    * xy: Specifies the language of the user interface. Possible values for `xy` include  *i18n* ar, bs, ca, cs, da, de, el, en, es, et, fi, fil, fr, he, hu, id, it, ja, ko, ms, nl, no, pl, pt, pt-br, ro, ru, sr, sv, th, tr, uk, vi, zh, zh-tw
    */
@@ -487,11 +493,11 @@ export interface DrawioURLParams {
   /**
    * 1: Adds layer control in chromeless mode
    */
-  layers?: number;
+  layers?: (On2 | Off2) & string;
   /**
    * 1: Specifies whether libraries should be enabled in embed mode. The default is disabled (0). **TBD `14.6.10`**
    */
-  libraries?: number;
+  libraries?: (On2 | Off2) & string;
   /**
    * key1;key2;...;keyN: Specifies the current libraries. Possible keys are allied\_telesis, android, archimate, archimate3, arrows2, atlassian, aws3, aws3d, aws4, azure, basic, bootstrap, bpmn, cabinets, cisco, cisco\_safe, citrix, clipart, dfd, eip, electrical, er, floorplan, flowchart, gcp2, general, gmdl, ibm, images, infographic, ios, lean\_mapping, mockups, mscae, network, office, pid, rack, signs, sitemap, sysml, uml, veeam and webicons.
    */
@@ -499,15 +505,15 @@ export interface DrawioURLParams {
   /**
    * 1: Uses the lightbox in chromeless mode (larger zoom, no page visible, chromeless).
    */
-  lightbox?: number;
+  lightbox?: (On2 | Off2) & string;
   /**
    * 1: Uses device mode only.
    */
-  local?: number;
+  local?: (On2 | Off2) & string;
   /**
    * 0: Disables MathJax support.
    */
-  math?: number;
+  math?: (On2 | Off2) & string;
   /**
    * : Sets the font to use for math typesetting. Possible values are STIX-Web and TeX (default). **TBD `14.6.10`**
    */
@@ -525,31 +531,31 @@ export interface DrawioURLParams {
   /**
    * 1: Enables folding in chromeless mode.
    */
-  nav?: number;
+  nav?: (On2 | Off2) & string;
   /**
    * 1: Displays no Exit button. Instead of using this URL parameter, you can specify this setting in the load message. **TBD `14.6.10`**
    */
-  noExitBtn?: number;
+  noExitBtn?: (On2 | Off2) & string;
   /**
    * 1: Displays a Save and Exit button instead of a Save button. Instead of using this URL parameter, you can specify this setting in the load message. If this is used, then saveAndExit is ignored. **TBD `14.6.10`**
    */
-  noSaveBtn?: number;
+  noSaveBtn?: (On2 | Off2) & string;
   /**
    * 1: Uses the default filename for new files (used with the `url` parameter)
    */
-  notitle?: number;
+  notitle?: (On2 | Off2) & string;
   /**
    * 1: Suppresses the warning before an unload for local files.
    */
-  nowarn?: number;
+  nowarn?: (On2 | Off2) & string;
   /**
    * 0: Disables the OneDrive integration.
    */
-  od?: number;
+  od?: (On1 | Off1) & string;
   /**
    * [1|0]: Registers or unregisters the progressive web app (all remote storage locations are disabled).
    */
-  offline?: number;
+  offline?: (Off | On) & string;
   /**
    * prefix+ID: If _location hash properties_ are not available, use this as a replacement. The browser will add the hash property to the URL immediately and not remove the URL parameter. Existing hash property takes precedence.
    */
@@ -557,7 +563,7 @@ export interface DrawioURLParams {
   /**
    * 1: Saves all Google Drive files as `application/vnd.jgraph.mxfile`.
    */
-  'override-mime'?: number;
+  'override-mime'?: (On2 | Off2) & string;
   /**
    * id1;id2;...;idN: Selects which plugins to load. _See the list of available plugins_.
    */
@@ -573,11 +579,11 @@ export interface DrawioURLParams {
   /**
    * 0/1: Disables/enables the Google file picker in dialogs.
    */
-  picker?: number;
+  picker?: (Off | On) & string;
   /**
    * 0: Does not load _plugins_.
    */
-  plugins?: number;
+  plugins?: (On1 | Off1) & string;
   /**
    * `client=1`: Runs diagrams.net in client mode. This displays a normal UI and sends a `ready` message to the opener or parent when the page is loaded. After receiving a message containing XML or compressed XML, a local file is created. The file is then set to `modified` so the connection to the window can be closed after sending the initial XML. Whether the XML is loaded again after a page refresh, depends on the caller implementation. Use `proto=json` to use a custom protocol for special cases. **NEW `14.6.10`**
    */
@@ -587,15 +593,15 @@ export interface DrawioURLParams {
   /**
    * 0: Sets the default `pageVisible` to `false`.
    */
-  pv?: number;
+  pv?: (On1 | Off1) & string;
   /**
    * 0: Disables the ability to (un)register the progressive web app (when installed it will stay installed). **NEW `14.6.10`**
    */
-  pwa?: number;
+  pwa?: (On1 | Off1) & string;
   /**
    * 1: Returns a JSON structure with the diagram bounds in embed and client mode. This message is dispatched immediately after receiving the diagram XML. **TBD `14.6.10`**
    */
-  returnbounds?: number;
+  returnbounds?: (On1 | Off1) & string;
   /**
    * id: Selects a specific revision of a Google Drive or Dropbox file.
    */
@@ -603,15 +609,15 @@ export interface DrawioURLParams {
   /**
    * [0|1]: Disables/enables the rough sketch style (default is 1 for sketch theme and 0 for all other themes).
    */
-  rough?: number;
+  rough?: (Off | On) & string;
   /**
    * 1: Uses chromeless mode with Google Drive realtime enabled.
    */
-  rt?: number;
+  rt?: (On2 | Off2) & string;
   /**
    * 1: Starts with the ruler enabled.
    */
-  ruler?: number;
+  ruler?: (On2 | Off2) & string;
   /**
    * local/remote: Enables/disables saving files locally (default is `local`). If this is disabled, then files are echoed via a servlet for a local save.
    */
@@ -619,11 +625,11 @@ export interface DrawioURLParams {
   /**
    * 1: Displays a Save and Exit button ne. Instead of using this URL parameter, you can specify this setting in the load message. **TBD `14.6.10`**
    */
-  saveAndExit?: number;
+  saveAndExit?: (On2 | Off2) & string;
   /**
    * 0: Starts with scrollbars disabled.
    */
-  sb?: number;
+  sb?: (On1 | Off1) & string;
   /**
    * value: Starts with given value in the search shapes box.  ## Modes **NEW `14.6.10`**
    */
@@ -631,15 +637,15 @@ export interface DrawioURLParams {
   /**
    * 1: Shows a Loading... spinner while waiting for the diagram data to load in embed mode. **TBD `14.6.10`**
    */
-  spin?: number;
+  spin?: (On2 | Off2) & string;
   /**
    * 0: Does not show the splash screen.
    */
-  splash?: number;
+  splash?: (On1 | Off1) & string;
   /**
    * 1: Disables all features that require external web services (such as _PDF export_).
    */
-  stealth?: number;
+  stealth?: (On2 | Off2) & string;
   /**
    * device: Adds a device storage option for touch devices.
    */
@@ -647,7 +653,7 @@ export interface DrawioURLParams {
   /**
    * 0: Suppresses the warning for old viewers in SVG export. **NEW `14.6.10`**
    */
-  'svg-warning'?: number;
+  'svg-warning'?: (On1 | Off1) & string;
   /**
    * [none|manual|auto]: Enables/disables collaborative editing (default is `auto`).
    */
@@ -663,7 +669,7 @@ export interface DrawioURLParams {
   /**
    * 0: Disables the creation of thumbnails in Drive.
    */
-  thumb?: number;
+  thumb?: (On1 | Off1) & string;
   /**
    * title: Sets a new file title (used with the `create` and `url` parameters).
    */
@@ -671,11 +677,11 @@ export interface DrawioURLParams {
   /**
    * 0: Disables the toolbar in chromeless mode.
    */
-  toolbar?: number;
+  toolbar?: (On1 | Off1) & string;
   /**
    * 0: Disables the Trello integration.
    */
-  tr?: number;
+  tr?: (On1 | Off1) & string;
   ui?: UITheme;
   /**
    * url: *Deprecated* - Use U hash property `#U{uri_encoded_url}` to open a diagram from a URI-encoded URL, eg. https://app.diagrams.net/\#Uhttps%3A%2F%2Fraw.githubusercontent.com%2Fjgraph%2Fdrawio-diagrams%2Fmaster%2Fdiagrams%2Fschema.xml **NEW `14.6.10`**

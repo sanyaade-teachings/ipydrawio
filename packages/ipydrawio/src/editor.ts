@@ -305,14 +305,24 @@ export class Diagram extends IFrame {
     };
     // [p]lugins should not be URL encoded
     let plugins = '';
-    for (const p in params) {
-      if (p == 'p') {
-        plugins = (params as any)[p];
+    for (const [paramName, paramValue] of Object.entries(params)) {
+      if (paramValue == null || (typeof paramValue == 'string' && !paramValue.trim())) {
         continue;
       }
-      query.append(p, (params as any)[p]);
+      switch (paramName) {
+        case 'p':
+          plugins = `${paramValue}`;
+          continue;
+        default:
+          query.append(paramName, `${paramValue}`);
+          break;
+      }
     }
-    const url = this.adapter.drawioUrl() + '?' + query.toString() + `&p=${plugins}`;
+    const url =
+      this.adapter.drawioUrl() +
+      '?' +
+      query.toString() +
+      (plugins ? `&p=${plugins}` : '');
 
     if (force || this.url !== url) {
       DEBUG && console.warn('configuring iframe', params);

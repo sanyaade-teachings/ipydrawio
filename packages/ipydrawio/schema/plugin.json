@@ -764,19 +764,37 @@
       "type": "object"
     },
     "off-switch": {
-      "maximum": 0,
-      "minimum": 0,
-      "type": "number"
+      "anyOf": [
+        {
+          "const": "",
+          "title": "on"
+        },
+        {
+          "const": "0",
+          "title": "off"
+        }
+      ],
+      "type": "string"
     },
     "on-off-switch": {
-      "maximum": 1,
-      "minimum": 0,
-      "type": "number"
+      "anyOf": [
+        { "const": "0", "title": "off" },
+        { "const": "", "title": "on" }
+      ],
+      "type": "string"
     },
     "on-switch": {
-      "maximum": 1,
-      "minimum": 1,
-      "type": "number"
+      "anyOf": [
+        {
+          "const": "1",
+          "title": "on"
+        },
+        {
+          "const": "",
+          "title": "off"
+        }
+      ],
+      "type": "string"
     },
     "plugin-url-list": {
       "items": {
@@ -860,18 +878,18 @@
     "drawioUrlParams": {
       "$ref": "#/definitions/drawio-url-params",
       "default": {
-        "db": 0,
-        "drafts": 0,
-        "gapi": 0,
-        "gh": 0,
-        "gl": 0,
-        "od": 0,
+        "db": "0",
+        "drafts": "0",
+        "gapi": "0",
+        "gh": "0",
+        "gl": "0",
+        "od": "0",
         "p": "ex;tips;svgdata;sql;anim;trees;replay;anon;flow;webcola;tags",
-        "picker": 0,
-        "stealth": 1,
-        "svg-warning": 0,
-        "thumb": 0,
-        "tr": 0,
+        "picker": "0",
+        "stealth": "1",
+        "svg-warning": "0",
+        "thumb": "0",
+        "tr": "0",
         "ui": "min"
       },
       "description": "URL parameters for the drawio iframe https://web.archive.org/web/20210425055302/https://www.diagrams.net/doc/faq/supported-url-parameters"
