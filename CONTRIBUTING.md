@@ -2,12 +2,15 @@
 
 ## Help Wanted
 
-- tackling [roadmap](./docs/ROADMAP.ipynb) issues
+- tackling [roadmap] issues
 - improving testing
 - improving (self-hosted) documentation
 - improving the binder demo
-- improving [continuous integration](./github/workflows/ci.yml) and
-  [developer experience](./dodo.py)
+- improving [continuous integration][ci] and [developer experience][dodo]
+
+[roadmap]: https://github.com/deathbeds/ipydrawio/blob/master/ROADMAP.md
+[ci]: https://github.com/deathbeds/ipydrawio/blob/master/.github/workflows/ci.yml
+[dodo]: https://github.com/deathbeds/ipydrawio/blob/master/dodo.py
 
 ## Prerequisites
 

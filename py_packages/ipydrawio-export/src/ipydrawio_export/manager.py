@@ -84,7 +84,8 @@ class IPyDrawioExportManager(LoggingConfigurable):
         config=True,
     )
     pdf_cache = Unicode(
-        allow_none=True, help="path to cache for generated PDF pages",
+        allow_none=True,
+        help="path to cache for generated PDF pages",
     ).tag(config=True)
     attach_xml = Bool(help="attach source XML to PDF document").tag(config=True)
     attachment_name = Unicode("diagram.drawio", help="name of document to attach").tag(
