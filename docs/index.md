@@ -50,8 +50,6 @@ Click the _Try IPyDrawio Now_ button to launch a new browser tab running IPyDraw
 JupyterLite. It contains all of the example _Diagrams_ from this documentation site, and
 some notebooks that show what's posssible.
 
-[demo]: ./demo/index
-
 ---
 
 ## Features
@@ -62,7 +60,7 @@ some notebooks that show what's posssible.
 
 ## More Screenshots and Examples
 
-> these are editable SVG files made with IPyDrawio, and can be found in the [demo].
+> these are editable SVG files made with IPyDrawio, and can be found in the demo.
 
 ### What can you draw with IPyDrawio
 

@@ -70,7 +70,9 @@ class ProvisionApp(ManagedApp):
 
     """pre-provision drawio export tools."""
 
-    show_workdir = T.Bool(False).tag(config=True)
+    show_workdir = T.Bool(False, help="also print out the working location").tag(
+        config=True,
+    )
 
     flags = dict(
         **TRIMMED_FLAGS,

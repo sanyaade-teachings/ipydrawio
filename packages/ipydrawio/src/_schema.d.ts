@@ -379,7 +379,7 @@ export interface DrawioURLParams {
    */
   chrome?: (On1 | Off1) & string;
   /**
-   * key1;key2;key;...;keyN: Specifies custom libraries (keys are file IDs or _URLs with a U-prefix_)
+   * key1;key2;key;...;keyN: Specifies custom libraries (keys are file IDs or URLs with a U-prefix)
    */
   clibs?: string;
   /**
@@ -391,7 +391,7 @@ export interface DrawioURLParams {
    */
   close?: (On2 | Off2) & string;
   /**
-   * 1: Sends the `configure` event and waits for the `configure` action. See more about the _embed mode_. **NEW `14.6.10`**
+   * 1: Sends the `configure` event and waits for the `configure` action. See more about the embed mode. **NEW `14.6.10`**
    */
   configure?: (On1 | Off1) & string;
   /**
@@ -399,7 +399,7 @@ export interface DrawioURLParams {
    */
   cors?: string;
   /**
-   * url/name: Creates a new file from a template URL. If the value is not a URL and is not empty, the script will try to use `window.opener_url]`. In [embed mode_, `window.opener[name]` will be used to get the initial XML. Note that this requires the same origin policy in the opener/parent for reading the variable.
+   * url/name: Creates a new file from a template URL. If the value is not a URL and is not empty, the script will try to use `window.opener_url`. In embed mode, `window.opener[name]` will be used to get the initial XML. Note that this requires the same origin policy in the opener/parent for reading the variable.
    */
   create?: string;
   /**
@@ -419,7 +419,7 @@ export interface DrawioURLParams {
    */
   demo?: (On2 | Off2) & string;
   /**
-   * {compressed-json}: Passes the CSV import descriptor (_example](https://web.archive.org/web/20210425055302/https://www.draw.io/?desc=SnVTtjpswEHwafl50gUP5nZC7F7i+gIMdvI3xIrMkSp++u7bh0tKoVSUE9sx6PPuRFLtDUZZTcPwuqj2/LdEwxuUHP9+7oAa76YDsdNoAMqSDugG+aFDM9aMgX0sMXWtVoE07XkWybPh9xtArWm54pLQitRBFWTl1Mi7uXouy9qo3/Cmq5hSK6p2/wMRId2eK6ljUotCiQyb37OBeVIcESnBZDzgCAfokwe4gicxifPOrDea8aPUKHGG8vjaykZOz4HsEoo6S83XDwlU2I4az9wP0qov+yjot5frDzQKZz0G1Qt24qoxZ6vnAccvLgJPXRufdGZxrUmIiI9ukMlLAi3mgEpDIbAm08QR0T65eMiq1HNP1AnMToB8w0My36L1pKdd+lwt5DtjPFYhErpPnvEImpJGZ4OKtgmMTV5HgrybQYzSFyTxGpHI+uXv8XTE+kkecnCdPPJM6ttJtp3Bd6m+83oeAN96eHLaXbxZ8gj+kFblJ6OkTfkg/t9uv0dsd/6OiPIWrlP5cTtDruH9J6W9unTnTclgAwuGX/Q002YSoKToT1BroLK3gQWkNvssjuC3n0ew8hjyBnEjZ5B9Ikya8ydOcHYG/pFD5f8pTjDpO8aL9NtszunvCOHXH6dFiTPsn)). Works with the [www.draw.io_ domain only. **NEW `14.6.10`**
+   * {compressed-json}: Passes the CSV import descriptor example. Works with the www.draw.io domain only. **NEW `14.6.10`**
    */
   desc?: {
     [k: string]: unknown;
@@ -429,7 +429,7 @@ export interface DrawioURLParams {
    */
   drafts?: (On1 | Off1) & string;
   /**
-   * 0: Simulates _app.diagrams.net_ regardless of the domain name (uses the old app ID).
+   * 0: Simulates app.diagrams.net regardless of the domain name (uses the old app ID).
    */
   drive?: (On1 | Off1) & string;
   /**
@@ -441,7 +441,7 @@ export interface DrawioURLParams {
    */
   edit?: string | '_blank';
   /**
-   * `embed=1:` Runs diagrams.net in _embed mode](/web/20210425055302/https://www.diagrams.net/doc/faq/embed-mode.html). Use this mode with [embed.diagrams.net_ only. **NEW `14.6.10`**
+   * `embed=1:` Runs diagrams.net in embed mode. Use this mode with embed.diagrams.net_ only. **NEW `14.6.10`**
    */
   embed?: {
     [k: string]: unknown;
@@ -463,7 +463,7 @@ export interface DrawioURLParams {
    */
   gitlab?: string;
   /**
-   * ID: Specifies the _client ID of the custom GitLab application_ when using a custom GitLab instance.
+   * ID: Specifies the client ID of the custom GitLab application when using a custom GitLab instance.
    */
   'gitlab-id'?: string;
   /**
@@ -499,7 +499,7 @@ export interface DrawioURLParams {
    */
   libraries?: (On2 | Off2) & string;
   /**
-   * key1;key2;...;keyN: Specifies the current libraries. Possible keys are allied\_telesis, android, archimate, archimate3, arrows2, atlassian, aws3, aws3d, aws4, azure, basic, bootstrap, bpmn, cabinets, cisco, cisco\_safe, citrix, clipart, dfd, eip, electrical, er, floorplan, flowchart, gcp2, general, gmdl, ibm, images, infographic, ios, lean\_mapping, mockups, mscae, network, office, pid, rack, signs, sitemap, sysml, uml, veeam and webicons.
+   * key1;key2;...;keyN: Specifies the current libraries. Possible keys are allied_telesis, android, archimate, archimate3, arrows2, atlassian, aws3, aws3d, aws4, azure, basic, bootstrap, bpmn, cabinets, cisco, cisco\_safe, citrix, clipart, dfd, eip, electrical, er, floorplan, flowchart, gcp2, general, gmdl, ibm, images, infographic, ios, lean\_mapping, mockups, mscae, network, office, pid, rack, signs, sitemap, sysml, uml, veeam and webicons.
    */
   libs?: string;
   /**
@@ -557,7 +557,7 @@ export interface DrawioURLParams {
    */
   offline?: (Off | On) & string;
   /**
-   * prefix+ID: If _location hash properties_ are not available, use this as a replacement. The browser will add the hash property to the URL immediately and not remove the URL parameter. Existing hash property takes precedence.
+   * prefix+ID: If location hash properties are not available, use this as a replacement. The browser will add the hash property to the URL immediately and not remove the URL parameter. Existing hash property takes precedence.
    */
   open?: string;
   /**
@@ -565,7 +565,7 @@ export interface DrawioURLParams {
    */
   'override-mime'?: (On2 | Off2) & string;
   /**
-   * id1;id2;...;idN: Selects which plugins to load. _See the list of available plugins_.
+   * id1;id2;...;idN: Selects which plugins to load. See the list of available plugins.
    */
   p?: string;
   /**
@@ -581,7 +581,7 @@ export interface DrawioURLParams {
    */
   picker?: (Off | On) & string;
   /**
-   * 0: Does not load _plugins_.
+   * 0: Does not load plugins.
    */
   plugins?: (On1 | Off1) & string;
   /**
@@ -643,7 +643,7 @@ export interface DrawioURLParams {
    */
   splash?: (On1 | Off1) & string;
   /**
-   * 1: Disables all features that require external web services (such as _PDF export_).
+   * 1: Disables all features that require external web services (such as PDF export).
    */
   stealth?: (On2 | Off2) & string;
   /**
@@ -663,7 +663,7 @@ export interface DrawioURLParams {
    */
   target?: 'auto' | 'self' | 'frame' | 'blank';
   /**
-   * name: If the \#U hash property is used but the URL does not contain a filename to determine binary mode. See the list of _supported location hash properties_.
+   * name: If the \#U hash property is used but the URL does not contain a filename to determine binary mode. See the list of supported location hash properties.
    */
   'template-filename'?: string;
   /**
@@ -690,7 +690,7 @@ export interface DrawioURLParams {
     [k: string]: unknown;
   };
   /**
-   * `vars=json`: Uses a URI-encoded JSON string for global _placeholders for use in labels and tooltips_ where enabled, e.g. `vars={"key":"value"}`.
+   * `vars=json`: Uses a URI-encoded JSON string for global placeholders for use in labels and tooltips where enabled, e.g. `vars={"key":"value"}`.
    */
   vars?: string;
   /**

@@ -74,18 +74,28 @@ class IPyDrawioExportManager(LoggingConfigurable):
 
     """manager of (currently) another node-based server."""
 
-    drawio_server_url = Unicode().tag(config=True)
-    drawio_port = Int().tag(config=True)
-    drawing_name = Unicode("drawing.dio.xml").tag(config=True)
-    core_params = Dict().tag(config=True)
-    drawio_export_workdir = Unicode().tag(config=True)
-    pdf_cache = Unicode(allow_none=True).tag(config=True)
-    attach_xml = Bool().tag(config=True)
-    attachment_name = Unicode("diagram.drawio").tag(config=True)
+    drawio_server_url = Unicode(help="URL for the drawio server").tag(config=True)
+    drawio_port = Int(help="port for the drawio server").tag(config=True)
+    drawing_name = Unicode("drawing.dio.xml", help="name for temporary XML").tag(
+        config=True,
+    )
+    core_params = Dict(help="URL parameters for export").tag(config=True)
+    drawio_export_workdir = Unicode(help="working directory for the drawio server").tag(
+        config=True,
+    )
+    pdf_cache = Unicode(
+        allow_none=True, help="path to cache for generated PDF pages",
+    ).tag(config=True)
+    attach_xml = Bool(help="attach source XML to PDF document").tag(config=True)
+    attachment_name = Unicode("diagram.drawio", help="name of document to attach").tag(
+        config=True,
+    )
+    init_wait_sec = Int(2, help="time to wait until contacting drawio server").tag(
+        config=True,
+    )
+    export_retries = Int(5, help="number of retries for export").tag(config=True)
     is_provisioning = Bool(False)
     is_starting = Bool(False)
-    init_wait_sec = Int(2).tag(config=True)
-    export_retries = Int(5).tag(config=True)
     _server = Instance(subprocess.Popen, allow_none=True)
     _session = Instance(Session)
 

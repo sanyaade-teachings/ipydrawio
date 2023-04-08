@@ -287,7 +287,7 @@
         },
         "clibs": {
           "$ref": "#/definitions/library-keys-string",
-          "description": "key1;key2;key;...;keyN: Specifies custom libraries (keys are file IDs or _URLs with a U-prefix_)"
+          "description": "key1;key2;key;...;keyN: Specifies custom libraries (keys are file IDs or URLs with a U-prefix)"
         },
         "client": {
           "$ref": "#/definitions/on-switch",
@@ -299,7 +299,7 @@
         },
         "configure": {
           "$ref": "#/definitions/off-switch",
-          "description": "1: Sends the `configure` event and waits for the `configure` action. See more about the _embed mode_. **NEW `14.6.10`**"
+          "description": "1: Sends the `configure` event and waits for the `configure` action. See more about the embed mode. **NEW `14.6.10`**"
         },
         "cors": {
           "description": "regex: Checks whether URLS have CORS enabled using a URL encoded regular expression, e.g.cors=%5Ehttps%3F%3A%5C%2F%5C%2F.*%5C.github%5C.io%5C%2F **TBD `14.6.10`**",
@@ -307,7 +307,7 @@
           "type": "string"
         },
         "create": {
-          "description": "url/name: Creates a new file from a template URL. If the value is not a URL and is not empty, the script will try to use `window.opener_url]`. In [embed mode_, `window.opener[name]` will be used to get the initial XML. Note that this requires the same origin policy in the opener/parent for reading the variable.",
+          "description": "url/name: Creates a new file from a template URL. If the value is not a URL and is not empty, the script will try to use `window.opener_url`. In embed mode, `window.opener[name]` will be used to get the initial XML. Note that this requires the same origin policy in the opener/parent for reading the variable.",
           "type": "string"
         },
         "dark": {
@@ -327,7 +327,7 @@
           "description": "1: Shortcut for `db=0&gapi=0&math=0&picker=0`, disables the splash screen and creates an empty, local diagram file."
         },
         "desc": {
-          "description": "{compressed-json}: Passes the CSV import descriptor (_example](https://web.archive.org/web/20210425055302/https://www.draw.io/?desc=SnVTtjpswEHwafl50gUP5nZC7F7i+gIMdvI3xIrMkSp++u7bh0tKoVSUE9sx6PPuRFLtDUZZTcPwuqj2/LdEwxuUHP9+7oAa76YDsdNoAMqSDugG+aFDM9aMgX0sMXWtVoE07XkWybPh9xtArWm54pLQitRBFWTl1Mi7uXouy9qo3/Cmq5hSK6p2/wMRId2eK6ljUotCiQyb37OBeVIcESnBZDzgCAfokwe4gicxifPOrDea8aPUKHGG8vjaykZOz4HsEoo6S83XDwlU2I4az9wP0qov+yjot5frDzQKZz0G1Qt24qoxZ6vnAccvLgJPXRufdGZxrUmIiI9ukMlLAi3mgEpDIbAm08QR0T65eMiq1HNP1AnMToB8w0My36L1pKdd+lwt5DtjPFYhErpPnvEImpJGZ4OKtgmMTV5HgrybQYzSFyTxGpHI+uXv8XTE+kkecnCdPPJM6ttJtp3Bd6m+83oeAN96eHLaXbxZ8gj+kFblJ6OkTfkg/t9uv0dsd/6OiPIWrlP5cTtDruH9J6W9unTnTclgAwuGX/Q002YSoKToT1BroLK3gQWkNvssjuC3n0ew8hjyBnEjZ5B9Ikya8ydOcHYG/pFD5f8pTjDpO8aL9NtszunvCOHXH6dFiTPsn)). Works with the [www.draw.io_ domain only. **NEW `14.6.10`**"
+          "description": "{compressed-json}: Passes the CSV import descriptor example. Works with the www.draw.io domain only. **NEW `14.6.10`**"
         },
         "drafts": {
           "$ref": "#/definitions/off-switch",
@@ -335,7 +335,7 @@
         },
         "drive": {
           "$ref": "#/definitions/off-switch",
-          "description": "0: Simulates _app.diagrams.net_ regardless of the domain name (uses the old app ID)."
+          "description": "0: Simulates app.diagrams.net regardless of the domain name (uses the old app ID)."
         },
         "edge": {
           "description": "move: Disables the handling of connector segments without having previously selected the connector.",
@@ -346,7 +346,7 @@
           "description": "`edit=url`: Adds a link for the *Edit* button in chromeless mode (use `edit=_blank` to edit the diagram as a new copy)."
         },
         "embed": {
-          "description": "`embed=1:` Runs diagrams.net in _embed mode](/web/20210425055302/https://www.diagrams.net/doc/faq/embed-mode.html). Use this mode with [embed.diagrams.net_ only. **NEW `14.6.10`**"
+          "description": "`embed=1:` Runs diagrams.net in embed mode. Use this mode with embed.diagrams.net_ only. **NEW `14.6.10`**"
         },
         "format": {
           "$ref": "#/definitions/off-switch",
@@ -366,7 +366,7 @@
           "type": "string"
         },
         "gitlab-id": {
-          "description": "ID: Specifies the _client ID of the custom GitLab application_ when using a custom GitLab instance.",
+          "description": "ID: Specifies the client ID of the custom GitLab application when using a custom GitLab instance.",
           "type": "string"
         },
         "gl": {
@@ -440,7 +440,7 @@
         },
         "libs": {
           "$ref": "#/definitions/library-keys-string",
-          "description": "key1;key2;...;keyN: Specifies the current libraries. Possible keys are allied\\_telesis, android, archimate, archimate3, arrows2, atlassian, aws3, aws3d, aws4, azure, basic, bootstrap, bpmn, cabinets, cisco, cisco\\_safe, citrix, clipart, dfd, eip, electrical, er, floorplan, flowchart, gcp2, general, gmdl, ibm, images, infographic, ios, lean\\_mapping, mockups, mscae, network, office, pid, rack, signs, sitemap, sysml, uml, veeam and webicons."
+          "description": "key1;key2;...;keyN: Specifies the current libraries. Possible keys are allied_telesis, android, archimate, archimate3, arrows2, atlassian, aws3, aws3d, aws4, azure, basic, bootstrap, bpmn, cabinets, cisco, cisco\\_safe, citrix, clipart, dfd, eip, electrical, er, floorplan, flowchart, gcp2, general, gmdl, ibm, images, infographic, ios, lean\\_mapping, mockups, mscae, network, office, pid, rack, signs, sitemap, sysml, uml, veeam and webicons."
         },
         "lightbox": {
           "$ref": "#/definitions/on-switch",
@@ -495,7 +495,7 @@
           "description": "[1|0]: Registers or unregisters the progressive web app (all remote storage locations are disabled)."
         },
         "open": {
-          "description": "prefix+ID: If _location hash properties_ are not available, use this as a replacement. The browser will add the hash property to the URL immediately and not remove the URL parameter. Existing hash property takes precedence.",
+          "description": "prefix+ID: If location hash properties are not available, use this as a replacement. The browser will add the hash property to the URL immediately and not remove the URL parameter. Existing hash property takes precedence.",
           "type": "string"
         },
         "override-mime": {
@@ -504,7 +504,7 @@
         },
         "p": {
           "$ref": "#/definitions/library-keys-string",
-          "description": "id1;id2;...;idN: Selects which plugins to load. _See the list of available plugins_."
+          "description": "id1;id2;...;idN: Selects which plugins to load. See the list of available plugins."
         },
         "page": {
           "description": "index: Starts with the given page (the default is the first page, where the index for the first page is `0`)",
@@ -520,7 +520,7 @@
         },
         "plugins": {
           "$ref": "#/definitions/off-switch",
-          "description": "0: Does not load _plugins_."
+          "description": "0: Does not load plugins."
         },
         "proto": {
           "description": "`client=1`: Runs diagrams.net in client mode. This displays a normal UI and sends a `ready` message to the opener or parent when the page is loaded. After receiving a message containing XML or compressed XML, a local file is created. The file is then set to `modified` so the connection to the window can be closed after sending the initial XML. Whether the XML is loaded again after a page refresh, depends on the caller implementation. Use `proto=json` to use a custom protocol for special cases. **NEW `14.6.10`**"
@@ -579,7 +579,7 @@
         },
         "stealth": {
           "$ref": "#/definitions/on-switch",
-          "description": "1: Disables all features that require external web services (such as _PDF export_)."
+          "description": "1: Disables all features that require external web services (such as PDF export)."
         },
         "storage": {
           "$ref": "#/definitions/url-param-storage",
@@ -598,7 +598,7 @@
           "description": "[auto|self|frame|blank]: Opens links in the same window or frame or in a blank window in chromeless mode (`auto` is the default which opens relative links and anchors in the same window in chromeless mode, and all links in a new window in editing mode)."
         },
         "template-filename": {
-          "description": "name: If the \\#U hash property is used but the URL does not contain a filename to determine binary mode. See the list of _supported location hash properties_.",
+          "description": "name: If the \\#U hash property is used but the URL does not contain a filename to determine binary mode. See the list of supported location hash properties.",
           "type": "string"
         },
         "thumb": {
@@ -626,7 +626,7 @@
           "description": "url: *Deprecated* - Use U hash property `#U{uri_encoded_url}` to open a diagram from a URI-encoded URL, eg. https://app.diagrams.net/\\#Uhttps%3A%2F%2Fraw.githubusercontent.com%2Fjgraph%2Fdrawio-diagrams%2Fmaster%2Fdiagrams%2Fschema.xml **NEW `14.6.10`**"
         },
         "vars": {
-          "description": "`vars=json`: Uses a URI-encoded JSON string for global _placeholders for use in labels and tooltips_ where enabled, e.g. `vars={\"key\":\"value\"}`.",
+          "description": "`vars=json`: Uses a URI-encoded JSON string for global placeholders for use in labels and tooltips where enabled, e.g. `vars={\"key\":\"value\"}`.",
           "type": "string"
         },
         "viewbox": {

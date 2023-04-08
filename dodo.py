@@ -898,7 +898,7 @@ def task_docs():
         "file_dep": sphinx_deps,
         "task_dep": sphinx_task_deps,
         "actions": [
-            ["sphinx-build", *P.SPHINX_ARGS, "-j8", "-b", "html", P.DOCS, P.DOCS_BUILD],
+            ["sphinx-build", *P.SPHINX_ARGS, "-b", "html", P.DOCS, P.DOCS_BUILD],
         ],
         "targets": [P.DOCS_BUILDINFO],
     }
