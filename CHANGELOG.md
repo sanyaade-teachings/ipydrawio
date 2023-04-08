@@ -76,8 +76,6 @@
 
 [#106]: https://github.com/deathbeds/ipydrawio/pull/106
 
----
-
 ### ipydrawio-widgets 1.2.1
 
 - add support for `ipywidgets` 8 [#98]
@@ -136,8 +134,6 @@
 [#85]: https://github.com/deathbeds/ipydrawio/issues/85
 [#88]: https://github.com/deathbeds/ipydrawio/issues/88
 
----
-
 ### ipydrawio 1.1.3
 
 #### @deathbeds/ipydrawio 1.1.3
@@ -153,8 +149,6 @@
 - revert to older PDF exporter for better robustness on binder, etc.
 
 #### @deathbeds/ipydrawio-pdf 1.1.3
-
----
 
 ### ipydrawio 1.1.2
 
@@ -178,8 +172,6 @@
 #### @deathbeds/ipydrawio-pdf 1.1.2
 
 [#72]: https://github.com/deathbeds/ipydrawio/issues/72
-
----
 
 ### ipydrawio 1.1.1
 
@@ -206,10 +198,7 @@
 
 #### @deathbeds/ipydrawio-pdf 1.1.1
 
-[#41]: https://github.com/deathbeds/ipydrawio/issues/41
 [#44]: https://github.com/deathbeds/ipydrawio/issues/44
-
----
 
 ### ipydrawio 1.1.0
 
@@ -244,8 +233,6 @@
 [#40]: https://github.com/deathbeds/ipydrawio/pull/40
 [#41]: https://github.com/deathbeds/ipydrawio/pull/41
 
----
-
 ### ipydrawio 1.0.1
 
 - [#32] on-disk file paths are shorter to avoid Windows issues
@@ -270,8 +257,6 @@
 
 [#31]: https://github.com/deathbeds/ipydrawio/issues/31
 [#32]: https://github.com/deathbeds/ipydrawio/issues/32
-
----
 
 ### ipydrawio 1.0.0
 
@@ -310,8 +295,6 @@
 [#21]: https://github.com/deathbeds/ipydrawio/issues/21
 [#22]: https://github.com/deathbeds/ipydrawio/pull/22
 
----
-
 ### ipydrawio 1.0.0a0
 
 - ipywidgets support
@@ -331,8 +314,6 @@
 ### ipydrawio-export 1.0.0a0
 
 #### @deathbeds/ipydrawio-pdf 1.0.0-alpha0
-
----
 
 ## Historic Releases
 

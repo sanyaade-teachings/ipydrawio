@@ -441,7 +441,7 @@ export interface DrawioURLParams {
    */
   edit?: string | '_blank';
   /**
-   * `embed=1:` Runs diagrams.net in embed mode. Use this mode with embed.diagrams.net_ only. **NEW `14.6.10`**
+   * `embed=1:` Runs diagrams.net in embed mode. Use this mode with embed.diagrams.net only. **NEW `14.6.10`**
    */
   embed?: {
     [k: string]: unknown;

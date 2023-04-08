@@ -346,7 +346,7 @@
           "description": "`edit=url`: Adds a link for the *Edit* button in chromeless mode (use `edit=_blank` to edit the diagram as a new copy)."
         },
         "embed": {
-          "description": "`embed=1:` Runs diagrams.net in embed mode. Use this mode with embed.diagrams.net_ only. **NEW `14.6.10`**"
+          "description": "`embed=1:` Runs diagrams.net in embed mode. Use this mode with embed.diagrams.net only. **NEW `14.6.10`**"
         },
         "format": {
           "$ref": "#/definitions/off-switch",

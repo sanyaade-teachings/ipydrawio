@@ -412,7 +412,7 @@ PYODIDE_URL = "https://cdn.jsdelivr.net/pyodide/v0.21.1/full"
 PYODIDE_PACKAGES = BUILD / "pyodide-packages.json"
 
 # docs
-SPHINX_ARGS = json.loads(os.environ.get("SPHINX_ARGS", "[]"))
+SPHINX_ARGS = json.loads(os.environ.get("SPHINX_ARGS", """["-W"]"""))
 DOCS_CONF = DOCS / "conf.py"
 ENV_DOCS = DOCS / "environment.yml"
 DOCS_BUILD = BUILD / "docs"

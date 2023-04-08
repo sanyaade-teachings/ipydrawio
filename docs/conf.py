@@ -46,7 +46,6 @@ version = ".".join(release.rsplit(".", 1))
 extensions = [
     "myst_nb",
     "sphinx.ext.intersphinx",
-    "sphinx.ext.autosectionlabel",
     "sphinx.ext.autodoc",
     "sphinx_copybutton",
     # for routing
@@ -145,6 +144,10 @@ intersphinx_mapping = {
     "traitlets": ("https://traitlets.readthedocs.io/en/stable/", None),
     "ipywidgets": ("https://ipywidgets.readthedocs.io/en/stable/", None),
 }
+
+suppress_warnings = [
+    "mystnb.unknown_mime_type",
+]
 
 
 def clean_schema(app: Sphinx, error):
