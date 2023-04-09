@@ -1,6 +1,6 @@
-""" patch drawio sources for embedding in JupyterLab"""
+"""patch drawio sources for embedding in JupyterLab."""
 
-# Copyright 2022 ipydrawio contributors
+# Copyright 2023 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,15 +31,15 @@ PATCHES = {
         },
         {
             "name": "patch cors check for data URI",
-            "before": "this.editor.isCorsEnabledForUrl(t)||(m=",
-            "after": "(t.match(/^data:/) || this.editor.isCorsEnabledForUrl(t))||(m=",
+            "before": "this.editor.isCorsEnabledForUrl(v)||(m=",
+            "after": "(v.match(/^data:/) || this.editor.isCorsEnabledForUrl(v))||(m=",
         },
         {
             "name": "get mathjax from the ipydrawio-mathjax",
             "before": "window.DRAW_MATH_URL=",
             "after": f'window.DRAW_MATH_URL="{IPDM_REL}/math/es5";',
         },
-    ]
+    ],
 }
 
 
@@ -85,7 +85,8 @@ def patch():
                 print("   ...patching")
                 txt = txt.replace(patch["before"], patch["after"])
             else:
-                raise ValueError(f"{path} didn't contain {patch}")
+                message = f"{path} didn't contain {patch}"
+                raise ValueError(message)
 
         dest_path.write_text(txt, encoding="utf-8")
     return 0

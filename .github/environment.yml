@@ -1,6 +1,6 @@
 # a sufficient environment for acceptance testing
 
-# Copyright 2022 ipydrawio contributors
+# Copyright 2023 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,15 +25,15 @@ dependencies:
 
   # core
   - doit
-  - nodejs >=16,<17
+  - nodejs >=18,<19
   - python # this gets patched in ci
   # run
   - ipywidgets >=7.6,<9
-  - jupyterlab >=3.5.0,<4.0.0a0
+  - jupyterlab >=3.6.3,<4.0.0a0
   - jupyterlab_widgets >=1
   - lxml
   - pillow
-  - pypdf2
+  - pypdf >=3.5
   - requests_cache
   # building
   - flit >=3.7.1
@@ -41,17 +41,18 @@ dependencies:
   - twine >=3.7.1
   - wheel
   # linting
-  - black
-  - flake8
-  - isort >=5
-  - pyflakes
+  - black-jupyter
+  - nbqa
   - pyyaml
-  - robotframework-lint
   - robotframework-tidy
+  - robotframework-robocop
+  - ruff
+  - ssort
   # unit testing
   - pytest
   - pytest-console-scripts
   - pytest-html
+  - pytest-jupyter-server
   - pytest-tornasync
   - pytest-xdist
   # acceptance testing

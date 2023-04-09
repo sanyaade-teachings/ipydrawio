@@ -14,9 +14,17 @@ Install `ipydrawio` (and optionally `ipydrawio-export`) with `pip`, `mamba`, or 
 
 ```bash
 pip install ipydrawio[all]
-# or
+```
+
+or...
+
+```bash
 mamba install -c conda-forge ipydrawio  # ipydrawio-export
-# or
+```
+
+or...
+
+```bash
 conda install -c conda-forge ipydrawio  # ipydrawio-export
 ```
 
@@ -42,8 +50,6 @@ Click the _Try IPyDrawio Now_ button to launch a new browser tab running IPyDraw
 JupyterLite. It contains all of the example _Diagrams_ from this documentation site, and
 some notebooks that show what's posssible.
 
-[demo]: ./demo/index
-
 ---
 
 ## Features
@@ -54,7 +60,7 @@ some notebooks that show what's posssible.
 
 ## More Screenshots and Examples
 
-> these are editable SVG files made with IPyDrawio, and can be found in the [demo].
+> these are editable SVG files made with IPyDrawio, and can be found in the demo.
 
 ### What can you draw with IPyDrawio
 
@@ -76,7 +82,7 @@ about/contributing
 ```
 
 <!--
-# Copyright 2022 ipydrawio contributors
+# Copyright 2023 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

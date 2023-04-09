@@ -1,6 +1,6 @@
-"""do out-of-band things with the export server"""
+"""do out-of-band things with the export server."""
 
-# Copyright 2022 ipydrawio contributors
+# Copyright 2023 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,6 +18,6 @@ import requests
 
 
 def get_ipydrawio_export_status(url):
-    """get the ipydrawio export status"""
+    """Get the ipydrawio export status."""
     r = requests.get(url)
     return r.json()

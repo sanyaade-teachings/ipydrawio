@@ -1,6 +1,6 @@
-"""CLI for ipydrawio-export"""
+"""CLI for ipydrawio-export."""
 
-# Copyright 2022 ipydrawio contributors
+# Copyright 2023 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import json
 from pathlib import Path
 
 import traitlets as T
-from jupyter_core.application import base_flags
+from ipydrawio.app import TRIMMED_FLAGS
 from tornado import ioloop
 from traitlets.config import Application
 
@@ -29,7 +29,11 @@ from .manager import IPyDrawioExportManager
 
 
 class BaseApp(Application):
+    """The base app for ``ipydrawio-export`` apps."""
+
     version = __version__
+
+    flags = TRIMMED_FLAGS
 
     @property
     def description(self):  # pragma: no cover
@@ -37,6 +41,8 @@ class BaseApp(Application):
 
 
 class ManagedApp(BaseApp):
+    """an ``ipydrawio-export`` app with a manager."""
+
     drawio_manager: IPyDrawioExportManager = T.Instance(IPyDrawioExportManager)
     io_loop = T.Instance(ioloop.IOLoop)
 
@@ -61,12 +67,15 @@ class ManagedApp(BaseApp):
 
 
 class ProvisionApp(ManagedApp):
-    """pre-provision drawio export tools"""
 
-    show_workdir = T.Bool(False).tag(config=True)
+    """pre-provision drawio export tools."""
+
+    show_workdir = T.Bool(False, help="also print out the working location").tag(
+        config=True,
+    )
 
     flags = dict(
-        **base_flags,
+        **TRIMMED_FLAGS,
         workdir=(
             {"ProvisionApp": {"show_workdir": True}},
             "Print the export working directory",
@@ -86,7 +95,8 @@ class ProvisionApp(ManagedApp):
 
 
 class PDFApp(ManagedApp):
-    """export a drawio as PDF"""
+
+    """export a drawio diagram as a PDF."""
 
     dio_files = T.Tuple()
 
@@ -104,7 +114,7 @@ class PDFApp(ManagedApp):
                 pdf_request = {}
                 if dio.name.endswith(".png"):
                     pdf_request["xml"] = base64.b64encode(dio.read_bytes()).decode(
-                        "utf-8"
+                        "utf-8",
                     )
                 elif dio.name.endswith(".ipynb"):
                     meta = json.loads(dio.read_text(encoding="utf-8"))["metadata"]
@@ -128,13 +138,14 @@ class PDFApp(ManagedApp):
 
 
 class DrawioExportApp(BaseApp):
-    """ipydrawio export tools"""
+
+    """``ipydrawio`` export tools."""
 
     name = "ipydrawio-export"
-    subcommands = dict(
-        provision=(ProvisionApp, ProvisionApp.__doc__.splitlines()[0]),
-        pdf=(PDFApp, PDFApp.__doc__.splitlines()[0]),
-    )
+    subcommands = {
+        "provision": (ProvisionApp, ProvisionApp.__doc__.splitlines()[0]),
+        "pdf": (PDFApp, PDFApp.__doc__.splitlines()[0]),
+    }
 
 
 main = launch_instance = DrawioExportApp.launch_instance

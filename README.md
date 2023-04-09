@@ -123,10 +123,9 @@ browser, powered by [@jgraph/draw-image-export2], `puppeteer`, and `nodejs`.
 - **native dependencies** as required to appease `puppeteer`
   - if running in `docker`, this can be a bit trial-and-error
   - for more, see the [binder][apt-txt] and CI.
-- `nodejs>10,<14` from `conda` or your system package manager
+- `nodejs>=18,<19` from `conda` or your system package manager
   - **NOTE**: this relies on being able to install `puppeteer` (and other **arbitrary
     dependencies** with `jlpm` for now **when first used**
-    - _we'll figure out a better approach soon enough_
 - `pip install ipydrawio-export` or `conda install -c conda-forge ipydrawio-export`
 
 > For example to install all the dependencies:
@@ -134,6 +133,21 @@ browser, powered by [@jgraph/draw-image-export2], `puppeteer`, and `nodejs`.
 > ```bash
 > conda install -yc conda-forge ipydrawio-export ipydrawio-mathjax
 > ```
+
+Optionally, pre-install the dependencies:
+
+```bash
+jupyter ipydrawio-export provision
+```
+
+> By default this will install to `{JUPYTER_DATA_DIR}/ipydrawio_export`, but can be
+> tuned with:
+>
+> - the `$IPYDRAWIO_DATA_DIR` environment variable
+> - `IPyDrawioExportManager.drawio_export_workdir` in `jupyter_config.json`
+>
+> Additionally, the (large) chromium browser download can be tuned with the
+> `$IPYDRAWIO_PUPPETEER_CACHE_DIR` or `$PUPPETEER_CACHE_DIR` environment variables.
 
 Once installed, you can use the in-browser tools _Export Diagram as PDF_ as well as the
 command line:
@@ -162,7 +176,7 @@ The original source code vendored in this package from:
 - [@jgraph/draw-image-export2][]
 
 ```
-Copyright 2022 ipydrawio contributors
+Copyright 2023 ipydrawio contributors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

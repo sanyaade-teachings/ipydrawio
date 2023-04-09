@@ -1,6 +1,6 @@
 """Utilities for making drawio files clean."""
 
-# Copyright 2022 ipydrawio contributors
+# Copyright 2023 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -60,7 +60,12 @@ def restore_entity_placeholders(out_xml: str) -> str:
 
 
 def clean_drawio_xml(
-    in_xml: str, pretty=True, indent=2, tabs=False, mx_attrs=MX_CLEAN_ATTRS, log=_log
+    in_xml: str,
+    pretty=True,
+    indent=2,
+    tabs=False,
+    mx_attrs=MX_CLEAN_ATTRS,
+    log=_log,
 ) -> str:
     """Clean up one diagram."""
     if not HAS_LXML:  # pragma: no cover
@@ -110,7 +115,12 @@ def clean_drawio_xml(
 
 
 def clean_drawio_xml_file(
-    path: Path, pretty=True, indent=2, tabs=False, mx_attrs=MX_CLEAN_ATTRS, log=_log
+    path: Path,
+    pretty=True,
+    indent=2,
+    tabs=False,
+    mx_attrs=MX_CLEAN_ATTRS,
+    log=_log,
 ) -> bool:
     if not HAS_LXML:  # pragma: no cover
         raise RuntimeError("install lxml to enable cleaning drawio XML")
@@ -125,7 +135,12 @@ def clean_drawio_xml_file(
 
 
 def clean_drawio_notebook_node(
-    nb_node, pretty=True, indent=2, tabs=False, mx_attrs=MX_CLEAN_ATTRS, log=_log
+    nb_node,
+    pretty=True,
+    indent=2,
+    tabs=False,
+    mx_attrs=MX_CLEAN_ATTRS,
+    log=_log,
 ) -> bool:
     """Strip headers and identifying information from drawio notebook node metadata/outputs."""
     changed = False
@@ -152,16 +167,22 @@ def clean_drawio_notebook_node(
 
 
 def clean_drawio_notebook_file(
-    path: Path, pretty=True, indent=2, tabs=False, mx_attrs=MX_CLEAN_ATTRS, log=_log
+    path: Path,
+    pretty=True,
+    indent=2,
+    tabs=False,
+    mx_attrs=MX_CLEAN_ATTRS,
+    log=_log,
 ) -> bool:
     """Strip headers and identifying information from drawio notebook file metadata/outputs."""
     if not HAS_LXML and HAS_NBFORMAT:  # pragma: no cover
         raise RuntimeError(
-            "install lxml and nbformat to enable cleaning drawio notebooks"
+            "install lxml and nbformat to enable cleaning drawio notebooks",
         )
 
     nb_node = nbformat.reads(
-        path.read_text(encoding="utf-8"), as_version=nbformat.NO_CONVERT
+        path.read_text(encoding="utf-8"),
+        as_version=nbformat.NO_CONVERT,
     )
 
     if clean_drawio_notebook_node(nb_node, pretty, indent, tabs, mx_attrs, log):
@@ -173,7 +194,12 @@ def clean_drawio_notebook_file(
 
 
 def clean_drawio_file(
-    path: Path, pretty=True, indent=2, tabs=False, mx_attrs=MX_CLEAN_ATTRS, log=_log
+    path: Path,
+    pretty=True,
+    indent=2,
+    tabs=False,
+    mx_attrs=MX_CLEAN_ATTRS,
+    log=_log,
 ) -> bool:
     """Strip headers and identifying information from drawio files."""
     log.info(f"cleaning {path}...")

@@ -1,4 +1,4 @@
-# Copyright 2022 ipydrawio contributors
+# Copyright 2023 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ IN_FILE = PKG / "schema/plugin.json"
 OUT_FILE = PKG / "src/_schema.d.ts"
 
 HEADER = """/*
-  Copyright 2022 ipydrawio contributors
+  Copyright 2023 ipydrawio contributors
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -44,7 +44,8 @@ def patch():
     out = subprocess.check_output(["jlpm", "--silent", "json2ts", IN_FILE])
     OUT_FILE.write_text("\n".join([HEADER, out.decode("utf-8")]), encoding="utf-8")
     subprocess.check_call(
-        ["jlpm", "prettier", "--write", OUT_FILE.resolve()], cwd=str(ROOT)
+        ["jlpm", "prettier", "--write", OUT_FILE.resolve()],
+        cwd=str(ROOT),
     )
     return 0
 

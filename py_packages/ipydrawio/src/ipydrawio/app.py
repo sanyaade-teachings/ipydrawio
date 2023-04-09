@@ -1,6 +1,6 @@
-"""CLI for ipydrawio"""
+"""CLI for ipydrawio."""
 
-# Copyright 2022 ipydrawio contributors
+# Copyright 2023 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,9 +24,17 @@ from ._version import __version__
 from .clean import clean_drawio_file
 from .constants import MX_CLEAN_ATTRS
 
+TRIMMED_FLAGS = {
+    name: flag
+    for name, flag in base_flags.items()
+    if name not in ["show-config", "show-config-json", "generate-config", "y"]
+}
+
 
 class BaseApp(JupyterApp):
     version = __version__
+
+    flags = TRIMMED_FLAGS
 
     @property
     def description(self):  # pragma: no cover
@@ -34,7 +42,8 @@ class BaseApp(JupyterApp):
 
 
 class CleanApp(BaseApp):
-    """clean drawio files"""
+
+    """clean drawio files."""
 
     dio_files = T.Tuple()
     pretty = T.Bool(True, help="pretty-print the XML").tag(config=True)
@@ -43,7 +52,7 @@ class CleanApp(BaseApp):
     tabs = T.Bool(False, help="indent with tabs instead of spaces").tag(config=True)
 
     flags = dict(
-        **base_flags,
+        **TRIMMED_FLAGS,
         **{
             "no-pretty": (
                 {"CleanApp": {"pretty": False}},
@@ -53,10 +62,11 @@ class CleanApp(BaseApp):
                 {"CleanApp": {"tabs": True}},
                 "Indent with tabs instead of spaces",
             ),
-        }
+        },
     )
     aliases = dict(
-        **base_aliases, **{"mx-attrs": "CleanApp.mx_attrs", "indent": "CleanApp.indent"}
+        **base_aliases,
+        **{"mx-attrs": "CleanApp.mx_attrs", "indent": "CleanApp.indent"},
     )
 
     def parse_command_line(self, argv=None):
@@ -80,12 +90,13 @@ class CleanApp(BaseApp):
 
 
 class IPyDrawioApp(BaseApp):
-    """ipydrawio utilities"""
+
+    """ipydrawio utilities."""
 
     name = "ipydrawio"
-    subcommands = dict(
-        clean=(CleanApp, CleanApp.__doc__.splitlines()[0]),
-    )
+    subcommands = {
+        "clean": (CleanApp, CleanApp.__doc__.splitlines()[0]),
+    }
 
 
 main = launch_instance = IPyDrawioApp.launch_instance

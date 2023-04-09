@@ -8,7 +8,6 @@ _output
 .virtual_documents/
 *.bundle.*
 *.egg-info/
-*.isorted
 *.log
 *.pdf
 *.sqlite

@@ -1,4 +1,4 @@
-// Copyright 2022 ipydrawio contributors
+// Copyright 2023 ipydrawio contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,14 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-let DEBUG = false;
-
 const plugin = {
   id: '@deathbeds/ipydrawio-mathjax:plugin',
   activate: async () => {
-    if (DEBUG) {
-      await import('./_static');
-    }
+    //
   },
   autoStart: true,
 };

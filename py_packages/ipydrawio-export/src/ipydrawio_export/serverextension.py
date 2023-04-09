@@ -1,6 +1,6 @@
-"""add drawio support to a running jupyter application"""
+"""add drawio support to a running jupyter application."""
 
-# Copyright 2022 ipydrawio contributors
+# Copyright 2023 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,11 +22,12 @@ from .manager import IPyDrawioExportManager
 
 
 def load_jupyter_server_extension(app):
-    """create a IPyDrawioExportManager and add handlers"""
+    """Create a IPyDrawioExportManager and add handlers."""
     app.add_traits(
         drawio_manager=traitlets.Instance(
-            IPyDrawioExportManager, help="a drawio export service"
-        )
+            IPyDrawioExportManager,
+            help="a drawio export service",
+        ),
     )
     manager = app.drawio_manager = IPyDrawioExportManager(parent=app, log=app.log)
     manager.initialize()

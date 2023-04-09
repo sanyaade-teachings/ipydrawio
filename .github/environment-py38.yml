@@ -1,4 +1,6 @@
-# Copyright 2022 ipydrawio contributors
+# extra/pinned packages for python 3.8
+
+# Copyright 2023 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-[flake8]
-max-line-length = 88
-ignore = E203, E501, W503
+name: ipydrawio-dev
 
-[isort]
-profile = black
-multi_line_output = 3
+channels:
+  - conda-forge
+  - nodefaults
+
+dependencies:
+  # for legacy ipywidgets
+  - ipywidgets <8

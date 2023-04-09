@@ -28,6 +28,8 @@ dio/onedrive*
 dio/onedrive*.html
 dio/package.json
 dio/service-worker*
+dio/js/mermaid/esm/*
+dio/js/mermaid/loadMermaidESM.js
 dio/stencils
 dio/teams*
 dio/vsdx*

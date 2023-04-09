@@ -1,6 +1,12 @@
-# extra/pinned packages for python 3.7
+# Widgets
 
-# Copyright 2022 ipydrawio contributors
+```{eval-rst}
+.. currentmodule:: ipydrawio_widgets
+.. automodule:: ipydrawio_widgets.widget_diagram
+```
+
+<!--
+# Copyright 2023 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,15 +19,4 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-name: ipydrawio-dev
-
-channels:
-  - conda-forge
-  - nodefaults
-
-dependencies:
-  # for flake8, sigh
-  - importlib-metadata <4.3
-  # for legacy ipywidgets
-  - ipywidgets <8
+-->

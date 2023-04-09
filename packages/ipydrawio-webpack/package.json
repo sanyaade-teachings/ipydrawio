@@ -1,6 +1,6 @@
 {
   "name": "@deathbeds/ipydrawio-webpack",
-  "version": "20.5.301",
+  "version": "21.1.400",
   "description": "A webpack-ready repackaging of drawio",
   "license": "Apache-2.0",
   "author": "IPyDrawio Contributors",
@@ -21,7 +21,8 @@
     "@jupyterlab/application": "^3.1.0"
   },
   "devDependencies": {
-    "@jupyterlab/builder": "^3.4.0"
+    "@jupyterlab/builder": "^3.6.1",
+    "copy-webpack-plugin": "^11.0.0"
   },
   "keywords": [
     "drawio",
@@ -41,6 +42,18 @@
           "conda"
         ]
       }
+    }
+  },
+  "scripts_doit": {
+    "build:pre": {
+      "file_dep": [
+        ".npmignore",
+        "scripts/*.py"
+      ],
+      "targets": [
+        "lib/_static.js",
+        "../ipydrawio-mathjax/dio/math/es5/startup.js"
+      ]
     }
   }
 }

@@ -1,6 +1,6 @@
-"""get a random port"""
+"""get a random port."""
 
-# Copyright 2022 ipydrawio contributors
+# Copyright 2023 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,12 +35,15 @@ def get_unused_port() -> int:
 
 
 def wait_for_url_status(
-    url: str, status_code: int, interval_sec: float = 0.1, attempts: int = 100
+    url: str,
+    status_code: int,
+    interval_sec: float = 0.1,
+    attempts: int = 100,
 ) -> bool:
-    """Attempt to fetch from the URL until, or raise an"""
+    """Attempt to fetch from the URL until, or raise an."""
     response = None
 
-    for i in range(attempts):
+    for _i in range(attempts):
         try:
             response = urllib.request.urlopen(url)
             if response.status == status_code:
@@ -52,7 +55,7 @@ def wait_for_url_status(
 
     if not response or response.status != status_code:
         raise RuntimeError(
-            f"{url} did return {status_code} within {interval_sec * attempts}s"
+            f"{url} did return {status_code} within {interval_sec * attempts}s",
         )
 
     return True

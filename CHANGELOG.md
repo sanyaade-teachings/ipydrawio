@@ -2,25 +2,41 @@
 
 ## Unreleased
 
-### ipydrawio-widgets 1.2.3
+### ipydrawio-widgets 1.3.0
 
-### ipydrawio 1.2.3
+- minimum supported python is now 3.8
 
-#### @deathbeds/ipydrawio 1.2.3
+### ipydrawio 1.3.0
 
-#### @deathbeds/ipydrawio-notebook 1.2.3
+- minimum supported python is now 3.8
 
-#### @deathbeds/ipydrawio-webpack 20.5.301
+#### @deathbeds/ipydrawio 1.3.0
 
-#### @deathbeds/ipydrawio-jupyter-templates 1.2.3
+#### @deathbeds/ipydrawio-notebook 1.3.0
 
-### ipydrawio-export 1.2.3
+#### @deathbeds/ipydrawio-webpack 21.1.400
 
-#### @deathbeds/ipydrawio-pdf 1.2.3
+- updates to [drawio v21.1.4](https://github.com/jgraph/drawio/releases/tag/v21.1.4)
+  - includes
+    [mermaidjs 10.0.0](https://github.com/mermaid-js/mermaid/releases/tag/v10.0.0)
 
-### ipydrawio-mathjax 1.2.3
+#### @deathbeds/ipydrawio-jupyter-templates 1.3.0
 
-#### @deathbeds/ipydrawio-mathjax 1.2.3
+### ipydrawio-export 1.3.0
+
+- minimum supported python is now 3.8
+- updates to
+  [draw-image-export2 v1.0.2](https://github.com/jgraph/draw-image-export2/releases/tag/v1.0.2)
+- by default uses a private copy of chromium in `{sys.prefix}/jupyter/ipydrawio_export`
+  - can be overridden with `IPYDRAWIO_PUPPETEER_CACHE_DIR` or `PUPPETEER_CACHE_DIR`
+
+#### @deathbeds/ipydrawio-pdf 1.3.0
+
+### ipydrawio-mathjax 1.3.0
+
+- minimum supported python is now 3.8
+
+#### @deathbeds/ipydrawio-mathjax 1.3.0
 
 ## Releases
 
@@ -59,8 +75,6 @@
 - initial release
 
 [#106]: https://github.com/deathbeds/ipydrawio/pull/106
-
----
 
 ### ipydrawio-widgets 1.2.1
 
@@ -120,8 +134,6 @@
 [#85]: https://github.com/deathbeds/ipydrawio/issues/85
 [#88]: https://github.com/deathbeds/ipydrawio/issues/88
 
----
-
 ### ipydrawio 1.1.3
 
 #### @deathbeds/ipydrawio 1.1.3
@@ -137,8 +149,6 @@
 - revert to older PDF exporter for better robustness on binder, etc.
 
 #### @deathbeds/ipydrawio-pdf 1.1.3
-
----
 
 ### ipydrawio 1.1.2
 
@@ -162,8 +172,6 @@
 #### @deathbeds/ipydrawio-pdf 1.1.2
 
 [#72]: https://github.com/deathbeds/ipydrawio/issues/72
-
----
 
 ### ipydrawio 1.1.1
 
@@ -190,10 +198,7 @@
 
 #### @deathbeds/ipydrawio-pdf 1.1.1
 
-[#41]: https://github.com/deathbeds/ipydrawio/issues/41
 [#44]: https://github.com/deathbeds/ipydrawio/issues/44
-
----
 
 ### ipydrawio 1.1.0
 
@@ -228,8 +233,6 @@
 [#40]: https://github.com/deathbeds/ipydrawio/pull/40
 [#41]: https://github.com/deathbeds/ipydrawio/pull/41
 
----
-
 ### ipydrawio 1.0.1
 
 - [#32] on-disk file paths are shorter to avoid Windows issues
@@ -254,8 +257,6 @@
 
 [#31]: https://github.com/deathbeds/ipydrawio/issues/31
 [#32]: https://github.com/deathbeds/ipydrawio/issues/32
-
----
 
 ### ipydrawio 1.0.0
 
@@ -294,8 +295,6 @@
 [#21]: https://github.com/deathbeds/ipydrawio/issues/21
 [#22]: https://github.com/deathbeds/ipydrawio/pull/22
 
----
-
 ### ipydrawio 1.0.0a0
 
 - ipywidgets support
@@ -316,8 +315,6 @@
 
 #### @deathbeds/ipydrawio-pdf 1.0.0-alpha0
 
----
-
 ## Historic Releases
 
 For pre-releases of the previously-named package, see the [old CHANGELOG][]
@@ -325,7 +322,7 @@ For pre-releases of the previously-named package, see the [old CHANGELOG][]
 [old changelog]: https://github.com/deathbeds/ipydrawio/tree/3a577ac/CHANGELOG.md
 
 ```
-Copyright 2022 ipydrawio contributors
+Copyright 2023 ipydrawio contributors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

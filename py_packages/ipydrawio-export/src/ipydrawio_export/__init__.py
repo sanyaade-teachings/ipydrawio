@@ -1,6 +1,6 @@
-"""programmatic drawio export"""
+"""programmatic drawio export."""
 
-# Copyright 2022 ipydrawio contributors
+# Copyright 2023 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,13 +22,12 @@ from .serverextension import load_jupyter_server_extension
 
 
 def _jupyter_labextension_paths():
-    """static paths to link for interactive installation"""
-    exts = _ipydrawio_labextension_paths(prefix=__prefix__, extensions=__ext__)
-    return exts
+    """Static paths to link for interactive installation."""
+    return _ipydrawio_labextension_paths(prefix=__prefix__, extensions=__ext__)
 
 
 def _jupyter_server_extension_paths():
-    """python module to load as extension"""
+    """Python module to load as extension."""
     return [{"module": "ipydrawio_export"}]
 
 

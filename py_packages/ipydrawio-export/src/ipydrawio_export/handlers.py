@@ -1,6 +1,6 @@
-"""tornado handlers for managing and communicating with drawio export server"""
+"""tornado handlers for managing and communicating with drawio export server."""
 
-# Copyright 2022 ipydrawio contributors
+# Copyright 2023 ipydrawio contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ class BaseHandler(JupyterHandler):
 
 class PDFHandler(BaseHandler):
     @authenticated
-    async def post(self, url=None):
+    async def post(self, url=None):  # noqa: ARG002
         params = {k: v[-1] for k, v in self.request.arguments.items()}
         params.pop("_xsrf", None)
         pdf = await self.manager.pdf([params])
@@ -53,7 +53,7 @@ class ProvisionHandler(BaseHandler):
 
 
 def add_handlers(app):
-    """Add ipydrawio routes to the notebook server web application"""
+    """Add ipydrawio routes to the notebook server web application."""
     ns_url = ujoin(app.base_url, "ipydrawio")
     pdf_url = ujoin(ns_url, "export", r"(?P<url>.*)")
     status_url = ujoin(ns_url, "status")

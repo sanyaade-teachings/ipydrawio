@@ -1,23 +1,5 @@
-# basically ipydrawio[all,test] and ipydrawio-export... plus robot, pyyaml
-black
 doit
-flake8
-ipywidgets >=7.6,<9
-isort >=5
-jsonpointer
-jupyterlab ==3.*
-jupyterlab_widgets >=1
-lxml
-pillow
+flit
 pip
-pyflakes
-pypdf2
-pytest
 pyyaml
-requests
-requests-cache
-robotframework
-robotframework-lint
-setuptools
-ssort
-wheel
+jupyterlab >=3.6,<4.0.0a0

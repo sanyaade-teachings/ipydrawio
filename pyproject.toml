@@ -1,0 +1,83 @@
+[tool.ruff]
+fix = true
+cache-dir = "build/.cache/ruff"
+ignore = [
+  "BLE001",
+  "E501",
+  "T201",
+  "N812",
+  "RET505",
+  "S320",
+  "N806",
+  "EM101",
+  "PLR0913",
+  "G004",
+  # keep 3.8 compat
+  "UP006",
+  "UP007",
+]
+select = [
+  "A",
+  # "ANN",
+  "ARG",
+  "B",
+  "BLE",
+  "C4",
+  "C90",
+  "COM",
+  # "D",
+  "DJ",
+  "DTZ",
+  "E",
+  "EM",
+  "ERA",
+  "EXE",
+  "F",
+  # "FBT",
+  "G",
+  "I",
+  "ICN",
+  "INP",
+  "ISC",
+  "N",
+  "NPY",
+  "PD",
+  "PGH",
+  "PIE",
+  "PL",
+  "PT",
+  "PTH",
+  "PYI",
+  "Q",
+  "RET",
+  "RSE",
+  "RUF",
+  "S",
+  "SIM",
+  "SLF",
+  "T10",
+  "T20",
+  "TCH",
+  "TID",
+  # "TRY",
+  "UP",
+  "W",
+  "YTT",
+]
+
+[tool.ruff.per-file-ignores]
+"integrity.py" = ["S101"]
+"dodo.py" = ["SLF001", "N812", "C901", "S101"]
+"atest/*.py" = ["INP001", "S113", "INP001", "S310", "EM102"]
+"conf.py" = ["INP001", "A001", "ARG001"]
+"scripts/*.py" = ["INP001", "N812", "PLR0912", "S320", "N802", "PLW0603", "S310", "RET505", "C901", "B006", "PLW2901"]
+"packages/*/scripts/*.py" = ["INP001"]
+"py_packages/*/setup.py" = ["INP001"]
+"py_packages/ipydrawio/src/ipydrawio/clean.py" = ["C901", "PLR0912", "ARG001", "EM102"]
+"py_packages/ipydrawio-export/src/ipydrawio_export/manager.py" = ["SIM105"]
+
+[tool.robocop]
+exclude = ["0201", "0302", "0503", "0914", "0319", "0701", "0913", "0203", "0508", "0911", "0301", "0505", "0507"]
+
+[tool.nbqa.addopts]
+ruff = ["--ignore=E402,PLW2901,ICN001,INP001,B018,S101,ARG001,ARG002,S113,SLF001,PD901,E722,PLR2004"]
