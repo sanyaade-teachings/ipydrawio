@@ -1021,6 +1021,7 @@ def task_test():
             f"--html={html}",
             "--self-contained-html",
             "--script-launch-mode=subprocess",
+            "--cov-context=test",
         ]
         pycov_args = []
         pycov_html_args = [f"--directory={htmlcov.parent}"]
