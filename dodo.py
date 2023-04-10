@@ -942,14 +942,10 @@ def task_provision():
     )
 
 
-def _pytest(setup_py, pycov_args, pytest_args):
+def _pytest(setup_py, pytest_args):
     return CmdAction(
         [
             *P.PYM,
-            "coverage",
-            "run",
-            *pycov_args,
-            "-m",
             "pytest",
             *P.PYTEST_ARGS,
             *pytest_args,
@@ -960,30 +956,6 @@ def _pytest(setup_py, pycov_args, pytest_args):
             COVERAGE_PROCESS_START="1",
             **os.environ,
         ),
-    )
-
-
-def _pycov_combine(setup_py):
-    return CmdAction(
-        [*P.PYM, "coverage", "combine"],
-        shell=False,
-        cwd=str(setup_py.parent),
-    )
-
-
-def _pycov_report(setup_py):
-    return CmdAction(
-        [*P.PYM, "coverage", "report", "--skip-covered", "--show-missing"],
-        shell=False,
-        cwd=str(setup_py.parent),
-    )
-
-
-def _pycov_html(setup_py, *pycov_html_args):
-    return CmdAction(
-        [*P.PYM, "coverage", "html", *pycov_html_args],
-        shell=False,
-        cwd=str(setup_py.parent),
     )
 
 
@@ -1006,24 +978,39 @@ def task_test():
                     P.SCRIPTS / "integrity.py",
                 ],
                 "actions": [
-                    ["python", "-m", "pytest", "--pyargs", "scripts.integrity", "-vv"],
+                    [
+                        *P.PYM,
+                        "pytest",
+                        "--pyargs",
+                        "scripts.integrity",
+                        "-vv",
+                        *("-o", f"""cache_dir={P.CACHE / ".pytest.integrity"}"""),
+                    ],
                 ],
             },
             P.OK_INTEGRITY,
         )
 
     for pkg, setup in P.PY_SETUP.items():
-        html = P.BUILD / f"pytest/{pkg}/test.html"
-        htmlcov = P.BUILD / f"pytest/{pkg}/htmlcov"
+        report_dir = P.REPORTS / "pytest" / pkg
+        html = report_dir / "pytest.html"
+        cov_index = report_dir / "htmlcov" / "index.html"
+        cache_dir = P.CACHE / f".pytest.{pkg}"
         pytest_args = [
             "-vv",
             "--tb=long",
+            *("-o", f"cache_dir={cache_dir}"),
+            # subs
+            "--script-launch-mode=subprocess",
+            # report
             f"--html={html}",
             "--self-contained-html",
-            "--script-launch-mode=subprocess",
+            # cov
+            "--cov-context=test",
+            f"""--cov={pkg.replace("-", "_")}""",
+            f"--cov-report=html:{cov_index.parent}",
+            "--cov-branch",
         ]
-        pycov_args = []
-        pycov_html_args = [f"--directory={htmlcov.parent}"]
 
         if pkg == P.IPD.name:
             pytest_args += ["-n", "auto"]
@@ -1041,12 +1028,9 @@ def task_test():
                 ],
                 "actions": [
                     (P.delete_some, [html]),
-                    _pytest(setup, pycov_args, pytest_args),
-                    _pycov_combine(setup),
-                    _pycov_html(setup, *pycov_html_args),
-                    _pycov_report(setup),
+                    _pytest(setup, pytest_args),
                 ],
-                "targets": [html],
+                "targets": [html, cov_index],
             },
             P.OK_PYTEST[pkg],
         )

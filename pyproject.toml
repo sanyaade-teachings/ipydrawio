@@ -1,6 +1,6 @@
 [tool.ruff]
 fix = true
-cache-dir = "build/.cache/ruff"
+cache-dir = "build/.cache/.ruff"
 ignore = [
   "BLE001",
   "E501",

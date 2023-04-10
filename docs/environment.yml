@@ -73,6 +73,7 @@ dependencies:
   - ssort
   # unit testing
   - pytest
+  - pytest-cov
   - pytest-console-scripts
   - pytest-html
   - pytest-jupyter-server
