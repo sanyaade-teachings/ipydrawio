@@ -12,7 +12,8 @@
     "ignore_sys_prefix": true,
     "lite_dir": ".",
     "output_archive": "../build/demo/ipydrawio-lite-1.3.0.tgz",
-    "output_dir": "../build/demo"
+    "output_dir": "../build/demo",
+    "cache_dir": "../build/.cache/.lite"
   },
   "PipliteAddon": {
     "piplite_urls": [
