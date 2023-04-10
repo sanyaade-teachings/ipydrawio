@@ -45,5 +45,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `Try this PR on [![](${LITE})](${RTD}) :arrow_left: ReadTheDocs or Binder :arrow_right: [![](${BND})](${BH})`,
+              body: `Try this PR on [![RTD](${LITE})](${RTD}) :arrow_left: ReadTheDocs or Binder :arrow_right: [![Binder](${BND})](${BH})`,
             });
