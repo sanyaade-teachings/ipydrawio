@@ -14,11 +14,12 @@
 
 ## Prerequisites
 
-- `jupyterlab >=3,<4`
-- `nodejs >=12`
 - `doit >=0.32`
+- `jupyterlab >=3,<4`
+- `nodejs >=18,<19`
+- `python >=3.8`
 
-### Recommended: conda
+### Recommended: `mamba`
 
 - Get [Miniforge/Mambaforge](https://github.com/conda-forge/miniforge/releases)
 
@@ -76,38 +77,12 @@ doit dist
 
 ## Releasing
 
-- [ ] start a release issue with a checklist (maybe like this one)
-- [ ] merge all outstanding PRs
-- [ ] ensure the versions have been bumped (check with `doit test:integrity`)
-- [ ] ensure the CHANGELOG is up-to-date
-  - [ ] move the new release to the top of the stack
-- [ ] validate on binder
-- [ ] validate on ReadTheDocs
-- [ ] wait for a successful build of `master`
-- [ ] download the `dist` archive and unpack somewhere (maybe a fresh `dist`)
-- [ ] create a new release through the GitHub UI
-  - [ ] paste in the relevant CHANGELOG entries
-  - [ ] upload the artifacts
-- [ ] actually upload to npm.com, pypi.org
-  ```bash
-  cd dist
-  twine upload ipydrawio*
-  npm login
-  npm publish deathbeds-ipydrawio-$VERSION.tgz
-  npm publish deathbeds-ipydrawio-jupyter-templates-$VERSION.tgz
-  npm publish deathbeds-ipydrawio-notebook-$VERSION.tgz
-  npm publish deathbeds-ipydrawio-pdf-$VERSION.tgz
-  npm publish deathbeds-ipydrawio-webpack-$OTHER_VERSION.tgz
-  npm logout
-  ```
-- [ ] postmortem
-  - [ ] handle `conda-forge` feedstock tasks
-  - [ ] validate on binder via simplest-possible gists
-  - [ ] activate the version on ReadTheDocs
-  - [ ] bump to next development version
-  - [ ] update release procedures
+- Start a [release] issue on GitHub
+  - Follow the checklist
 
-```
+[release]: https://github.com/deathbeds/ipydrawio/issues/new?template=release.md
+
+<!--
 Copyright 2023 ipydrawio contributors
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -121,4 +96,4 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-```
+-->
