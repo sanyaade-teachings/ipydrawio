@@ -2,27 +2,33 @@
 
 ## Unreleased
 
-### ipydrawio-widgets 1.3.0
+> TBD
+
+## Releases
+
+### 1.3.0
+
+#### ipydrawio-widgets 1.3.0
 
 - minimum supported python is now 3.8
 
-### ipydrawio 1.3.0
+#### ipydrawio 1.3.0
 
 - minimum supported python is now 3.8
 
-#### @deathbeds/ipydrawio 1.3.0
+##### @deathbeds/ipydrawio 1.3.0
 
-#### @deathbeds/ipydrawio-notebook 1.3.0
+##### @deathbeds/ipydrawio-notebook 1.3.0
 
-#### @deathbeds/ipydrawio-webpack 21.1.400
+##### @deathbeds/ipydrawio-webpack 21.1.400
 
 - updates to [drawio v21.1.4](https://github.com/jgraph/drawio/releases/tag/v21.1.4)
   - includes
     [mermaidjs 10.0.0](https://github.com/mermaid-js/mermaid/releases/tag/v10.0.0)
 
-#### @deathbeds/ipydrawio-jupyter-templates 1.3.0
+##### @deathbeds/ipydrawio-jupyter-templates 1.3.0
 
-### ipydrawio-export 1.3.0
+#### ipydrawio-export 1.3.0
 
 - minimum supported python is now 3.8
 - updates to
@@ -30,19 +36,19 @@
 - by default uses a private copy of chromium in `{sys.prefix}/jupyter/ipydrawio_export`
   - can be overridden with `IPYDRAWIO_PUPPETEER_CACHE_DIR` or `PUPPETEER_CACHE_DIR`
 
-#### @deathbeds/ipydrawio-pdf 1.3.0
+##### @deathbeds/ipydrawio-pdf 1.3.0
 
-### ipydrawio-mathjax 1.3.0
+#### ipydrawio-mathjax 1.3.0
 
 - minimum supported python is now 3.8
 
-#### @deathbeds/ipydrawio-mathjax 1.3.0
+##### @deathbeds/ipydrawio-mathjax 1.3.0
 
-## Releases
+### 1.2.2
 
-### ipydrawio-widgets 1.2.2
+#### ipydrawio-widgets 1.2.2
 
-### ipydrawio 1.2.2
+#### ipydrawio 1.2.2
 
 - as `retrolab` no longer supports installation next to `jupyterlab 3.5`, it is no
   longer under test... but might still work.
@@ -52,161 +58,173 @@
   - `mathjax` rendering is no longer included by default
     - install it with `(mamba|conda|pip) install ipydrawio-mathjax`
 
-#### @deathbeds/ipydrawio 1.2.2
+##### @deathbeds/ipydrawio 1.2.2
 
-#### @deathbeds/ipydrawio-notebook 1.2.2
+##### @deathbeds/ipydrawio-notebook 1.2.2
 
-#### @deathbeds/ipydrawio-webpack 20.5.300
+##### @deathbeds/ipydrawio-webpack 20.5.300
 
 - updates to drawio v20.5.3 [#106]
 
-#### @deathbeds/ipydrawio-jupyter-templates 1.2.2
+##### @deathbeds/ipydrawio-jupyter-templates 1.2.2
 
-### ipydrawio-export 1.2.2
+#### ipydrawio-export 1.2.2
 
-#### @deathbeds/ipydrawio-pdf 1.2.2
+##### @deathbeds/ipydrawio-pdf 1.2.2
 
-### ipydrawio-mathjax 1.2.2
+#### ipydrawio-mathjax 1.2.2
 
 - now holds the drawio-compatible copy of MathJax [#106]
 
-#### @deathbeds/ipydrawio-mathjax 1.2.2
+##### @deathbeds/ipydrawio-mathjax 1.2.2
 
 - initial release
 
 [#106]: https://github.com/deathbeds/ipydrawio/pull/106
 
-### ipydrawio-widgets 1.2.1
+### 1.2.1
+
+#### ipydrawio-widgets 1.2.1
 
 - add support for `ipywidgets` 8 [#98]
 
-### ipydrawio 1.2.1
+#### ipydrawio 1.2.1
 
-#### @deathbeds/ipydrawio 1.2.1
+##### @deathbeds/ipydrawio 1.2.1
 
 - add support `@jupyter-widgets/jupyterlab-manager` 5 [#98]
 
-#### @deathbeds/ipydrawio-notebook 1.2.1
+##### @deathbeds/ipydrawio-notebook 1.2.1
 
-#### @deathbeds/ipydrawio-webpack 20.2.800
+##### @deathbeds/ipydrawio-webpack 20.2.800
 
 - updates to drawio v20.2.8
 
-#### @deathbeds/ipydrawio-jupyter-templates 1.2.1
+##### @deathbeds/ipydrawio-jupyter-templates 1.2.1
 
-### ipydrawio-export 1.2.1
+#### ipydrawio-export 1.2.1
 
-#### @deathbeds/ipydrawio-pdf 1.2.1
+##### @deathbeds/ipydrawio-pdf 1.2.1
 
 [#98]: https://github.com/deathbeds/ipydrawio/issues/98
 
-### ipydrawio-widgets 1.2.0
+### 1.2.0
+
+#### ipydrawio-widgets 1.2.0
 
 - new kernel-only package for headless kernel installs [#63]
 - adds `cell_ids` to widget diagrams [#88]
 
-### ipydrawio 1.2.0
+#### ipydrawio 1.2.0
 
 - `jupyter ipydrawio clean` can now cleans `.ipynb` metadata and outputs [#88]
 - minimum supported python is now to 3.7
 
-#### @deathbeds/ipydrawio 1.2.0
+##### @deathbeds/ipydrawio 1.2.0
 
 - adds support for data URI-encoded shape libraries (incompatible with `stealth`) [#80]
 - fixes selection in widget diagrams with more than 10 shapes [#85]
 
-#### @deathbeds/ipydrawio-notebook 1.2.0
+##### @deathbeds/ipydrawio-notebook 1.2.0
 
-#### @deathbeds/ipydrawio-webpack 16.4.500
+##### @deathbeds/ipydrawio-webpack 16.4.500
 
 - updates to drawio v16.4.5
 
-#### @deathbeds/ipydrawio-jupyter-templates 1.2.0
+##### @deathbeds/ipydrawio-jupyter-templates 1.2.0
 
-### ipydrawio-export 1.2.0
+#### ipydrawio-export 1.2.0
 
 - minimum supported python is now to 3.7
 
-#### @deathbeds/ipydrawio-pdf 1.2.0
+##### @deathbeds/ipydrawio-pdf 1.2.0
 
 [#63]: https://github.com/deathbeds/ipydrawio/issues/63
 [#80]: https://github.com/deathbeds/ipydrawio/issues/80
 [#85]: https://github.com/deathbeds/ipydrawio/issues/85
 [#88]: https://github.com/deathbeds/ipydrawio/issues/88
 
-### ipydrawio 1.1.3
+### 1.1.3
 
-#### @deathbeds/ipydrawio 1.1.3
+#### ipydrawio 1.1.3
 
-#### @deathbeds/ipydrawio-notebook 1.1.3
+##### @deathbeds/ipydrawio 1.1.3
 
-#### @deathbeds/ipydrawio-webpack 15.8.701
+##### @deathbeds/ipydrawio-notebook 1.1.3
 
-#### @deathbeds/ipydrawio-jupyter-templates 1.1.3
+##### @deathbeds/ipydrawio-webpack 15.8.701
 
-### ipydrawio-export 1.1.3
+##### @deathbeds/ipydrawio-jupyter-templates 1.1.3
+
+#### ipydrawio-export 1.1.3
 
 - revert to older PDF exporter for better robustness on binder, etc.
 
-#### @deathbeds/ipydrawio-pdf 1.1.3
+##### @deathbeds/ipydrawio-pdf 1.1.3
 
-### ipydrawio 1.1.2
+### 1.1.2
 
-#### @deathbeds/ipydrawio 1.1.2
+#### ipydrawio 1.1.2
+
+##### @deathbeds/ipydrawio 1.1.2
 
 - minimal support for RetroLab [#72]
 
-#### @deathbeds/ipydrawio-notebook 1.1.2
+##### @deathbeds/ipydrawio-notebook 1.1.2
 
-#### @deathbeds/ipydrawio-webpack 15.8.700
+##### @deathbeds/ipydrawio-webpack 15.8.700
 
 - upgrade to drawio v15.8.7 for enhancements and bug fixes
 
-#### @deathbeds/ipydrawio-jupyter-templates 1.1.2
+##### @deathbeds/ipydrawio-jupyter-templates 1.1.2
 
-### ipydrawio-export 1.1.2
+#### ipydrawio-export 1.1.2
 
 - a `yarn.lock` is shipped to reduce provisioning time and increase reproducibility
 - update to newer PDF exporter for better performance
 
-#### @deathbeds/ipydrawio-pdf 1.1.2
+##### @deathbeds/ipydrawio-pdf 1.1.2
 
 [#72]: https://github.com/deathbeds/ipydrawio/issues/72
 
-### ipydrawio 1.1.1
+### 1.1.1
+
+#### ipydrawio 1.1.1
 
 - adds `jupyter ipydrawio clean` for removing `host`, `agent`, `modified` attributes and
   pretty printing, restoring `lxml` as a dependency [#44]
 
-#### @deathbeds/ipydrawio 1.1.1
+##### @deathbeds/ipydrawio 1.1.1
 
 - revert default theme from `sketch` back to `min` [#41]
 
-#### @deathbeds/ipydrawio-notebook 1.1.1
+##### @deathbeds/ipydrawio-notebook 1.1.1
 
-#### @deathbeds/ipydrawio-webpack 14.9.300
+##### @deathbeds/ipydrawio-webpack 14.9.300
 
 - upgrade to drawio v14.9.300 for many enhancements and bug fixes [#51]
 
-#### @deathbeds/ipydrawio-jupyter-templates 1.1.1
+##### @deathbeds/ipydrawio-jupyter-templates 1.1.1
 
 - adds some (unofficial) Jupyter-branded templates [#44]
 
-### ipydrawio-export 1.1.1
+#### ipydrawio-export 1.1.1
 
 - upgrades `draw-image-export` for `xmldom` version and bugfixes [#44]
 
-#### @deathbeds/ipydrawio-pdf 1.1.1
+##### @deathbeds/ipydrawio-pdf 1.1.1
 
 [#44]: https://github.com/deathbeds/ipydrawio/issues/44
 
-### ipydrawio 1.1.0
+### 1.1.0
+
+#### ipydrawio 1.1.0
 
 - new documentation site at https://ipydrawio.rtfd.io [#40]
 - no longer depends on `lxml`, future XML-based features will hopefully support the
   standard library `xml` module [#40]
 
-#### @deathbeds/ipydrawio 1.1.0
+##### @deathbeds/ipydrawio 1.1.0
 
 - the `sketch` theme is now available as the `ui` [#40]
 - the _Custom Diagram..._ Launcher card offers all the themes, templates, and editable
@@ -218,47 +236,51 @@
   - the previous inescapable behavior can be restored in _Adanced Settings_ by setting
     `"disableEscapeFocus": true`
 
-#### @deathbeds/ipydrawio-notebook 1.1.0
+##### @deathbeds/ipydrawio-notebook 1.1.0
 
-#### @deathbeds/ipydrawio-webpack 14.7.100
+##### @deathbeds/ipydrawio-webpack 14.7.100
 
 - drawio 14.7.1 [#41]
 
-### ipydrawio-export 1.1.0
+#### ipydrawio-export 1.1.0
 
 - depends on `lxml` [#40]
 
-#### @deathbeds/ipydrawio-pdf 1.1.0
+##### @deathbeds/ipydrawio-pdf 1.1.0
 
 [#40]: https://github.com/deathbeds/ipydrawio/pull/40
 [#41]: https://github.com/deathbeds/ipydrawio/pull/41
 
-### ipydrawio 1.0.1
+### 1.0.1
+
+#### ipydrawio 1.0.1
 
 - [#32] on-disk file paths are shorter to avoid Windows issues
 - [#31] `install.json` is properly placed
 
-#### @deathbeds/ipydrawio 1.0.1
+##### @deathbeds/ipydrawio 1.0.1
 
-#### @deathbeds/ipydrawio-notebook 1.0.1
+##### @deathbeds/ipydrawio-notebook 1.0.1
 
-#### @deathbeds/ipydrawio-webpack 14.5.901
+##### @deathbeds/ipydrawio-webpack 14.5.901
 
 - [#32] drawio assets are copied into a shorter path
 - changing version scheme to allow for patch releases.
   - going forward, the upstream patch release will be multiplied by 100
 
-### ipydrawio-export 1.0.1
+#### ipydrawio-export 1.0.1
 
 - [#32] on-disk file paths are shorter to avoid Windows issues
 - [#31] `install.json` is properly placed
 
-#### @deathbeds/ipydrawio-pdf 1.0.1
+##### @deathbeds/ipydrawio-pdf 1.0.1
 
 [#31]: https://github.com/deathbeds/ipydrawio/issues/31
 [#32]: https://github.com/deathbeds/ipydrawio/issues/32
 
-### ipydrawio 1.0.0
+### 1.0.0
+
+#### ipydrawio 1.0.0
 
 - ipywidgets support
 - Supports JupyterLab 3
@@ -268,7 +290,7 @@
     unavailable
 - A future release may unpack various dependencies into sub-packages
 
-#### @deathbeds/ipydrawio 1.0.0
+##### @deathbeds/ipydrawio 1.0.0
 
 - [#22] adds more _Main Menu_ options and _Command Palette_ Commands
 - [#22] new file names created by _Export Diagram as..._ commands use best-effort,
@@ -276,18 +298,18 @@
 - [#20] add `allow-downloads` sandbox exception for the drawio `iframe`, enabling some
   more built-in features
 
-#### @deathbeds/ipydrawio-notebook 1.0.0
+##### @deathbeds/ipydrawio-notebook 1.0.0
 
 - [#21] fixes overload of default _Notebook_ activity for _Edit with_ for `.ipynb` files
 
-#### @deathbeds/ipydrawio-webpack 14.5.9
+##### @deathbeds/ipydrawio-webpack 14.5.9
 
-### ipydrawio-export 1.0.0
+#### ipydrawio-export 1.0.0
 
 - [#22] correctly handle finding/resolving `node.*` on windows
 - [#22] upgrade to newer `puppeteer`-based `draw-image-export`
 
-#### @deathbeds/ipydrawio-pdf 1.0.0
+##### @deathbeds/ipydrawio-pdf 1.0.0
 
 - [#22] improved PDF export
 
@@ -295,7 +317,9 @@
 [#21]: https://github.com/deathbeds/ipydrawio/issues/21
 [#22]: https://github.com/deathbeds/ipydrawio/pull/22
 
-### ipydrawio 1.0.0a0
+### 1.0.0a0
+
+#### ipydrawio 1.0.0a0
 
 - ipywidgets support
 - Supports JupyterLab 3
@@ -305,15 +329,15 @@
     unavailable
 - A future release may unpack various dependencies into sub-packages
 
-#### @deathbeds/ipydrawio 1.0.0-alpha0
+##### @deathbeds/ipydrawio 1.0.0-alpha0
 
-#### @deathbeds/ipydrawio-notebook 1.0.0-alpha0
+##### @deathbeds/ipydrawio-notebook 1.0.0-alpha0
 
-#### @deathbeds/ipydrawio-webpack 14.2.6-alpha0
+##### @deathbeds/ipydrawio-webpack 14.2.6-alpha0
 
-### ipydrawio-export 1.0.0a0
+#### ipydrawio-export 1.0.0a0
 
-#### @deathbeds/ipydrawio-pdf 1.0.0-alpha0
+##### @deathbeds/ipydrawio-pdf 1.0.0-alpha0
 
 ## Historic Releases
 
