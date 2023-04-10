@@ -978,7 +978,14 @@ def task_test():
                     P.SCRIPTS / "integrity.py",
                 ],
                 "actions": [
-                    ["python", "-m", "pytest", "--pyargs", "scripts.integrity", "-vv"],
+                    [
+                        *P.PYM,
+                        "pytest",
+                        "--pyargs",
+                        "scripts.integrity",
+                        "-vv",
+                        *("-o", f"""cache_dir={P.CACHE / ".pytest.integrity"}"""),
+                    ],
                 ],
             },
             P.OK_INTEGRITY,
@@ -988,12 +995,17 @@ def task_test():
         report_dir = P.REPORTS / "pytest" / pkg
         html = report_dir / "pytest.html"
         cov_index = report_dir / "htmlcov" / "index.html"
+        cache_dir = P.CACHE / f".pytest.{pkg}"
         pytest_args = [
             "-vv",
             "--tb=long",
+            *("-o", f"cache_dir={cache_dir}"),
+            # subs
+            "--script-launch-mode=subprocess",
+            # report
             f"--html={html}",
             "--self-contained-html",
-            "--script-launch-mode=subprocess",
+            # cov
             "--cov-context=test",
             f"""--cov={pkg.replace("-", "_")}""",
             f"--cov-report=html:{cov_index.parent}",

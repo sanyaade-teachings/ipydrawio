@@ -137,15 +137,18 @@ YARN_LOCK = ROOT / "yarn.lock"
 DODO = ROOT / "dodo.py"
 BUILD = ROOT / "build"
 REPORTS = BUILD / "reports"
+OK = BUILD / "ok"
 DIST = ROOT / "dist"
 DOCS = ROOT / "docs"
 README = ROOT / "README.md"
 CHANGELOG = ROOT / "CHANGELOG.md"
+CACHE = BUILD / ".cache"
 
 # external URLs
 # archive.org template
 CACHE_EPOCH = 0
-HTTP_CACHE = BUILD / ".requests-cache"
+HTTP_CACHE = CACHE / ".requests-cache"
+BLACK_CACHE_DIR = CACHE / ".black"
 
 
 def A_O(archive_id, url, cache_bust=CACHE_EPOCH):
@@ -366,7 +369,7 @@ JS_PKG_PACK = {
     for k, v in JS_TSBUILDINFO.items()
     if not k.startswith("_")
 ]
-OK_PYSETUP = {k: BUILD / f"pysetup.{k}.ok" for k, v in PY_SETUP.items()}
+OK_PYSETUP = {k: OK / f"pysetup.{k}.ok" for k, v in PY_SETUP.items()}
 
 PY_SETUP_DEPS = {
     IPD: lambda: [OK_PYSETUP["ipydrawio-widgets"]],
@@ -558,7 +561,6 @@ JS_PKG_PACK[IPDM.name][0] += [IPDWP_IGNORE, IPDWP_APP, *ALL_IPDM_JS, IPDM_STARTU
 IPYDRAWIO_DATA_DIR = Path(sys.prefix) / "share/jupyter/ipydrawio_export"
 
 # built files
-OK = BUILD / "ok"
 OK_PIP_CHECK = OK / "pip.check.ok"
 OK_INTEGRITY = OK / "integrity.ok"
 OK_SUBMODULES = OK / "submodules.ok"
@@ -1074,4 +1076,5 @@ os.environ.update(
     JUPYTER_PLATFORM_DIRS="1",
     PYDEVD_DISABLE_FILE_VALIDATION="1",
     IPYDRAWIO_DATA_DIR=str(IPYDRAWIO_DATA_DIR),
+    BLACK_CACHE_DIR=str(BLACK_CACHE_DIR),
 )

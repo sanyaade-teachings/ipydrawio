@@ -91,7 +91,7 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         id: cache-yarn-packages
         with:
-          path: .yarn-packages
+          path: ./build/.cache/.yarn-packages
           key: |
             ${{ env.CACHE_EPOCH }}-yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
           restore-keys: |
@@ -335,7 +335,7 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         id: cache-yarn-packages
         with:
-          path: .yarn-packages
+          path: ./build/.cache/.yarn-packages
           key: |
             ${{ env.CACHE_EPOCH }}-yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
           restore-keys: |
@@ -391,7 +391,7 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         id: cache-yarn-packages
         with:
-          path: .yarn-packages
+          path: ./build/.cache/.yarn-packages
           key: |
             ${{ env.CACHE_EPOCH }}-yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
           restore-keys: |
