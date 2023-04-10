@@ -296,21 +296,13 @@ jobs:
           cd ../ipydrawio-mathjax
           codecov --root ../..
 
-      - name: upload (utest)
+      - name: upload (reports)
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: |-
-            ipydrawio-${{ github.run_number }}-utest-${{ matrix.os }}-${{ matrix.python-version }}
-          path: ./build/pytest
-
-      - name: upload (atest)
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: |-
-            ipydrawio-${{ github.run_number }}-atest-${{ matrix.os }}-${{matrix.python-version }}
-          path: ./build/atest
+            ipydrawio-${{ github.run_number }}-reports-${{ matrix.os }}-${{matrix.python-version }}
+          path: ./build/reports
 
       - name: Rename uncached conda packages
         shell: bash
@@ -430,12 +422,12 @@ jobs:
         shell: bash -l {0}
         run: doit test:robot
 
-      - name: upload (atest)
+      - name: upload (reports)
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: |-
-            ipydrawio-${{ github.run_number }}-atest-${{ matrix.os }}${{ matrix.python-version }}
+            ipydrawio-${{ github.run_number }}-reports-${{ matrix.os }}${{ matrix.python-version }}
           path: ./build/atest
 
       - name: upload (docs)

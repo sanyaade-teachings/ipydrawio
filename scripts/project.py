@@ -136,6 +136,7 @@ YARN_INTEGRITY = NODE_MODULES / ".yarn-integrity"
 YARN_LOCK = ROOT / "yarn.lock"
 DODO = ROOT / "dodo.py"
 BUILD = ROOT / "build"
+REPORTS = BUILD / "reports"
 DIST = ROOT / "dist"
 DOCS = ROOT / "docs"
 README = ROOT / "README.md"
@@ -200,7 +201,7 @@ EXAMPLE_IPYNB = _clean(EXAMPLES.rglob("*.ipynb"))
 DIST_NBHTML = DIST / "nbsmoke"
 ATEST = ROOT / "atest"
 ATEST_DIO = _clean(ATEST.rglob("*.dio"), ATEST.rglob("*.dio.svg"))
-ATEST_OUT = BUILD / "atest"
+ATEST_OUT = REPORTS / "atest"
 ATEST_OUT_XML = "output.xml"
 ATEST_TEMPLATES = [*ATEST.rglob("*.robot.j2")]
 
@@ -557,32 +558,33 @@ JS_PKG_PACK[IPDM.name][0] += [IPDWP_IGNORE, IPDWP_APP, *ALL_IPDM_JS, IPDM_STARTU
 IPYDRAWIO_DATA_DIR = Path(sys.prefix) / "share/jupyter/ipydrawio_export"
 
 # built files
-OK_PIP_CHECK = BUILD / "pip.check.ok"
-OK_INTEGRITY = BUILD / "integrity.ok"
-OK_SUBMODULES = BUILD / "submodules.ok"
-OK_BLACK = BUILD / "black.ok"
-OK_BLACK_JUPYTER = BUILD / "black.jupyter.ok"
-OK_NBQA_RUFF = BUILD / "nbqa.ruff.ok"
-OK_RUFF = BUILD / "ruff.ok"
-OK_FLAKE8 = BUILD / "flake8.ok"
-OK_SSORT = BUILD / "ssort.ok"
-OK_LINT = BUILD / "lint.ok"
-OK_ROBOTIDY = BUILD / "robot.tidy.ok"
-OK_PRETTIER = BUILD / "prettier.ok"
-OK_ESLINT = BUILD / "eslint.ok"
-OK_JS_BUILD_PRE = BUILD / "js.build.pre.ok"
-OK_JS_BUILD = BUILD / "js.build.ok"
-OK_PYTEST = {k: BUILD / f"pytest.{k}.ok" for k, v in PY_SETUP.items()}
-OK_SERVEREXT = {k: BUILD / f"serverext.{k}.ok" for k, v in SERVER_EXT.items()}
-OK_PROVISION = BUILD / "provision.ok"
-OK_ROBOT_DRYRUN = BUILD / "robot.dryrun.ok"
-OK_ROBOCOP = BUILD / "robot.robocop.ok"
-OK_DIOLINT = BUILD / "dio.lint.ok"
-OK_ATEST = BUILD / "atest.ok"
-OK_CONDA_TEST = BUILD / "conda-build.test.ok"
-OK_LINK_CHECK = BUILD / "pytest-check-links.ok"
+OK = BUILD / "ok"
+OK_PIP_CHECK = OK / "pip.check.ok"
+OK_INTEGRITY = OK / "integrity.ok"
+OK_SUBMODULES = OK / "submodules.ok"
+OK_BLACK = OK / "black.ok"
+OK_BLACK_JUPYTER = OK / "black.jupyter.ok"
+OK_NBQA_RUFF = OK / "nbqa.ruff.ok"
+OK_RUFF = OK / "ruff.ok"
+OK_FLAKE8 = OK / "flake8.ok"
+OK_SSORT = OK / "ssort.ok"
+OK_LINT = OK / "lint.ok"
+OK_ROBOTIDY = OK / "robot.tidy.ok"
+OK_PRETTIER = OK / "prettier.ok"
+OK_ESLINT = OK / "eslint.ok"
+OK_JS_BUILD_PRE = OK / "js.build.pre.ok"
+OK_JS_BUILD = OK / "js.build.ok"
+OK_PYTEST = {k: OK / f"pytest.{k}.ok" for k, v in PY_SETUP.items()}
+OK_SERVEREXT = {k: OK / f"serverext.{k}.ok" for k, v in SERVER_EXT.items()}
+OK_PROVISION = OK / "provision.ok"
+OK_ROBOT_DRYRUN = OK / "robot.dryrun.ok"
+OK_ROBOCOP = OK / "robot.robocop.ok"
+OK_DIOLINT = OK / "dio.lint.ok"
+OK_ATEST = OK / "atest.ok"
+OK_CONDA_TEST = OK / "conda-build.test.ok"
+OK_LINK_CHECK = OK / "pytest-check-links.ok"
 
-OK_EXT_BUILD = {k: BUILD / f"ext.build.{k}.ok" for k in JS_LABEXT_PY_HOST}
+OK_EXT_BUILD = {k: OK / f"ext.build.{k}.ok" for k in JS_LABEXT_PY_HOST}
 
 PY_TEST_DEP.setdefault("ipydrawio-export", []).append(OK_PROVISION)
 
@@ -829,7 +831,11 @@ def _ok(task, ok):
     task["actions"] = [
         lambda: [ok.exists() and ok.unlink(), True][-1],
         *task["actions"],
-        lambda: [ok.parent.mkdir(exist_ok=True), ok.write_text("ok", **ENC), True][-1],
+        lambda: [
+            ok.parent.mkdir(exist_ok=True, parents=True),
+            ok.write_text("ok", **ENC),
+            True,
+        ][-1],
     ]
     return task
 
