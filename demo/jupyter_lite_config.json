@@ -1,5 +1,6 @@
 {
   "LiteBuildConfig": {
+    "cache_dir": "../build/.cache/.lite",
     "federated_extensions": [
       "../py_packages/ipydrawio/dist/ipydrawio-1.3.0-py3-none-any.whl",
       "https://conda.anaconda.org/conda-forge/noarch/bqplot-0.12.38-pyhd8ed1ab_0.conda",
@@ -12,8 +13,7 @@
     "ignore_sys_prefix": true,
     "lite_dir": ".",
     "output_archive": "../build/demo/ipydrawio-lite-1.3.0.tgz",
-    "output_dir": "../build/demo",
-    "cache_dir": "../build/.cache/.lite"
+    "output_dir": "../build/demo"
   },
   "PipliteAddon": {
     "piplite_urls": [

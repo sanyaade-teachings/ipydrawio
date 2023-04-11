@@ -223,15 +223,13 @@ limitations under the License.
   https://github.com/deathbeds/ipydrawio/blob/main/docs/Diagram%20Document.ipynb
 [rich display]:
   https://github.com/deathbeds/ipydrawio/blob/main/docs/Diagram%20Rich%20Display.ipynb
-[widgets]:
-  https://github.com/deathbeds/ipydrawio/blob/main/docs/Diagram%20Widgets.ipynb
+[widgets]: https://github.com/deathbeds/ipydrawio/blob/main/docs/Diagram%20Widgets.ipynb
 [puppeteer]: https://github.com/puppeteer/puppeteer
 [@jgraph/draw-image-export2]: https://github.com/jgraph/draw-image-export2
 [apt-txt]: https://github.com/deathbeds/ipydrawio/blob/main/.binder/apt.txt
 [poster-min]:
   https://raw.githubusercontent.com/deathbeds/ipydrawio/main/docs/_static/images/poster.png
-[poster]:
-  https://raw.githubusercontent.com/deathbeds/ipydrawio/main/docs/Poster.dio.svg
+[poster]: https://raw.githubusercontent.com/deathbeds/ipydrawio/main/docs/Poster.dio.svg
 [roadmap]:
   https://nbviewer.jupyter.org/github/deathbeds/ipydrawio/blob/main/docs/ROADMAP.ipynb
 [command palette]:
