@@ -601,7 +601,7 @@ CMD_LIST_EXTENSIONS = ["jupyter", "labextension", "list"]
 CMD_LAB = ["jupyter", "lab", "--no-browser", "--debug"]
 
 # conda building
-RECIPE = ROOT / "conda.recipe/meta.yaml"
+RECIPE = GH / "conda.recipe/meta.yaml"
 CONDA_BLD = BUILD / "conda-bld"
 CONDARC = GH / ".condarc"
 # could be mambabuild

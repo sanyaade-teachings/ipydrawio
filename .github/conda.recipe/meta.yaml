@@ -2,7 +2,7 @@
 
 {% set build_number = 0 %}
 
-{% set url_base = RECIPE_DIR.replace("\\", "/") + "/../dist" %}
+{% set url_base = RECIPE_DIR.replace("\\", "/") + "/../../dist" %}
 {% if not url_base.startswith("/") %}
 {% set url_base = "/" + url_base %}
 {% endif %}
