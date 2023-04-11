@@ -1,6 +1,8 @@
 # About
 
 ```{toctree}
+:maxdepth: 3
+
 ../ROADMAP.ipynb
 changelog
 ```

@@ -70,7 +70,7 @@ pip install ipydrawio[all]
   - or follow the [Installation instructions](#installation) and **Start JupyterLab**
 - Open a diagram, by doing one of:
   - Creating a
-    <img src="https://raw.githubusercontent.com/deathbeds/ipydrawio/master/packages/ipydrawio/style/img/drawio.svg" width="24"/>
+    <img src="https://raw.githubusercontent.com/deathbeds/ipydrawio/main/packages/ipydrawio/style/img/drawio.svg" width="24"/>
     Diagram\_ from the [Launcher][]
   - Uploading a diagram created on [diagrams.net](https://diagrams.net) with the _[File
     Manager][]_ and double clicking it
@@ -191,22 +191,22 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-[apache 2.0]: https://github.com/deathbeds/ipydrawio/blob/master/LICENSE.txt
+[apache 2.0]: https://github.com/deathbeds/ipydrawio/blob/main/LICENSE.txt
 [@jgraph/drawio]: https://github.com/jgraph/drawio
 [@jgraph/draw-image-export2]: https://github.com/jgraph/draw-image-export2
 [jupyterlab]: https://github.com/jupyterlab/jupyterlab
 [drawio]: https://www.diagrams.net
 [quantstack/jupyterlab-drawio]: https://github.com/QuantStack/jupyterlab-drawio
 [contributors]: https://github.com/deathbeds/ipydrawio/graphs/contributors
-[history]: https://github.com/deathbeds/ipydrawio/blob/master/CHANGELOG.md
+[history]: https://github.com/deathbeds/ipydrawio/blob/main/CHANGELOG.md
 [binder]:
-  http://mybinder.org/v2/gh/deathbeds/ipydrawio/master?urlpath=lab/tree/docs/Poster.dio.svg
+  http://mybinder.org/v2/gh/deathbeds/ipydrawio/main?urlpath=lab/tree/docs/Poster.dio.svg
 [binder-badge]: https://mybinder.org/badge_logo.svg
 [workflow-badge]:
   https://github.com/deathbeds/ipydrawio/workflows/.github/workflows/ci.yml/badge.svg
 [workflow]:
-  https://github.com/deathbeds/ipydrawio/actions?query=branch%3Amaster+workflow%3A.github%2Fworkflows%2Fci.yml
-[roadmap]: https://github.com/deathbeds/ipydrawio/blob/master/docs/ROADMAP.ipynb
+  https://github.com/deathbeds/ipydrawio/actions?query=branch%3Amain+workflow%3A.github%2Fworkflows%2Fci.yml
+[roadmap]: https://github.com/deathbeds/ipydrawio/blob/main/docs/ROADMAP.ipynb
 [conda-badge]: https://img.shields.io/conda/vn/conda-forge/ipydrawio
 [conda]: https://anaconda.org/conda-forge/ipydrawio
 [pypi-badge]: https://img.shields.io/pypi/v/ipydrawio
@@ -214,26 +214,24 @@ limitations under the License.
 [npm]: https://npmjs.com/package/@deathbeds/ipydrawio
 [npm-badge]: https://img.shields.io/npm/v/@deathbeds/ipydrawio
 [cov-badge]:
-  https://codecov.io/gh/deathbeds/ipydrawio/branch/master/graph/badge.svg?token=9B74VKHQDK
+  https://codecov.io/gh/deathbeds/ipydrawio/branch/main/graph/badge.svg?token=9B74VKHQDK
 [cov]: https://codecov.io/gh/deathbeds/ipydrawio
 [docs-badge]: https://readthedocs.org/projects/ipydrawio/badge/?version=latest
 [docs]: https://ipydrawio.rtfd.io
-[contributing]: https://github.com/deathbeds/ipydrawio/blob/master/CONTRIBUTING.md
+[contributing]: https://github.com/deathbeds/ipydrawio/blob/main/CONTRIBUTING.md
 [documents]:
-  https://github.com/deathbeds/ipydrawio/blob/master/docs/Diagram%20Document.ipynb
+  https://github.com/deathbeds/ipydrawio/blob/main/docs/Diagram%20Document.ipynb
 [rich display]:
-  https://github.com/deathbeds/ipydrawio/blob/master/docs/Diagram%20Rich%20Display.ipynb
-[widgets]:
-  https://github.com/deathbeds/ipydrawio/blob/master/docs/Diagram%20Widgets.ipynb
+  https://github.com/deathbeds/ipydrawio/blob/main/docs/Diagram%20Rich%20Display.ipynb
+[widgets]: https://github.com/deathbeds/ipydrawio/blob/main/docs/Diagram%20Widgets.ipynb
 [puppeteer]: https://github.com/puppeteer/puppeteer
 [@jgraph/draw-image-export2]: https://github.com/jgraph/draw-image-export2
-[apt-txt]: https://github.com/deathbeds/ipydrawio/blob/master/.binder/apt.txt
+[apt-txt]: https://github.com/deathbeds/ipydrawio/blob/main/.binder/apt.txt
 [poster-min]:
-  https://raw.githubusercontent.com/deathbeds/ipydrawio/master/docs/_static/images/poster.png
-[poster]:
-  https://raw.githubusercontent.com/deathbeds/ipydrawio/master/docs/Poster.dio.svg
+  https://raw.githubusercontent.com/deathbeds/ipydrawio/main/docs/_static/images/poster.png
+[poster]: https://raw.githubusercontent.com/deathbeds/ipydrawio/main/docs/Poster.dio.svg
 [roadmap]:
-  https://nbviewer.jupyter.org/github/deathbeds/ipydrawio/blob/master/docs/ROADMAP.ipynb
+  https://nbviewer.jupyter.org/github/deathbeds/ipydrawio/blob/main/docs/ROADMAP.ipynb
 [command palette]:
   https://jupyterlab.readthedocs.io/en/stable/user/commands.html?highlight=command%20palette
 [launcher]:

@@ -17,7 +17,7 @@ pip install ipydrawio
 
 This work is licensed under the [Apache-2.0] License.
 
-[apache-2.0]: https://github.com/deathbeds/ipydrawio/blob/master/LICENSE.txt
+[apache-2.0]: https://github.com/deathbeds/ipydrawio/blob/main/LICENSE.txt
 
 ```
 Copyright 2023 ipydrawio contributors

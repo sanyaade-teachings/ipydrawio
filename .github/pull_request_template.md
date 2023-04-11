@@ -2,7 +2,7 @@
 Thanks for contributing to ipydrawio!
 Please fill out the following items to submit a pull request.
 See the contributing guidelines for more information:
-https://github.com/deathbeds/ipydrawio/blob/master/CONTRIBUTING.md
+https://github.com/deathbeds/ipydrawio/blob/main/CONTRIBUTING.md
 -->
 
 ## References

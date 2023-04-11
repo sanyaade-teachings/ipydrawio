@@ -40,9 +40,9 @@ limitations under the License.
 ```
 
 [apache-2.0]:
-  https://github.com/deathbeds/ipydrawio/blob/master/py_packages/ipydrawio-mathjax/LICENSE.txt
+  https://github.com/deathbeds/ipydrawio/blob/main/py_packages/ipydrawio-mathjax/LICENSE.txt
 [binder]:
-  http://mybinder.org/v2/gh/deathbeds/ipydrawio/master?urlpath=lab/tree/docs/Poster.dio.svg
+  http://mybinder.org/v2/gh/deathbeds/ipydrawio/main?urlpath=lab/tree/docs/Poster.dio.svg
 [binder-badge]: https://mybinder.org/badge_logo.svg
 [pypi-badge]: https://img.shields.io/pypi/v/ipydrawio-mathjax
 [pypi]: https://pypi.org/project/ipydrawio-mathjax
@@ -51,9 +51,9 @@ limitations under the License.
 [workflow-badge]:
   https://github.com/deathbeds/ipydrawio/workflows/.github/workflows/ci.yml/badge.svg
 [workflow]:
-  https://github.com/deathbeds/ipydrawio/actions?query=branch%3Amaster+workflow%3A.github%2Fworkflows%2Fci.yml
+  https://github.com/deathbeds/ipydrawio/actions?query=branch%3Amain+workflow%3A.github%2Fworkflows%2Fci.yml
 [cov-badge]:
-  https://codecov.io/gh/deathbeds/ipydrawio/branch/master/graph/badge.svg?token=9B74VKHQDK
+  https://codecov.io/gh/deathbeds/ipydrawio/branch/main/graph/badge.svg?token=9B74VKHQDK
 [cov]: https://codecov.io/gh/deathbeds/ipydrawio
 [docs-badge]: https://readthedocs.org/projects/ipydrawio/badge/?version=latest
 [docs]: https://ipydrawio.rtfd.io

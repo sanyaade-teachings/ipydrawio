@@ -15,7 +15,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "dependencies": {
-    "@deathbeds/ipydrawio-webpack": "^21.1.400",
+    "@deathbeds/ipydrawio-webpack": "^21.1.600",
     "@jupyterlab/application": "^3.1.0"
   },
   "devDependencies": {

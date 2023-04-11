@@ -133,7 +133,7 @@ html_sidebars = {
 html_context = {
     "github_user": "deathbeds",
     "github_repo": "ipydrawio",
-    "github_version": "master",
+    "github_version": "main",
     "doc_path": "docs",
     "demo_tarball": f"_static/ipydrawio-lite-{release}.tgz",
 }
