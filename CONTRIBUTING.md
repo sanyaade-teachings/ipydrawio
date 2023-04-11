@@ -8,9 +8,9 @@
 - improving the binder demo
 - improving [continuous integration][ci] and [developer experience][dodo]
 
-[roadmap]: https://github.com/deathbeds/ipydrawio/blob/master/ROADMAP.md
-[ci]: https://github.com/deathbeds/ipydrawio/blob/master/.github/workflows/ci.yml
-[dodo]: https://github.com/deathbeds/ipydrawio/blob/master/dodo.py
+[roadmap]: https://github.com/deathbeds/ipydrawio/blob/main/ROADMAP.md
+[ci]: https://github.com/deathbeds/ipydrawio/blob/main/.github/workflows/ci.yml
+[dodo]: https://github.com/deathbeds/ipydrawio/blob/main/dodo.py
 
 ## Prerequisites
 

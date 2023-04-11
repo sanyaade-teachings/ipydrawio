@@ -17,10 +17,10 @@
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - '*'
 
 concurrency:
   group: ${{ github.ref }}

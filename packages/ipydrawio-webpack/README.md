@@ -36,4 +36,4 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-[apache-2.0]: https://github.com/deathbeds/ipydrawio/blob/master/LICENSE.txt
+[apache-2.0]: https://github.com/deathbeds/ipydrawio/blob/main/LICENSE.txt
