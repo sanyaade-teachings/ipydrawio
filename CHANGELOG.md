@@ -2,7 +2,27 @@
 
 ## Unreleased
 
-> TBD
+### 1.3.1
+
+#### ipydrawio-widgets 1.3.1
+
+#### ipydrawio 1.3.1
+
+##### @deathbeds/ipydrawio 1.3.1
+
+##### @deathbeds/ipydrawio-notebook 1.3.1
+
+##### @deathbeds/ipydrawio-webpack 21.1.601
+
+##### @deathbeds/ipydrawio-jupyter-templates 1.3.1
+
+#### ipydrawio-export 1.3.1
+
+##### @deathbeds/ipydrawio-pdf 1.3.1
+
+#### ipydrawio-mathjax 1.3.1
+
+##### @deathbeds/ipydrawio-mathjax 1.3.1
 
 ## Releases
 
@@ -20,9 +40,9 @@
 
 ##### @deathbeds/ipydrawio-notebook 1.3.0
 
-##### @deathbeds/ipydrawio-webpack 21.1.600
+##### @deathbeds/ipydrawio-webpack 21.1.400
 
-- updates to [drawio v21.1.6](https://github.com/jgraph/drawio/releases/tag/v21.1.6)
+- updates to [drawio v21.1.4](https://github.com/jgraph/drawio/releases/tag/v21.1.4)
   - includes
     [mermaidjs 10.0.0](https://github.com/mermaid-js/mermaid/releases/tag/v10.0.0)
 

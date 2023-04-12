@@ -763,7 +763,7 @@ def task_demo():
     yield {
         "name": "pyodide:packages",
         "doc": "fetch the pyodide packages.json",
-        "uptodate": [doit.tools.config_changed(P.PYODIDE_URL)],
+        "uptodate": [config_changed(P.PYODIDE_URL)],
         "targets": [P.PYODIDE_PACKAGES],
         "actions": [P.fetch_pyodide_packages],
     }
@@ -911,15 +911,13 @@ def task_check():
     yield P._ok(
         {
             "name": "links",
+            "uptodate": [config_changed({"args": P.PYTEST_CHECK_LINKS_ARGS})],
             "file_dep": [*file_dep, P.DOCS_BUILDINFO],
             "actions": [
                 [
                     "pytest-check-links",
                     "--check-anchors",
-                    "--check-links-ignore",
-                    "http://",
-                    "--check-links-ignore",
-                    "https://",
+                    *P.PYTEST_CHECK_LINKS_ARGS,
                     *[p for p in file_dep if p.name not in ["schema.html"]],
                 ],
             ],
