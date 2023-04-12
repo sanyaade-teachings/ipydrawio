@@ -115,6 +115,17 @@ ATEST_ARGS = json.loads(os.environ.get("ATEST_ARGS", "[]"))
 ATEST_ATTEMPT = json.loads(os.environ.get("ATEST_ATTEMPT", "0"))
 ATEST_RETRIES = int(os.environ.get("ATEST_RETRIES") or "0")
 PYTEST_ARGS = json.loads(os.environ.get("PYTEST_ARGS", "[]"))
+PYTEST_CHECK_LINKS_ARGS = json.loads(
+    os.environ.get(
+        "PYTEST_CHECK_LINKS_ARGS",
+        """[
+    "--check-links-ignore",
+    "http://",
+    "--check-links-ignore",
+    "https://"
+]""",
+    ),
+)
 ATEST_PROCS = int(os.environ.get("ATEST_PROCS", "4"))
 
 # find root
@@ -411,8 +422,8 @@ BUILD_WHEELS = BUILD / "wheels"
 DEMO_WHEELS = DEMO / "pypi"
 NOARCH_WHL = "py3-none-any.whl"
 IGNORED_WHEELS = ["widgetsnbextension", "nbformat", "ipykernel", "pyolite"]
-# sync swith jupyterlite
-PYODIDE_URL = "https://cdn.jsdelivr.net/pyodide/v0.21.1/full"
+# sync with jupyterlite-pyodide-kernel
+PYODIDE_URL = "https://cdn.jsdelivr.net/pyodide/v0.23.0/full"
 PYODIDE_PACKAGES = BUILD / "pyodide-packages.json"
 
 # docs

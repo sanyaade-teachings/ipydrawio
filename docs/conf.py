@@ -59,6 +59,7 @@ extensions = [
 autosummary_generate = True
 autosectionlabel_prefix_document = True
 myst_heading_anchors = 3
+nb_execution_show_tb = True
 suppress_warnings = ["autosectionlabel.*"]
 
 rediraffe_redirects = {
